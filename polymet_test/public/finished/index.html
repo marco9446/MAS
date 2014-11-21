@@ -21,10 +21,15 @@
   <link rel="import" href="../components/core-icon/core-icon.html">
   <link rel="import" href="../components/core-image/core-image.html">
   <link rel="import" href="../components/core-ajax/core-ajax.html">
+  <link rel="import" href="../components/app-router-master/src/app-router.html">
+
   <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 
 
 <body unresolved>
+
+
+
 <core-ajax auto url="/users"
            params="{}"
            handleAs="json"
@@ -37,7 +42,8 @@
       <paper-tabs id="tabs" selected="0" onselect="{{selected}}"  self-end>
         <paper-tab class="paper_tab" inline flex center-center horizontal layout>
           <core-icon icon="home" class="core_icon"></core-icon>
-          Home
+          <a href="#/">Home</a>
+          <!--<a href="#/home">Home</a>-->
         </paper-tab>
         <paper-tab class="paper_tab" inline flex center-center horizontal layout center center-justified>
           <core-icon icon="extension" class="core_icon"></core-icon>
@@ -49,47 +55,46 @@
         </paper-tab>
         <paper-tab class="paper_tab"  inline flex center-center horizontal layout>
           <core-icon icon="info-outline" class="core_icon"  ></core-icon>
-          Log
+          <a href="#/log"> Log</a>
         </paper-tab>
 
       </paper-tabs>
     </core-toolbar>
     <section id="section">
-
-      <template bind="{{pene}}" >
-        <input value="{{bb}}">
-        <textarea value="{{bb}}" ></textarea>
-        <div>{{cane}}</div>
-      <core-image  id="house" src="{{cane}}" sizing="contain" center-center horizontal layout ></core-image>
-      </template>
+      <app-router  >
+        <app-route path="/" import="my-element.html"  template active="active"></app-route>
+        <app-route path="/log" import="new-page.html"  template></app-route>
+      </app-router>
     </section>
   </core-header-panel>
 
 
 
-
-
-
-
   <script>
-    var ajax = document.querySelector("core-ajax");
-    ajax.addEventListener("core-response",
-            function(e) {
-              console.log("fehjbhjds"+e.detail.response);
-              document.querySelector('template').model= {
-                pene: e.detail.response
-              }
-            }
-    );
+//    var ajax = document.querySelector("core-ajax");
+//    ajax.addEventListener("core-response",
+//            function(e) {
+//              console.log("fehjbhjds"+e.detail.response);
+//              document.querySelector('template').model= {
+//                pene: e.detail.response
+//              }
+//            }
+//    );
     var tabs = document.querySelector('paper-tabs');
+
     tabs.addEventListener('core-select', function() {
+      console.log("cacca");
       if (tabs.selected ==0){
+       // window.location = "http://localhost:3000/finished/#/home";
+        //document.querySelector('app-router').go("/");
         console.log("Selected: home" );
       }else if(tabs.selected ==1){
         console.log("Selected: edit" );
       }else if(tabs.selected ==2){
         console.log("Selected: setting" );
       }else if(tabs.selected ==3){
+       // window.location = "http://localhost:3000/finished/#/log";
+        //document.querySelector('app-router').go("/log");
         console.log("Selected: log" );
       }
 

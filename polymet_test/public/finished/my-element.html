@@ -10,122 +10,15 @@
 <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 
 
-<polymer-element name="my-element">
-
   <template>
-    <style>
-      :host {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-      }
-      #core_header_panel {
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        position: absolute;
-      }
-      #core_toolbar {
-
-        color: rgb(255, 255, 255);
-        background-color: #3f51b5;
-      }
-      #section {
-        /*height: 1000px;*/
-        background-color: #E5E5E5;
-        /*background: linear-gradient(rgb(214, 227, 231), rgb(173, 216, 230));*/
-      }
-      #paper_tab {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        background-color: #3f51b5;
-      }
-      #paper_tab::shadow #ink {
-        color: rgb(197, 202, 233);
-
-      }
-      .core_icon {
-        margin-right: 10px;
-      }
-
-      #tabs {
-        width: 100%;
-        margin: 0;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        text-transform: uppercase;
-      }
-      #tabs::shadow #selectionBar {
-
-        background-color: #ff4081;
-      }
-
-      #house{
-        margin-top: 40px;
-        height: 580px;
-
-      }
-      #speechInput{
-        margin-left: 40px;
-
-      }
-    </style>
-    <core-header-panel mode="waterfall" id="core_header_panel" >
-      <core-toolbar id="core_toolbar">
-        <paper-tabs id="tabs" selected="0" self-end>
-          <paper-tab id="paper_tab" inline flex center-center horizontal layout>
-            <core-icon icon="home" class="core_icon"></core-icon>
-            Home
-          </paper-tab>
-          <paper-tab id="paper_tab" inline flex center-center horizontal layout center center-justified>
-            <core-icon icon="extension" class="core_icon"></core-icon>
-            Edit
-          </paper-tab>
-          <paper-tab id="paper_tab" inline flex center-center horizontal layout>
-            <core-icon icon="settings" class="core_icon"></core-icon>
-            Setting
-          </paper-tab>
-          <paper-tab id="paper_tab"  inline flex center-center horizontal layout>
-            <core-icon icon="info-outline" class="core_icon"  ></core-icon>
-            Log
-          </paper-tab>
-
-
-        </paper-tabs>
-      </core-toolbar>
-      <section id="section">
-        <div >
-          <input id="speechInput">
-          <speech-mic transcript="come stai" completetranscript="come stai" language="it-IT" id="speech_mic"></speech-mic>
-        </div>
-
-        <core-image  id="house" src="../images/map-house-2-Metaform.jpeg" sizing="contain" center-center horizontal layout ></core-image>
-      </section>
-    </core-header-panel>
-    <script>
-      var speechInput = document.querySelector('#speechInput');
-      var speechMic = document.querySelector('#speechMic');
-
-      speechMic.addEventListener('speech-mic-result', function(e) {
-        speechInput.value = e.detail.transcript;
-      });
-
-    </script>
-
+    <input onkeyup="cinghiale()"  id="sdv">
+    <textarea id="hh"  ></textarea>
+    <div>home</div>
+    <core-image  id="house" src="../images/map-house-2-Metaform.jpeg" sizing="contain" center-center horizontal layout ></core-image>
 
   </template>
 
-  <script>
-    Polymer({});
-
-
-
+  <script src="../javascripts/functions.js">
 
   </script>
 
-</polymer-element>
