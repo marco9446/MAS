@@ -1,19 +1,15 @@
 #include "WiFly.h"
 #define HeadLength 50
 #define actionInDigLength 4
-#define actionOutDigLength 3
 #define actionInAnalogLength 3
-#define actionOutAnalogLength 3
 
 Server server(80);
 char* stringOne;
 char actionInDig[]={
   '2','3','4','5'};
-char actionOutDig[]={
-  '7','8','9'};
 
-char actionOutDigStatus[]={
-  LOW,LOW,LOW};  
+
+
 char actionInDigStatus[]={
   LOW,LOW,LOW,LOW
 };
@@ -23,8 +19,7 @@ byte actionInDigStatusClick[]={
 };
 char* actionInAnalog[5]={
   "A0","A1","A2"};
-char* actionOutAnalog[5]={
-  "A3","A4","A5"};
+
 
  
  
@@ -46,39 +41,11 @@ int indexOf(char *in,char* wt,int matchLength,byte from){
 }
 
 void setPinMode(){
-  for(byte i=0;i<actionOutDigLength;i++){
-    pinMode((int)actionOutDig[i]-'0',OUTPUT); 
-  }
+  
   for(byte i=0;i<actionInDigLength;i++){
     pinMode((int)(actionInDig[i]-'0'),INPUT_PULLUP); 
   }
 }
-
-void modStatusPin(char* in){
-
-  //Manage the Output Pin Digital
-  for(byte i=0;i<actionOutDigLength;i++){
-    char helper[6]="pin";
-    helper[3]=actionOutDig[i];
-    helper[4]='=';
-    helper[5]='t';
-    if(indexOf(in,helper,6,0)!=-1){
-      digitalWrite((int)actionOutDig[i]-'0',HIGH);
-      actionOutDigStatus[i]=HIGH;
-    }
-    helper[5]='f';
-    if(indexOf(in,helper,6,0)!=-1){
-      digitalWrite((int)actionOutDig[i]-'0',LOW);
-      actionOutDigStatus[i]=LOW;
-    }
-    helper[5]='s';
-    if(indexOf(in,helper,6,0)!=-1){ 
-      actionOutDigStatus[i]=actionOutDigStatus[i]==HIGH?LOW:HIGH;
-      digitalWrite((int)actionOutDig[i]-'0',actionOutDigStatus[i]);
-    }
-  }
-}
-
 
 
 
