@@ -8,3 +8,64 @@ margin-left: -8px;
 a {
   color: #00B7FF;
 }
+
+:host {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+#core_header_panel {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+#core_toolbar {
+
+  color: rgb(255, 255, 255);
+  background-color: #3f51b5;
+}
+#section {
+  /*height: 1000px;*/
+  background-color: #E5E5E5;
+  /*background: linear-gradient(rgb(214, 227, 231), rgb(173, 216, 230));*/
+}
+#paper_tab {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #3f51b5;
+}
+.paper_tab::shadow #ink {
+  color: rgb(197, 202, 233);
+
+}
+.core_icon {
+  margin-right: 10px;
+}
+
+#tabs {
+  width: 100%;
+  margin: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-transform: uppercase;
+}
+#tabs::shadow #selectionBar {
+
+  background-color: #ff4081;
+}
+
+#house{
+  margin-top: 40px;
+  height: 580px;
+
+}
+#speechInput{
+  margin-left: 40px;
+
+}
