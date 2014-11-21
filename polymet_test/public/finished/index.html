@@ -11,18 +11,91 @@
   </script>
 
   <link rel="import" href="../components/font-roboto/roboto.html">
-  <link rel="import"
-    href="../components/core-header-panel/core-header-panel.html">
-  <link rel="import"
-    href="../components/core-toolbar/core-toolbar.html">
-  <link rel="import"
-    href="../components/paper-tabs/paper-tabs.html">
-    <link rel="import"
-    href="./my-element.html">
+
+  <link rel="import" href="../components/paper-tabs/paper-tabs.html">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/style.css"><link rel="import" href="../components/core-icon-button/core-icon-button.html">
+  <link rel="import" href="../components/core-toolbar/core-toolbar.html">
+  <link rel="import" href="../components/core-header-panel/core-header-panel.html">
+  <link rel="import" href="../components/paper-tabs/paper-tab.html">
+  <link rel="import" href="../components/core-icons/core-icons.html">
+  <link rel="import" href="../components/core-icon/core-icon.html">
+  <link rel="import" href="../components/core-image/core-image.html">
+  <link rel="import" href="../components/core-ajax/core-ajax.html">
   <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 
-<body>
-<my-element></my-element>
+
+<body unresolved>
+<core-ajax auto url="/users"
+           params="{}"
+           handleAs="json"
+        ></core-ajax>
+
+
+  <core-header-panel mode="waterfall" id="core_header_panel" >
+    <core-toolbar id="core_toolbar">
+
+      <paper-tabs id="tabs" selected="0" onselect="{{selected}}"  self-end>
+        <paper-tab class="paper_tab" inline flex center-center horizontal layout>
+          <core-icon icon="home" class="core_icon"></core-icon>
+          Home
+        </paper-tab>
+        <paper-tab class="paper_tab" inline flex center-center horizontal layout center center-justified>
+          <core-icon icon="extension" class="core_icon"></core-icon>
+          Edit
+        </paper-tab>
+        <paper-tab class="paper_tab" inline flex center-center horizontal layout>
+          <core-icon icon="settings" class="core_icon"></core-icon>
+          Setting
+        </paper-tab>
+        <paper-tab class="paper_tab"  inline flex center-center horizontal layout>
+          <core-icon icon="info-outline" class="core_icon"  ></core-icon>
+          Log
+        </paper-tab>
+
+      </paper-tabs>
+    </core-toolbar>
+    <section id="section">
+
+      <template bind="{{pene}}" >
+        <input value="{{bb}}">
+        <textarea value="{{bb}}" ></textarea>
+        <div>{{cane}}</div>
+      <core-image  id="house" src="{{cane}}" sizing="contain" center-center horizontal layout ></core-image>
+      </template>
+    </section>
+  </core-header-panel>
+
+
+
+
+
+
+
+  <script>
+    var ajax = document.querySelector("core-ajax");
+    ajax.addEventListener("core-response",
+            function(e) {
+              console.log("fehjbhjds"+e.detail.response);
+              document.querySelector('template').model= {
+                pene: e.detail.response
+              }
+            }
+    );
+    var tabs = document.querySelector('paper-tabs');
+    tabs.addEventListener('core-select', function() {
+      if (tabs.selected ==0){
+        console.log("Selected: home" );
+      }else if(tabs.selected ==1){
+        console.log("Selected: edit" );
+      }else if(tabs.selected ==2){
+        console.log("Selected: setting" );
+      }else if(tabs.selected ==3){
+        console.log("Selected: log" );
+      }
+
+    });
+
+  </script>
 
 </body>
 <script>
