@@ -1,18 +1,42 @@
-<link rel="import" href="../components/core-icon-button/core-icon-button.html">
-<link rel="import" href="../components/core-toolbar/core-toolbar.html">
-<link rel="import" href="../components/core-header-panel/core-header-panel.html">
-<link rel="import" href="../components/paper-tabs/paper-tab.html">
-<link rel="import" href="../components/core-icons/core-icons.html">
-<link rel="import" href="../components/core-icon/core-icon.html">
-<link rel="import" href="../components/core-icon/core-icon.html">
-<link rel="import" href="../components/core-image/core-image.html">
-<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+
+<polymer-element name="new-page">
 
 
 
-    <template>
-        <div>
-            ciao
-        </div>
+    <template  >
+        <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+        <core-ajax auto =true
+                   url="/users/"
+                   handleAs="json"
+                   response="{{res}}"
+                   on-core-response="{{handleResponse}}"
+                   class=""></core-ajax>
+
+        <template  repeat="{{log in res.log}}"  >
+            <div class="logContainer"  layout horizontal center>
+                <div class="logContainerHour">{{log.hour}}</div>
+                <div class="logContainerMessage" flex>{{log.message}}</div>
+            </div>
+
+        </template>
+
 
     </template>
+    <script>
+        Polymer("new-page",{
+            ready : function(){
+                console.log("{{log}}");
+
+            },
+            handleResponse:function(a,b,c){
+                console.log(JSON.parse(b.xhr.response));
+
+
+            }
+        }
+
+        )
+    </script>
+</polymer-element>

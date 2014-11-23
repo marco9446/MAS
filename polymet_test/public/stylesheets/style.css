@@ -1,7 +1,7 @@
 body {
   margin-top: -8px;
 margin-left: -8px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
   background-color: #E5E5E5;
 }
 
@@ -61,11 +61,91 @@ a {
 }
 
 #house{
-  margin-top: 40px;
-  height: 580px;
-
+  position: relative;
+  margin-top: 20px;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 #speechInput{
   margin-left: 40px;
 
+}
+
+.logContainer{
+  border-radius: 5px;
+  width: 80%;
+  margin: 7px auto;
+  color: #555;
+  background-color: #ffffff;
+}
+.logContainerHour{
+
+  line-height: 64px;
+  font-size: 20px;
+  text-align: center;
+  height: 64px;
+  width: 64px;
+  border-radius: 90%;
+  background: #ddd;
+  margin: 5px;
+}
+.logContainerMessage{
+  padding: 5px;
+  margin-left: 20px;
+ }
+#newUserContainer{
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  background-color: #ffffff;
+}
+
+
+paper-input, paper-input-decorator{
+  width: 60%;
+}
+
+.settingTitle{
+  font-size: 40px;
+  color: #5c6bc0;
+  padding-bottom: 15px;
+}
+.settingFields{
+  text-align: right;
+  width: 200px;
+}
+#paper_fab1{
+  position: absolute;
+  left: 80%;
+
+}
+#paper_fab2{
+  z-index: 10;
+  color:#000000;
+  background: #ffffff;
+  position: absolute;
+  top: 35%;
+  left: 25%;
+
+}
+#paper_fab3{
+  z-index: 10;
+  color:#000000;
+  background: #ffffff;
+  position: absolute;
+  top: 75%;
+  left: 25%;
+
+}
+#paper_fab4{
+  z-index: 10;
+  position: absolute;
+  top: 65%;
+  left: 49%;
+
+}
+.dialog{
+  padding: 10px;
 }

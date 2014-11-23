@@ -1,0 +1,75 @@
+
+<link rel="import" href="../components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/core-icons/core-icons.html">
+<link rel="import" href="../components/core-icons/av-icons.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/paper-input/paper-autogrow-textarea.html">
+<polymer-element name="setting-page">
+
+    <template >
+        <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+        <core-ajax id="post"
+                    url="/users"
+                   class=""></core-ajax>
+
+
+
+        <div id="newUserContainer" vertical layout>
+            <div class="settingTitle">
+                Create New User
+                <paper-fab icon="check" id="paper_fab1" on-tap={{tappato}} ></paper-fab>
+            </div>
+            <div>
+                <div class="settingFields" inline  horizontal layout>User Name</div>
+                <paper-input label="User Name"  id="paper_input2"  inline ></paper-input>
+            </div>
+            <div >
+                <div class="settingFields" inline   horizontal layout>Password</div>
+                <paper-input-decorator label="Password"  inline>
+                    <input type="password" is="core-input" id="pass"  value="{{pass}}" >
+                </paper-input-decorator>
+            </div>
+            <div >
+                <div class="settingFields" inline  horizontal layout>Confirm Password</div>
+                <paper-input-decorator label=" Confirm Password" on-keyup="{{ciccio}}"  inline>
+                    <input type="password" is="core-input" value="{{conf}}" id="conf" >
+                </paper-input-decorator>
+                <core-icon icon=""  id="verification" inline></core-icon>
+            </div>
+        </div>
+
+
+
+    </template>
+    <script>
+        Polymer("setting-page",{
+                    ready : function(){
+                        console.log("setting page ready");
+
+                    },
+                    ciccio: function() {
+
+                        if (this.pass == this.conf){
+                            console.log("good");
+                            this.$.verification.style.color  = "green";
+                            this.$.verification.icon="check";
+                        }else{
+                            this.$.verification.style.color  = "red";
+                            this.$.verification.icon="clear";
+                        }
+                    },
+                    tappato: function(){
+                        console.log("ho tappato");
+//                        var ajax = this.$.post;
+//                        ajax.method = 'POST';
+//
+//                        ajax.body = json.parse("{cacca : 'molle'}");
+//
+//                        ajax.go();
+                    }
+
+                }
+        )
+    </script>
+</polymer-element>

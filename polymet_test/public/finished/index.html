@@ -21,7 +21,9 @@
   <link rel="import" href="../components/core-icon/core-icon.html">
   <link rel="import" href="../components/core-image/core-image.html">
   <link rel="import" href="../components/core-ajax/core-ajax.html">
-  <link rel="import" href="../components/app-router-master/src/app-router.html">
+  <link rel="import" href="../components/app-router-master/app-router.html">
+  <link rel="import" href="../components/core-animated-pages/core-animated-pages.html">
+  <link rel="import" href="../components/core-animated-pages/transitions/slide-from-right.html">
 
   <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 
@@ -29,41 +31,36 @@
 <body unresolved>
 
 
-
-<core-ajax auto url="/users"
-           params="{}"
-           handleAs="json"
-        ></core-ajax>
-
-
   <core-header-panel mode="waterfall" id="core_header_panel" >
     <core-toolbar id="core_toolbar">
 
       <paper-tabs id="tabs" selected="0" onselect="{{selected}}"  self-end>
-        <paper-tab class="paper_tab" inline flex center-center horizontal layout>
+        <paper-tab class="paper_tab" onclick="toggle('home')" inline flex center-center horizontal layout>
           <core-icon icon="home" class="core_icon"></core-icon>
-          <a href="#/">Home</a>
+          Home
           <!--<a href="#/home">Home</a>-->
         </paper-tab>
-        <paper-tab class="paper_tab" inline flex center-center horizontal layout center center-justified>
+        <paper-tab class="paper_tab" onclick="toggle('edit')" inline flex center-center horizontal layout center center-justified>
           <core-icon icon="extension" class="core_icon"></core-icon>
           Edit
         </paper-tab>
-        <paper-tab class="paper_tab" inline flex center-center horizontal layout>
+        <paper-tab class="paper_tab" onclick="toggle('setting')" inline flex center-center horizontal layout>
           <core-icon icon="settings" class="core_icon"></core-icon>
-          Setting
+          Settings
         </paper-tab>
-        <paper-tab class="paper_tab"  inline flex center-center horizontal layout>
+        <paper-tab class="paper_tab" onclick="toggle('log')"  inline flex center-center horizontal layout>
           <core-icon icon="info-outline" class="core_icon"  ></core-icon>
-          <a href="#/log"> Log</a>
+           Log
         </paper-tab>
 
       </paper-tabs>
     </core-toolbar>
     <section id="section">
       <app-router  >
-        <app-route path="/" import="my-element.html"  template active="active"></app-route>
-        <app-route path="/log" import="new-page.html"  template></app-route>
+        <app-route path="/home" import="my-element.html" element="my-element"></app-route>
+        <app-route path="/log" import="new-page.html" element="new-page" ></app-route>
+        <app-route path="/settings" import="setting-page.html"  element="setting-page" ></app-route>
+        <app-route path="/edit" import="edit-page.html" element="edit-page"></app-route>
       </app-router>
     </section>
   </core-header-panel>
@@ -71,34 +68,44 @@
 
 
   <script>
-//    var ajax = document.querySelector("core-ajax");
-//    ajax.addEventListener("core-response",
-//            function(e) {
-//              console.log("fehjbhjds"+e.detail.response);
-//              document.querySelector('template').model= {
-//                pene: e.detail.response
-//              }
-//            }
-//    );
-    var tabs = document.querySelector('paper-tabs');
+    window.onload = function() {
+      document.querySelector('app-router').go('/home');
+    };
 
-    tabs.addEventListener('core-select', function() {
-      console.log("cacca");
-      if (tabs.selected ==0){
-       // window.location = "http://localhost:3000/finished/#/home";
-        //document.querySelector('app-router').go("/");
-        console.log("Selected: home" );
-      }else if(tabs.selected ==1){
-        console.log("Selected: edit" );
-      }else if(tabs.selected ==2){
-        console.log("Selected: setting" );
-      }else if(tabs.selected ==3){
-       // window.location = "http://localhost:3000/finished/#/log";
-        //document.querySelector('app-router').go("/log");
-        console.log("Selected: log" );
+//    var tabs = document.querySelector('paper-tabs');
+//
+//    tabs.addEventListener('core-select', function() {
+//
+//      if (tabs.selected ==0){
+//       window.location = "http://localhost:3000/finished/#/home";
+//        document.querySelector('app-router').go("/");
+//        console.log("Selected: home" );
+//      }else if(tabs.selected ==1){
+//        console.log("Selected: edit" );
+//      }else if(tabs.selected ==2){
+//        console.log("Selected: setting" );
+//      }else if(tabs.selected ==3){
+//       window.location = "http://localhost:3000/finished/#/log";
+//        document.querySelector('app-router').go("/log");
+//        console.log("Selected: log" );
+//      }
+//
+//    });
+
+    function toggle(page){
+      if (page == "home"){
+        document.querySelector('app-router').go('/home');
+      }else if(page== "edit"){
+        document.querySelector('app-router').go('/edit');
+      }else if(page == "setting"){
+        document.querySelector('app-router').go('/settings');
+      }else if(page == "log"){
+        document.querySelector('app-router').go('/log');
+      }else {
+
       }
 
-    });
+    }
 
   </script>
 

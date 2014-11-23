@@ -6,3 +6,4 @@ function cinghiale() {
     var cd = document.getElementById("sdv").value;
     document.getElementById("hh").value = cd;
 }
+
