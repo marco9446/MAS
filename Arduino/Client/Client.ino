@@ -6,7 +6,9 @@
 #define actionInDigLength 4
 #define actionInAnalogLength 3
 #define DEBUG true
-
+#define ID "1111111111"
+#define Type "OUTPUT"
+#define PIN "2=o,3=o,4=o,5=o,6=o,7=o,8=o,9=o"
 
 char* stringOne;
 char actionInDig[]={
@@ -25,6 +27,7 @@ char* actionInAnalog[5]={
   "A0","A1","A2"};
 
 
+ 
 
 
 
@@ -50,7 +53,36 @@ void setPinMode(){
     pinMode((int)(actionInDig[i]-'0'),INPUT_PULLUP); 
   }
 }
+void onlyOneTimePleas(){
+ Client client("192.168.1.101", 3005);
+    Serial.println("connecting...");
 
+    if (client.connect()) {
+      Serial.println("connected");
+      client.println("GET /  HTTP/1.0");
+      client.println("Host: 192.168.1.102");
+      client.println("Content-Length:67");
+      client.println();
+      
+      client.print(WiFly.ip());
+      client.println();
+      client.print(ID);
+      client.println();
+      client.print(Type);
+      client.println();
+      client.print(PIN);
+      client.print("    ");
+      client.println();
+      client.stop();
+    }
+     while(client.available()) {
+      char c = client.read();
+      
+    }
+    
+    Serial.println("end...");
+
+}
 void setup() {
   Serial.begin(9600);
   stringOne=new char[HeadLength];
@@ -60,11 +92,13 @@ void setup() {
     while (1) {
     }
   }
-
+  onlyOneTimePleas();
   Serial.print("IP: ");
   Serial.println(WiFly.ip());
   setPinMode();
 }
+
+
 
 
 void updateInput(){
@@ -82,15 +116,15 @@ void updateInput(){
     }
   }
   if(change){
-
-    Client client("192.168.43.206", 3005);
+Client client("192.168.1.101", 3015);
+   
     Serial.println("connecting...");
 
     if (client.connect()) {
       Serial.println("connected");
       client.println("GET /  HTTP/1.0");
       client.println("Host: 192.168.1.102");
-      client.println("Content-Length:33");
+      client.println("Content-Length:34 ");
       //TODO
       //Compute the content-length dynamic, using char[]
       client.println();
@@ -108,6 +142,7 @@ void updateInput(){
           client.print("]");
           client.print("}");
           client.println();
+          client.println();
     } 
     else {
       
@@ -117,9 +152,9 @@ void updateInput(){
       char c = client.read();
     }
     Serial.println();
-    #if DEBUG
+   
     Serial.println("disconnecting.");
-    #endif
+
     client.stop();
   }
 }
