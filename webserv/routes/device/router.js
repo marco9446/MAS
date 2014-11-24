@@ -31,3 +31,5 @@ router.post('/', function(req, res, next) {
     var newDevice = new Device(req.body);
     newDevice.save(onModelSave(res, 201, true));
 });
+
+module.exports = router;

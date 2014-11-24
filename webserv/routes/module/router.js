@@ -42,3 +42,4 @@ router.post('/', function(req, res, next) {
     newModule.save(onModelSave(res, 201, true));
 });
 
+module.exports = router;

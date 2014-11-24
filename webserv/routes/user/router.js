@@ -31,3 +31,6 @@ router.post('/', function(req, res, next) {
     var newUser = new User(req.body);
     newUser.save(onModelSave(res, 201, true));
 });
+
+
+module.exports = router;
