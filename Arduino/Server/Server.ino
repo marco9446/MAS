@@ -82,7 +82,7 @@ void modStatusPin(char* in){
 
 
 void onlyOneTimePleas(){
-    Client client("192.168.1.101", 3005);
+    Client client("192.168.43.206", 3005);
     Serial.println("connecting...");
 
     if (client.connect()) {

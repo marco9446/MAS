@@ -2,50 +2,29 @@
 //The respost of the server is not keep 
 
 #include "WiFly.h"
-#define HeadLength 50
-#define actionInDigLength 4
+
+#define actionInDigLength 8
 #define actionInAnalogLength 3
 #define DEBUG true
-#define ID "1111111111"
-#define Type "OUTPUT"
-#define PIN "2=o,3=o,4=o,5=o,6=o,7=o,8=o,9=o"
+#define ID "1111111112"
+#define Type "INPUT "
+#define PIN "2=b,3=b,4=b,5=b,6=s,7=s,8=w,9=w"
 
-char* stringOne;
 char actionInDig[]={
-  '2','3','4','5'};
+  '2','3','4','5','6','7','8','9'};
 
 
 
 char actionInDigStatus[]={
-  LOW,LOW,LOW,LOW
+  LOW,LOW,LOW,LOW,LOW,LOW,LOW,LOW
 };
 
 byte actionInDigStatusClick[]={
-  0,0,0,0
+  0,0,0,0,0,0,0,0
 };
-char* actionInAnalog[5]={
-  "A0","A1","A2"};
-
-
- 
 
 
 
-int indexOf(char *in,char* wt,int matchLength,byte from){
-  int wIndex=0;
-  for(int i=from;i<HeadLength;i++){
-    if(in[i]==wt[wIndex]){
-      wIndex++;
-      if(wIndex>=matchLength){
-        return i-matchLength+1;
-      }
-    }
-    else{
-      wIndex=0;
-    }
-  }
-  return -1;
-}
 
 void setPinMode(){
   
@@ -54,14 +33,14 @@ void setPinMode(){
   }
 }
 void onlyOneTimePleas(){
- Client client("192.168.1.101", 3005);
-    Serial.println("connecting...");
+ Client client("192.168.43.206", 3005);
+    //Serial.println("connecting...");
 
     if (client.connect()) {
-      Serial.println("connected");
+      //Serial.println("connected");
       client.println("GET /  HTTP/1.0");
       client.println("Host: 192.168.1.102");
-      client.println("Content-Length:67");
+      client.println("Content-Length:68");
       client.println();
       
       client.print(WiFly.ip());
@@ -80,21 +59,20 @@ void onlyOneTimePleas(){
       
     }
     
-    Serial.println("end...");
+    //Serial.println("end...");
 
 }
 void setup() {
-  Serial.begin(9600);
-  stringOne=new char[HeadLength];
+ // Serial.begin(9600);
   WiFly.begin();
   if (!WiFly.join("Beduu", "fbedulli4")) {
-    Serial.println("Association failed.");
+    //Serial.println("Association failed.");
     while (1) {
     }
   }
   onlyOneTimePleas();
-  Serial.print("IP: ");
-  Serial.println(WiFly.ip());
+  //Serial.print("IP: ");
+  //Serial.println(WiFly.ip());
   setPinMode();
 }
 
@@ -106,6 +84,7 @@ void updateInput(){
   boolean change=false;
   for(byte i=0;i<actionInDigLength;i++){
     int readVal=digitalRead((int)(actionInDig[i]-'0'));
+    if(i<6){
     if(readVal==0){
       actionInDigStatusClick[i]++;
     }
@@ -113,22 +92,31 @@ void updateInput(){
       actionInDigStatusClick[i]=0;
       actionInDigStatus[i]= actionInDigStatus[i]==LOW?HIGH:LOW;
       change=true;
+    }}else{
+      if((readVal==1 && actionInDigStatus[i]==LOW)||(readVal==0 && actionInDigStatus[i]==HIGH)){
+      actionInDigStatus[i]= actionInDigStatus[i]==LOW?HIGH:LOW;
+      change=true;
+        
+      }
+      
     }
+    
   }
   if(change){
-Client client("192.168.1.101", 3015);
+    Client client("192.168.43.206", 3015);
    
-    Serial.println("connecting...");
-
+    //Serial.println("connecting...");
+    
     if (client.connect()) {
-      Serial.println("connected");
+      ///Serial.println("connected");
       client.println("GET /  HTTP/1.0");
       client.println("Host: 192.168.1.102");
-      client.println("Content-Length:34 ");
+      client.println("Content-Length:55 ");
+      client.println("Connection:cloase ");
       //TODO
       //Compute the content-length dynamic, using char[]
       client.println();
-      client.print("{ID:[");
+
           for(byte i=0;i<actionInDigLength;i++){
             if(i!=0){
               client.print(",");
@@ -139,21 +127,19 @@ Client client("192.168.1.101", 3015);
             client.print(actionInDigStatus[i]==HIGH?"t":"f");
             client.print("}");
           }
-          client.print("]");
-          client.print("}");
+         
           client.println();
           client.println();
     } 
     else {
       
-      Serial.println("connection failed");
+      //Serial.println("connection failed");
     }
     while(client.available()) {
       char c = client.read();
     }
-    Serial.println();
    
-    Serial.println("disconnecting.");
+//    Serial.println("disconnecting.");
 
     client.stop();
   }
