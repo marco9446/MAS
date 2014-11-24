@@ -1,0 +1,129 @@
+<link rel="import" href="../components/core-icons/core-icons.html">
+<link rel="import" href="../components/core-icons/device-icons.html">
+<link rel="import" href="../components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../components/paper-toast/paper-toast.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="edit-page.html">
+<polymer-element name="bluePrint-page">
+
+
+
+        <template >
+            <core-ajax id="post" method="POST" url="/users" ></core-ajax>
+
+            <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+            <figure center layout >
+                <paper-fab mini icon="device:brightness-high" id="paper_fab2" class="btHome" on-tap={{tappato}} style="top: 25%;left: 25%"></paper-fab>
+                <paper-fab mini icon="device:brightness-high" id="paper_fab3" class="btHome" on-tap={{tappato}} style="top: 48%;left: 15%" ></paper-fab>
+                <paper-fab mini icon="settings-remote" id="paper_fab4"  on-tap={{tappato2}} style="top: 45%;left: 49%"></paper-fab>
+                <paper-fab mini icon="device:brightness-high" id="paper_fab5" class="btHome" on-tap={{tappato}} style="top: 27%;left: 55%"></paper-fab>
+                <paper-fab mini icon="device:brightness-high" id="paper_fab6" class="btHome" on-tap={{tappato}} style="top: 70%;left: 60%"></paper-fab>
+                <paper-fab mini icon="device:brightness-high" id="paper_fab7" class="btHome" on-tap={{tappato}} style="top: 65%;left: 25%"></paper-fab>
+
+                <paper-dialog id="dialog">
+                    <div>
+                        <div class="dialog" center horizontal layout>
+                            <div>Touch sounds</div>
+                            <paper-checkbox></paper-checkbox>
+                        </div>
+                        <div class="dialog" center horizontal layout>
+                            <div> uscabau</div>
+                            <paper-checkbox></paper-checkbox>
+                        </div>
+                    </div>
+                </paper-dialog>
+                <img id="house" src="../images/map-house-2-Metaform.jpeg">
+
+            </figure>
+            <paper-toast id="toast" class="capsule" style="padding-right: 60px;"></paper-toast>
+        </template >
+
+
+
+
+
+    <script>
+        (function () {
+            var status = {
+                "paper_fab2" : {status: 'off', position:"Living room light " },
+                "paper_fab3" : {status: 'off', position:"Bathroom light " },
+                "paper_fab5" : {status: 'off', position:"Bed room1 light " },
+                "paper_fab6" : {status: 'off', position:"Bed room2 light " },
+                "paper_fab7" : {status: 'off', position:"Bed room3 light " }};
+
+            Polymer('bluePrint-page', {
+                        ready: function () {
+                            console.log(status["paper_fab3"]);
+
+                        },
+
+
+                        tappato: function (a,b,target) {
+                            var id = target.id;
+                            var ajax = this.$.post;
+                            if (status[id].status == "on") {
+                                console.log("spento");
+                                this.$.toast.text = status[id].position + "off";
+                                target.style.background = "#ffffff";
+                                status[id].status = "off"
+//                                ajax.body=;
+//                                ajax.go();
+
+                            } else {
+                                console.log("acceso");
+                                this.$.toast.text = status[id].position + "on";;
+                                target.style.background = "#ffeb3b";
+                                status[id].status = "on"
+//                                ajax.body=;
+//                                ajax.go();
+                            }
+                            this.$.toast.show();
+                        },
+
+
+                        tappato2: function () {
+                            var dialog = this.$.dialog.toggle();
+
+
+                        }
+//                        test34: function () {
+//                            console.log(this.valueSpech);
+//                            var voice = this.$.voiceSpeack;
+//
+//                            if (this.valueSpech == "turn on the light" || this.valueSpech == " turn on the light") {
+//                                this.$.toast.text = "Bathroom light on";
+//                                this.$.paper_fab3.style.background = "#ffeb3b";
+//
+//                                this.$.speech_mic.stop()
+//
+//                                this.togg1 = "on";
+//
+//                                this.$.toast.show();
+//                            } else if (this.valueSpech == " turn off the light" || this.valueSpech == "turn off the light") {
+//                                console.log("spento");
+//                                this.$.toast.text = "Bathroom light off";
+//                                this.$.paper_fab3.style.background = "#ffffff";
+//                                this.togg1 = "off";
+//                                this.$.speech_mic.stop()
+//
+//
+//                                this.$.toast.show();
+//                            } else if (this.valueSpech.toUpperCase() == "HELLO JARVIS" || this.valueSpech.toUpperCase() == " HELLO JARVIS") {
+//
+//                                voice.text = "welcome back sir";
+//                                voice.speak();
+//
+//                            }
+//
+//                        }
+
+
+                    }
+            )
+        })();
+
+    </script>
+
+</polymer-element>

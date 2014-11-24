@@ -3,7 +3,7 @@
 
 <head>
 
-  <title>unquote</title>
+  <title>Automate</title>
 
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
@@ -24,9 +24,9 @@
   <link rel="import" href="../components/app-router-master/app-router.html">
   <link rel="import" href="../components/core-animated-pages/core-animated-pages.html">
   <link rel="import" href="../components/core-animated-pages/transitions/slide-from-right.html">
-
+  <link rel="import" href="../components/core-media-query/core-media-query.html">
   <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
-
+  <link rel="import" href="../components/speech-mic-master/speech-mic.html">
 
 <body unresolved>
 
@@ -34,11 +34,12 @@
   <core-header-panel mode="waterfall" id="core_header_panel" >
     <core-toolbar id="core_toolbar">
 
-      <paper-tabs id="tabs" selected="0" onselect="{{selected}}"  self-end>
+      <paper-tabs id="tabs" selected="1" onselect="{{selected}}"  self-end>
+        <speech-mic on-speech-mic-result="{{test34}}" transcript="{{ valueSpech }}" language="en-EN" id="speech_mic"></speech-mic>
         <paper-tab class="paper_tab" onclick="toggle('home')" inline flex center-center horizontal layout>
           <core-icon icon="home" class="core_icon"></core-icon>
           Home
-          <!--<a href="#/home">Home</a>-->
+
         </paper-tab>
         <paper-tab class="paper_tab" onclick="toggle('edit')" inline flex center-center horizontal layout center center-justified>
           <core-icon icon="extension" class="core_icon"></core-icon>
@@ -57,10 +58,12 @@
     </core-toolbar>
     <section id="section">
       <app-router  >
-        <app-route path="/home" import="my-element.html" element="my-element"></app-route>
+
+        <app-route path="/home" import="my-element.html"  element="my-element"></app-route>
         <app-route path="/log" import="new-page.html" element="new-page" ></app-route>
         <app-route path="/settings" import="setting-page.html"  element="setting-page" ></app-route>
         <app-route path="/edit" import="edit-page.html" element="edit-page"></app-route>
+
       </app-router>
     </section>
   </core-header-panel>
@@ -69,28 +72,11 @@
 
   <script>
     window.onload = function() {
+
       document.querySelector('app-router').go('/home');
     };
 
-//    var tabs = document.querySelector('paper-tabs');
-//
-//    tabs.addEventListener('core-select', function() {
-//
-//      if (tabs.selected ==0){
-//       window.location = "http://localhost:3000/finished/#/home";
-//        document.querySelector('app-router').go("/");
-//        console.log("Selected: home" );
-//      }else if(tabs.selected ==1){
-//        console.log("Selected: edit" );
-//      }else if(tabs.selected ==2){
-//        console.log("Selected: setting" );
-//      }else if(tabs.selected ==3){
-//       window.location = "http://localhost:3000/finished/#/log";
-//        document.querySelector('app-router').go("/log");
-//        console.log("Selected: log" );
-//      }
-//
-//    });
+
 
     function toggle(page){
       if (page == "home"){
@@ -106,6 +92,12 @@
       }
 
     }
+
+    var speechMic = document.querySelector('#speech_mic');
+
+    speechMic.addEventListener('speech-mic-result', function(e) {
+      console.log(e.detail.transcript);
+    });
 
   </script>
 

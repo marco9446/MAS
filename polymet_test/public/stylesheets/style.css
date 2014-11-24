@@ -56,8 +56,8 @@ a {
   text-transform: uppercase;
 }
 #tabs::shadow #selectionBar {
-
-  background-color: #ff4081;
+  height: 2px;
+  background-color: #f50057;
 }
 
 #house{
@@ -121,31 +121,61 @@ paper-input, paper-input-decorator{
   left: 80%;
 
 }
-#paper_fab2{
+.btHome{
   z-index: 10;
   color:#000000;
-  background: #ffffff;
   position: absolute;
-  top: 35%;
-  left: 25%;
-
-}
-#paper_fab3{
-  z-index: 10;
-  color:#000000;
   background: #ffffff;
-  position: absolute;
-  top: 75%;
-  left: 25%;
-
 }
+
+
 #paper_fab4{
   z-index: 10;
   position: absolute;
-  top: 65%;
+  top: 45%;
   left: 49%;
 
 }
 .dialog{
   padding: 10px;
+}
+
+speech-mic{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.subMenuContainer{
+  margin: 2px;
+  padding: 20px;
+}
+
+.subMenuTitle{
+
+}
+figure{
+  position: relative;
+}
+
+.core_submenu{
+  margin: 2px;
+  border-radius: 5px;
+  background: #ffffff;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.toggleBt{
+  padding-right: 10px;
+}
+paper-toggle-button::shadow paper-radio-button::shadow #ink[checked] {
+  color: #f50057;
+}
+paper-toggle-button::shadow paper-radio-button::shadow #onRadio {
+  background-color: #f50057;
+}
+paper-toggle-button::shadow #toggleBar[checked] {
+  background-color: #f50057;
+}
+core-submenu::shadow > #submenuItem {
+  color: #3f51b5;
 }
