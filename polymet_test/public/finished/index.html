@@ -97,6 +97,15 @@
 
     speechMic.addEventListener('speech-mic-result', function(e) {
       console.log(e.detail.transcript);
+      if(e.detail.transcript == "settings" || e.detail.transcript == " settings" ){
+        document.querySelector('app-router').go('/settings');
+      }else if(e.detail.transcript == "edit" ||e.detail.transcript == " edit"){
+        document.querySelector('app-router').go('/edit');
+      }else if(e.detail.transcript == "log" || e.detail.transcript == " log"){
+        document.querySelector('app-router').go('/log');
+      }else if(e.detail.transcript == "home"|| e.detail.transcript == " home"){
+        document.querySelector('app-router').go('/home');
+      }
     });
 
   </script>
