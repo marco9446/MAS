@@ -11,7 +11,7 @@
 
 
         <template >
-            <core-ajax id="post" method="POST" url="/users" ></core-ajax>
+            <core-ajax id="post" method="POST" url="/action" ></core-ajax>
 
             <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
             <figure center layout >
@@ -47,18 +47,18 @@
     <script>
         (function () {
             var status = {
-                "paper_fab2" : {status: 'off', position:"Living room light " },
-                "paper_fab3" : {status: 'off', position:"Bathroom light " },
-                "paper_fab5" : {status: 'off', position:"Bed room1 light " },
-                "paper_fab6" : {status: 'off', position:"Bed room2 light " },
-                "paper_fab7" : {status: 'off', position:"Bed room3 light " }};
+                "paper_fab2" : {status: 'off', position:"Living room light " ,action:"pin4"},
+                "paper_fab3" : {status: 'off', position:"Bathroom light " ,action:"pin5"},
+                "paper_fab5" : {status: 'off', position:"Bed room1 light " ,action:"pin6"},
+                "paper_fab6" : {status: 'off', position:"Bed room2 light " ,action:"pin7"},
+                "paper_fab7" : {status: 'off', position:"Bed room3 light " ,action:"pin8"}};
 
             Polymer('bluePrint-page', {
                         ready: function () {
                             console.log(status["paper_fab3"]);
 
                         },
-
+                      
 
                         tappato: function (a,b,target) {
                             var id = target.id;
@@ -68,16 +68,18 @@
                                 this.$.toast.text = status[id].position + "off";
                                 target.style.background = "#ffffff";
                                 status[id].status = "off"
-//                                ajax.body=;
-//                                ajax.go();
+                                ajax.bodyType="json";
+                                ajax.body='{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "'+status[id].action+'": false }}';
+                                ajax.go();                            
 
                             } else {
                                 console.log("acceso");
                                 this.$.toast.text = status[id].position + "on";;
                                 target.style.background = "#ffeb3b";
-                                status[id].status = "on"
-//                                ajax.body=;
-//                                ajax.go();
+                                status[id].status = "on";
+                                ajax.bodyType="json";
+                                ajax.body='{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "'+status[id].action+'": true }}';
+                                ajax.go();
                             }
                             this.$.toast.show();
                         },

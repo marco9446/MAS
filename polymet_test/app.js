@@ -25,10 +25,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-l.sendMessageTo("547363a2744331d1d9556bc2",[{pin5:true}]);
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/action', l.router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

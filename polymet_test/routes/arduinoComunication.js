@@ -1,7 +1,8 @@
 var express = require('express');
-var router = express.Router();
 var mongoose = require('mongoose');
 var io=function(){};
+io.router=express.Router();
+
 var http=require('http');
 var ip = require("ip");
 
@@ -17,6 +18,17 @@ io.addDeviceCallback=[];
 io.actionLinstener=[];
 
 
+
+io.router.post('/', function(req, res) {
+  console.log("send REQ");
+  var b=req.body;
+  var elem=Object.keys(b)[0];
+  var ek1=JSON.parse(elem);
+  io.sendMessageTo(ek1.ID,[ek1.PARAM]);
+  res.status(200).end();
+});
+
+
 io.server1=http.createServer(function (req, res) {
   var body = "";
   req.on('data', function (chunk) {
@@ -28,9 +40,10 @@ io.server1=http.createServer(function (req, res) {
   	//check if arduino module arleady exists
   	var content=body.split("\n");
   	ArduinoBase.findOne({MAC:content[2].replace(/(\r\n|\n|\r)/gm,"")},function(err,found){
+
   		if(!err){
   				if(found){
-  					
+  					   console.log("trovatoo");
   						if(found.IP!=content[1].replace(/(\r\n|\n|\r)/gm,"")){
   							found.IP=content[1].replace(/(\r\n|\n|\r)/gm,"");
   							found.update(function(err){
@@ -55,6 +68,7 @@ io.server1=http.createServer(function (req, res) {
               v1.TYPE=content[3].replace(/(\r\n|\n|\r)/gm,"");
               v1.PORT=resPinConfig;
   						v1.save(function(err){
+                  console.log(v1);
   								for (i in io.addNewDeviceCallback){
   									io.addNewDeviceCallback[i](v1);
   								}
@@ -115,14 +129,16 @@ io.server2=http.createServer(function (req, res) {
 //the message should be   a json with the state of the pin
 //{pin1:true},{pin2:false}]
 io.sendMessageTo=function(ID,message){
-  console.log("asd");
+  try{
   ArduinoBase.findOne({_id:ID},function(err,found){
       if(found){
-        console.log(found);
+
         var finalMsg="";
-        //TODO
+        console.log(message,"Qidkjfhskjdhf");
+        //TODOa
         //UPDATE STATE OF ARDUINOOO !!!!!!!!!! Done <3
         for (i in message){
+
               finalMsg+=Object.keys(message[i])[0].replace("in","")+"=";
               finalMsg+=message[i][Object.keys(message[i])[0]]==true?"t&":"f&";
               found.PORT[Object.keys(message[i])[0]].state=message[i][Object.keys(message[i])[0]];
@@ -141,7 +157,9 @@ io.sendMessageTo=function(ID,message){
         http.get(options);
       }
 
-  })
+   })
+  }
+  catch(err){}
 }
 
 
