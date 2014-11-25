@@ -51,7 +51,9 @@
                 "paper_fab3" : {status: 'off', position:"Bathroom light " ,action:"pin5"},
                 "paper_fab5" : {status: 'off', position:"Bed room1 light " ,action:"pin6"},
                 "paper_fab6" : {status: 'off', position:"Bed room2 light " ,action:"pin7"},
+                "paper_fab4" : {status: 'off', position:"Allarm " ,action:"pin3"},
                 "paper_fab7" : {status: 'off', position:"Bed room3 light " ,action:"pin8"}};
+
 
             Polymer('bluePrint-page', {
                         ready: function () {
@@ -85,8 +87,21 @@
                         },
 
 
-                        tappato2: function () {
-                            var dialog = this.$.dialog.toggle();
+                        tappato2: function (a,b,target) {
+                            var ajax = this.$.post;
+                            //var dialog = this.$.dialog.toggle();
+                            if(status[id].status == "on") {
+                                this.$.toast.text = status[id].position + "on";
+                                ajax.bodyType = "json";
+                                ajax.body = '{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "' + status[id].action + '": true }}';
+                                ajax.go();
+                            }else{
+                                this.$.toast.text = status[id].position + "on";
+                                ajax.bodyType = "json";
+                                ajax.body = '{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "' + status[id].action + '": false }}';
+                                ajax.go();
+                            }
+                            this.$.toast.show();
 
 
                         }

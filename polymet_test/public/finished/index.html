@@ -38,20 +38,20 @@
         <speech-mic on-speech-mic-result="{{test34}}" transcript="{{ valueSpech }}" language="en-EN" id="speech_mic"></speech-mic>
         <paper-tab class="paper_tab" onclick="toggle('home')" inline flex center-center horizontal layout>
           <core-icon icon="home" class="core_icon"></core-icon>
-          Home
+          <span class="titleTab">Home</span>
 
         </paper-tab>
-        <paper-tab class="paper_tab" onclick="toggle('edit')" inline flex center-center horizontal layout center center-justified>
+        <paper-tab class="paper_tab" id="editPage" onclick="toggle('edit')" inline flex center-center horizontal layout center center-justified>
           <core-icon icon="extension" class="core_icon"></core-icon>
-          Edit
+          <span class="titleTab">Edit</span>
         </paper-tab>
         <paper-tab class="paper_tab" onclick="toggle('setting')" inline flex center-center horizontal layout>
           <core-icon icon="settings" class="core_icon"></core-icon>
-          Settings
+          <span class="titleTab">Settings</span>
         </paper-tab>
         <paper-tab class="paper_tab" onclick="toggle('log')"  inline flex center-center horizontal layout>
           <core-icon icon="info-outline" class="core_icon"  ></core-icon>
-           Log
+          <span class="titleTab">Log</span>
         </paper-tab>
 
       </paper-tabs>

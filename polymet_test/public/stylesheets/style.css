@@ -113,6 +113,7 @@ paper-input, paper-input-decorator{
   padding-bottom: 15px;
 }
 .settingFields{
+  display: inline;
   text-align: right;
   width: 200px;
 }
@@ -185,4 +186,11 @@ core-submenu::shadow > #submenuItem {
 
 
   }
+  #editPage{
+    display: none;
+  }
+  .titleTab{
+    display: none;
+  }
+ 
 }
