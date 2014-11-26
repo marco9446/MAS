@@ -3,7 +3,7 @@
 
 var express = require('express');
 var router = express.Router();
-var middleware =  require('../middleware');
+var middleware =  require('./middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Program = mongoose.model('Program');
