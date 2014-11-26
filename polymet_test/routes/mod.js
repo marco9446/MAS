@@ -14,15 +14,15 @@ router.all('/', middleware.supportedMethods('GET, POST'));
 //get module with id
 router.get('/:moduleid', function(req, res, next) {
 
-  Module.findById(req.params.moduleid).lean().exec(function(err, module){
+  Module.findById(req.params.moduleid).lean().exec(function(err, mod){
     if (err) return next (err);
 
-    if (!module) {
+    if (!mod) {
     	res.status(404);
     	res.json({message: "not found"});
     }
 
-    res.json(module);
+    res.json(mod);
   });
 });
 
