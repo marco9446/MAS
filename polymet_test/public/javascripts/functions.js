@@ -24,7 +24,7 @@ function drop(dragInfo) {
     var dropTarget = dragInfo.event.relatedTarget;
     //chceck if the droptarget is the figure
     //
-    
+
     console.log(dropTarget.offsetWidth);
     console.log(dragInfo.event.clientHeight);
     var f = dragInfo.framed;
