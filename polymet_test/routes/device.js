@@ -9,7 +9,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var Device = mongoose.model('Device');
 
 //allowed methods
-router.all('/', middleware.supportedMethods('GET, POST'));
+router.all('/', middleware.supportedMethods('GET, POST, PUT'));
 
 //get device with id
 router.get('/:deviceid', function(req, res, next) {
@@ -41,6 +41,28 @@ router.get('/', function( req, res, next) {
 
         res.json(devices);
     })
+});
+
+//update device
+
+router.put('/:devicename', function(req, res, next) {
+    Device.findById(req.params.deviceid).lean().exec(function(err, device) {
+        if (err) return next (err);
+
+        if (device) {
+            if (req.body.name) {
+                device.name = req.body.name;
+            }
+            if (req.body.state) {
+                device.state = req.body.state;
+            }
+            if (req.body.position) {
+                device.position = req.body.position;
+            }
+
+            device.save(onModelSave(res));
+        };
+    });
 })
 
 function onModelSave(res, status, sendItAsResponse){
