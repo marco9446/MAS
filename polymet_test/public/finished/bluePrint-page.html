@@ -4,23 +4,26 @@
 <link rel="import" href="../components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../components/paper-toast/paper-toast.html">
 <link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/core-drag-drop/core-drag-drop.html">
 <link rel="import" href="../components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="edit-page.html">
-<polymer-element name="bluePrint-page">
+
+<polymer-element name="bluePrint-page"  on-drag='{{dragStart}}'  on-dragover="{{allowDrop}}" on-drop='{{dragStop}}' >
 
 
 
         <template >
             <core-ajax id="post" method="POST" url="/action" ></core-ajax>
-
+            <script src="../javascripts/functions.js"></script>
             <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
-            <figure center layout >
-                <paper-fab mini icon="device:brightness-high" id="paper_fab2" class="btHome" on-tap={{tappato}} style="top: 25%;left: 25%"></paper-fab>
-                <paper-fab mini icon="device:brightness-high" id="paper_fab3" class="btHome" on-tap={{tappato}} style="top: 48%;left: 15%" ></paper-fab>
-                <paper-fab mini icon="settings-remote" id="paper_fab4"  on-tap={{tappato2}} style="top: 45%;left: 49%"></paper-fab>
-                <paper-fab mini icon="device:brightness-high" id="paper_fab5" class="btHome" on-tap={{tappato}} style="top: 27%;left: 55%"></paper-fab>
-                <paper-fab mini icon="device:brightness-high" id="paper_fab6" class="btHome" on-tap={{tappato}} style="top: 70%;left: 60%"></paper-fab>
-                <paper-fab mini icon="device:brightness-high" id="paper_fab7" class="btHome" on-tap={{tappato}} style="top: 65%;left: 25%"></paper-fab>
+            <figure id="blueprint-container" center layout  >
+
+                <paper-fab mini icon="device:brightness-high" id="paper_fab2" class="btHome" on-tap={{tappato}} style="top: 25%;left: 25%" ></paper-fab>
+                <!--<paper-fab mini icon="device:brightness-high" id="paper_fab3" class="btHome" on-tap={{tappato}} style="top: 48%;left: 15%" ></paper-fab>-->
+                <!--<paper-fab mini icon="settings-remote" id="paper_fab4"  on-tap={{tappato2}} style="top: 45%;left: 49%"></paper-fab>-->
+                <!--<paper-fab mini icon="device:brightness-high" id="paper_fab5" class="btHome" on-tap={{tappato}} style="top: 27%;left: 55%"></paper-fab>-->
+                <paper-fab mini icon="device:brightness-high" id="paper_fab6" class="btHome" on-tap={{tappato}} style="top: 70%;left: 60%" ></paper-fab>
+                <!--<paper-fab mini icon="device:brightness-high" id="paper_fab7" class="btHome" on-tap={{tappato}} style="top: 65%;left: 25%"></paper-fab>-->
 
                 <paper-dialog id="dialog">
                     <div>
@@ -34,11 +37,25 @@
                         </div>
                     </div>
                 </paper-dialog>
-                <img id="house" src="../images/map-house-2-Metaform.jpeg">
+
+                <img id="house" src="../images/map-house-2-Metaform.jpeg" draggable="false" >
 
             </figure>
+            <div style="border: 1px dotted silver;">
+
+                <core-drag-drop></core-drag-drop>
+
+                <div class="box" style="background-color: lightblue;" draggable="false"></div>
+
+                <div class="box" style="background-color: orange;" draggable="false"></div>
+
+                <div class="box" style="background-color: lightgreen;" draggable="false"></div>
+
+            </div>
+
             <paper-toast id="toast" class="capsule" style="padding-right: 60px;"></paper-toast>
         </template >
+
 
 
 
@@ -54,7 +71,7 @@
                 "paper_fab4" : {status: 'off', position:"Allarm " ,action:"pin3"},
                 "paper_fab7" : {status: 'off', position:"Bed room3 light " ,action:"pin8"}};
 
-
+            var draginfo="";
             Polymer('bluePrint-page', {
                         ready: function () {
                             console.log('bluePrint ready');
@@ -104,40 +121,34 @@
                             this.$.toast.show();
 
 
-                        }
-//                        test34: function () {
-//                            console.log(this.valueSpech);
-//                            var voice = this.$.voiceSpeack;
-//
-//                            if (this.valueSpech == "turn on the light" || this.valueSpech == " turn on the light") {
-//                                this.$.toast.text = "Bathroom light on";
-//                                this.$.paper_fab3.style.background = "#ffeb3b";
-//
-//                                this.$.speech_mic.stop()
-//
-//                                this.togg1 = "on";
-//
-//                                this.$.toast.show();
-//                            } else if (this.valueSpech == " turn off the light" || this.valueSpech == "turn off the light") {
-//                                console.log("spento");
-//                                this.$.toast.text = "Bathroom light off";
-//                                this.$.paper_fab3.style.background = "#ffffff";
-//                                this.togg1 = "off";
-//                                this.$.speech_mic.stop()
-//
-//
-//                                this.$.toast.show();
-//                            } else if (this.valueSpech.toUpperCase() == "HELLO JARVIS" || this.valueSpech.toUpperCase() == " HELLO JARVIS") {
-//
-//                                voice.text = "welcome back sir";
-//                                voice.speak();
-//
-//                            }
-//
+                        },
+//                        dragStart: function(ev) {
+//                            if (this.dragged) return;
+//                            draginfo=this;
+//                            this.dragged=true;
+//                            console.log("dragstart");
+//                            console.log(draginfo)
+//                        },
+//                        allowDrop: function(ev){
+//                            //console.log(ev);
+//                            ev.dataTransfer.setData("X", ev.clientX);
+//                            ev.dataTransfer.setData("Y", ev.clientY);
+//                            ev.preventDefault();
+//                        },
+//                        dragStop: function(ev){
+//                            console.log(ev.dataTransfer.getData("Y"));
+//                            if (draginfo=="") return;
+//                            ev.preventDefault();
+//                            var parent=this.parentNode
+//                            draginfo.dragged=false;
+//                            parent.insertBefore(draginfo,this)
+//                            draginfo="";
 //                        }
+//
 
 
                     }
+
             )
         })();
 

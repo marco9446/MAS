@@ -30,6 +30,7 @@ a {
 #section {
   /*height: 1000px;*/
   background-color: #E5E5E5;
+  overflow-x: auto;
   /*background: linear-gradient(rgb(214, 227, 231), rgb(173, 216, 230));*/
 }
 #paper_tab {
@@ -61,11 +62,13 @@ a {
 }
 
 #house{
+
+  z-index: -1;
   position: relative;
   margin-top: 20px;
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 #speechInput{
   margin-left: 40px;
@@ -123,6 +126,7 @@ paper-input, paper-input-decorator{
 
 }
 .btHome{
+  -moz-user-select: none;
   z-index: 10;
   color:#000000;
   position: absolute;
@@ -180,6 +184,22 @@ paper-toggle-button::shadow #toggleBar[checked] {
 core-submenu::shadow > #submenuItem {
   color: #3f51b5;
 }
+
+.box {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: 16px;
+}
+.dropped {
+  position: absolute;
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  border-radius: 90%;
+}
+
+
 
 @media screen and (max-width: 700px) {
   body {
