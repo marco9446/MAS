@@ -34,12 +34,42 @@ router.get('/', function(req, res, next) {
 
         res.json(programs);
     })
-})
+});
 
 //create new program
 router.post('/', function(req, res, next) {
     var newProgram = new Program(req.body);
     newProgram.save(onModelSave(res, 201, true));
 });
+
+
+function onModelSave(res, status, sendItAsResponse){
+  var statusCode = status || 204;
+  var sendItAsResponse = sendItAsResponse || false;
+  return function(err, saved){
+    if (err) {
+      if (err.name === 'ValidationError' 
+        || err.name === 'TypeError' ) {
+        res.status(400)
+        return res.json({
+          statusCode: 400,
+          message: "Bad Request"
+        });
+      }else{
+        return next (err);
+      }
+    }
+    if( sendItAsResponse){
+      var obj = saved.toObject();
+      delete obj.password;
+      delete obj.__v;
+      addLinks(obj);
+      res.status(statusCode)
+      return res.json(obj);
+    }else{
+      return res.status(statusCode).end();
+    }
+  }
+};
 
 module.exports = router;

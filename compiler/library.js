@@ -51,9 +51,13 @@ function action(argument) {
 	if (device.type != "output") {
 		throw new Error("bad type of device:" + device._id);
 	};
+
+	var newstate = (device.state == "true") ? "false" : "true";
 	//resolve module name
 	var module = doRequest("GET", '/mod/bydevice/' + device._id, {});
 	//very politely ask the module to perform shit
+	var postbody = {ID: device._id, PARAM: [ {device.pin: newstate}]};
+	doRequest('POST', "/action/" + module._id, postbody);
 
 	return true;
 }
