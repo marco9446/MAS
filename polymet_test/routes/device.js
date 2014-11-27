@@ -45,7 +45,7 @@ router.get('/', function( req, res, next) {
 
 //update device
 
-router.put('/:devicename', function(req, res, next) {
+router.put('/:deviceid', function(req, res, next) {
     Device.findById(req.params.deviceid).lean().exec(function(err, device) {
         if (err) return next (err);
 
