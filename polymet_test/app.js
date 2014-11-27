@@ -11,7 +11,7 @@ var http = require('http');
 
 var mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost/" + "HOMEAUTO");
+mongoose.createConnection("mongodb://localhost/" + "HOMEAUTO");
 
 
 require('./models');
