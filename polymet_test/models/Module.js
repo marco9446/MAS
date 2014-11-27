@@ -10,6 +10,7 @@ var ModuleSchema = new mongoose.Schema(
 	type : {type: String, required: true},
 	netID : {type: Number, required: true},
 	ip : {type: String, required: true},
+	mac : {type: String, required: true},
 	devices : {type: [ObjectId], ref: "Device"}
 }
 

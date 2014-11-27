@@ -34,6 +34,16 @@ router.get('/', function(req, res, next) {
 
         res.json(modules);
     })
+});
+
+//get module with device
+router.get('/bydevice/:deviceid', function(req, res, next) {
+
+    Module.find({devices: req.params.deviceid}).lean().exec(function(err, modules) {
+        if (err) return next(err);
+
+        res.json(modules);
+    })
 })
 
 //create new module

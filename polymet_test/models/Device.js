@@ -6,9 +6,9 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var DeviceSchema = new mongoose.Schema(
 {
 	name: {type: String, required: true, default: "new device"},
-	module: {type: ObjectId, required: true, ref: "Module"},
-	slot : {type: Number, required: true, default: 0},
-	type : {type: String, required: true}
+	pin : {type: String, required: true},
+	type : {type: String, required: true},
+	state: {type: String, required: true}
 }
 );
 
