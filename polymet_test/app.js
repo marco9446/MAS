@@ -42,20 +42,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-<<<<<<< HEAD
-app.use('/', routes);
-app.use('/users', users);
-app.use('/action', l.router);
-=======
+
 // app.use('/', indexRouter);
-// app.use('/user', usersRouter);
+app.use('/user', usersRouter);
 app.use('/action', actionRouter);
 app.use('/device', deviceRouter);
 app.use('/log', logRouter);
 app.use('/mod', modRouter);
 app.use('/program', programRouter);
-
->>>>>>> another-merge-branch
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
