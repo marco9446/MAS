@@ -53,7 +53,6 @@ function onModelSave(res, status, sendItAsResponse){
       var obj = saved.toObject();
       delete obj.password;
       delete obj.__v;
-      addLinks(obj);
       res.status(statusCode)
       return res.json(obj);
     }else{
