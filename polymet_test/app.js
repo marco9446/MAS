@@ -19,7 +19,6 @@ require('./models');
 
 // var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
-var actionRouter = require('./routes/action');
 var deviceRouter = require('./routes/device');
 var logRouter = require('./routes/log');
 var modRouter = require('./routes/mod');
