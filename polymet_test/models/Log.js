@@ -11,4 +11,4 @@ var LogSchema = new mongoose.Schema(
 );
 
 
-mongoose.model("Log", DeviceSchema);
+mongoose.model("Log", LogSchema);

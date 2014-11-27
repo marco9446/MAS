@@ -3,43 +3,43 @@
 
 var express = require('express');
 var router = express.Router();
-var middleware =  require('../middleware');
+var middleware =  require('./middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
-var Action = mongoose.model('Action');
+var Module = mongoose.model('Module');
 
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST'));
 
-//get Action with id
-router.get('/:actionid', function(req, res, next) {
+//get module with id
+router.get('/:moduleid', function(req, res, next) {
 
-  Action.findById(req.params.actionid).lean().exec(function(err, action){
+  Module.findById(req.params.moduleid).lean().exec(function(err, mod){
     if (err) return next (err);
 
-    if (!action) {
+    if (!mod) {
     	res.status(404);
     	res.json({message: "not found"});
     }
 
-    res.json(action);
+    res.json(mod);
   });
 });
 
-//get all Actions
+//get all modules
 router.get('/', function(req, res, next) {
 
-    Action.find({}).lean().exec(function(err, actions) {
+    Module.find({}).lean().exec(function(err, modules) {
         if (err) return next (err);
 
-        res.json(actions);
+        res.json(modules);
     })
 })
 
-//create new Action
+//create new module
 router.post('/', function(req, res, next) {
-    var newAction = new Action(req.body);
-    newAction.save(onModelSave(res, 201, true));
+    var newModule = new Module(req.body);
+    newModule.save(onModelSave(res, 201, true));
 });
 
 module.exports = router;

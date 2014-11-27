@@ -9,8 +9,24 @@ var http = require('http');
 
 
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var mongoose = require('mongoose');
+
+mongoose.connect("mongodb://localhost/" + "HOMEAUTO");
+
+
+require('./models');
+
+
+// var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/user');
+var actionRouter = require('./routes/action');
+var deviceRouter = require('./routes/device');
+var logRouter = require('./routes/log');
+var modRouter = require('./routes/mod');
+
+
+
+var programRouter = require('./routes/program');
 
 var app = express();
 
@@ -26,9 +42,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+<<<<<<< HEAD
 app.use('/', routes);
 app.use('/users', users);
 app.use('/action', l.router);
+=======
+// app.use('/', indexRouter);
+// app.use('/user', usersRouter);
+app.use('/action', actionRouter);
+app.use('/device', deviceRouter);
+app.use('/log', logRouter);
+app.use('/mod', modRouter);
+app.use('/program', programRouter);
+
+>>>>>>> another-merge-branch
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

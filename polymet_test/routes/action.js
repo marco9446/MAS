@@ -3,43 +3,43 @@
 
 var express = require('express');
 var router = express.Router();
-var middleware =  require('../middleware');
+var middleware =  require('./middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
-var Program = mongoose.model('Program');
+var Action = mongoose.model('Action');
 
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST'));
 
-//get program with id
-router.get('/:programid', function(req, res, next) {
+//get Action with id
+router.get('/:actionid', function(req, res, next) {
 
-  Program.findById(req.params.userid).lean().exec(function(err, program){
+  Action.findById(req.params.actionid).lean().exec(function(err, action){
     if (err) return next (err);
 
-    if (!program) {
+    if (!action) {
     	res.status(404);
     	res.json({message: "not found"});
     }
 
-    res.json(program);
+    res.json(action);
   });
 });
 
-//get all programs
+//get all Actions
 router.get('/', function(req, res, next) {
 
-    Program.find({}).lean().exec(function(err, programs) {
+    Action.find({}).lean().exec(function(err, actions) {
         if (err) return next (err);
 
-        res.json(programs);
+        res.json(actions);
     })
 })
 
-//create new program
+//create new Action
 router.post('/', function(req, res, next) {
-    var newProgram = new Program(req.body);
-    newProgram.save(onModelSave(res, 201, true));
+    var newAction = new Action(req.body);
+    newAction.save(onModelSave(res, 201, true));
 });
 
 module.exports = router;
