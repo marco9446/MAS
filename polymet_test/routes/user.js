@@ -28,7 +28,7 @@ router.get('/byid/:userid', function(req, res, next) {
 
 //get user by name
 router.get('/byname/:username', function(req, res, next) {
-    User.find({name: res.params.username}).lean().exec(function(err, user) {
+    User.find({name: req.params.username}).lean().exec(function(err, user) {
         if (err) return next (err);
 
         if (!user) {
