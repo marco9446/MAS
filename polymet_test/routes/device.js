@@ -33,6 +33,16 @@ router.post('/', function(req, res, next) {
 });
 
 
+//get all devices
+router.get('/', function( req, res, next) {
+
+    Device.find({}).lean().exec(function(err, devices) {
+        if (err) return next (err);
+
+        res.json(devices);
+    })
+})
+
 function onModelSave(res, status, sendItAsResponse){
   var statusCode = status || 204;
   var sendItAsResponse = sendItAsResponse || false;

@@ -8,7 +8,8 @@ var DeviceSchema = new mongoose.Schema(
 	name: {type: String, required: true, default: "new device"},
 	pin : {type: String, required: true},
 	type : {type: String, required: true},
-	state: {type: String, required: true}
+	state: {type: String, required: true},
+	position: {type: [Number]}
 }
 );
 

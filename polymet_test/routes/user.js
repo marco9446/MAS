@@ -12,7 +12,7 @@ var User = mongoose.model('User');
 router.all('/', middleware.supportedMethods('GET, POST'));
 
 //get user with id
-router.get('/:userid', function(req, res, next) {
+router.get('/byid/:userid', function(req, res, next) {
 
   User.findById(req.params.userid).lean().exec(function(err, user){
     if (err) return next (err);
@@ -24,6 +24,20 @@ router.get('/:userid', function(req, res, next) {
 
     res.json(user);
   });
+});
+
+//get user by name
+router.get('/byname/:username', function(req, res, next) {
+    User.find({name: res.params.username}).lean().exec(function(err, user) {
+        if (err) return next (err);
+
+        if (!user) {
+            res.status(404);
+            res.json({message: "not found"});
+        };
+
+        res.json(user);
+    })
 });
 
 //create new user
