@@ -47,6 +47,17 @@ router.post('/', function(req, res, next) {
 });
 
 
+//get all users
+
+router.get('/', function(req, res, next) {
+    User.find({}).lean().exec(function(err, users) {
+        if (err) return next (err);
+
+        res.json(users);
+    })
+})
+
+
 
 function onModelSave(res, status, sendItAsResponse){
   var statusCode = status || 204;
