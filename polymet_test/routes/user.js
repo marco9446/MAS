@@ -8,8 +8,7 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var User = mongoose.model('User');
 
-
-passfilter = {"password": 0};
+var passfilter = {"password": 0};
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST'));
 
