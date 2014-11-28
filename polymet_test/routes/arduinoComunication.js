@@ -4,6 +4,10 @@ var http=require('http');
 var ip = require("ip");
 var query = require("./query");
 var io=function(){};
+
+
+var possibleAction={"true":"t","false":"f","switch":"s"}
+
 io.router=express.Router();
 io.http=require('http');
 
@@ -14,47 +18,35 @@ Device = mongoose.model("Device");
 var Queue=function(){ 
     var list=[];
     var timer=null;
+    var currentId=null;
     var callBack=function(a){
-      console.log("maCane",a.ID,a.PARAM);
-      var ID=a.ID;
-      var message=a.PARAM;
+      //ip of arduino, param to send and id of device      
       try{
-          console.log("send message to ",ID,message);
-          Module.findOne({_id:ID},function(err,found){
-          if(found){
-
-              var finalMsg="";
-              for (i in message){
-                  finalMsg+=Object.keys(message[i])[0].replace("in","")+"=";
-                  finalMsg+=message[i][Object.keys(message[i])[0]]==true?"t&":"f&";
-                  found.PORT[Object.keys(message[i])[0]].state=message[i][Object.keys(message[i])[0]];
-                  found.markModified('PORT');
-                  found.save();
-             }
-              found.save();
-              var options = {
-                    host: found.IP,
+          var finalMsg="";
+          currentId=a.ip
+          for (i in a.action){
+            finalMsg+=Object.keys(a.action[i])[0].replace("in","")+"=";
+            finalMsg+=possibleAction[a.action[i][Object.keys(a.action[i])[0]]]+"&"  //not check
+            console.log(finalMsg);
+          }
+          var options = {
+                    host: a.ip,
                     port: 80,
                     path:finalMsg,
                     method: 'GET'
-                  };
-
-              http.get(options);
-            }
-
-      })
+          };
+          http.get(options);
       }catch(err){
-
         console.log(err);
-     }}
-
-
+      }
+    }
      this.performQuery = function(elem){
         var helper={};
-        for(var i = 0 ; i < list.length ; i++){
-            if(list[i].ID == elem.ID){
-              for( var l = 0;l<elem.PARAM.length;l++){
-                  list[i].PARAM.push(elem.PARAM[l]);
+        console.log(elem)
+        for(var i = 1; i < list.length ; i++){
+            if(list[i].ip == elem.ip ){
+              for( var l = 0;l<elem.action.length;l++){
+                  list[i].action.push(elem.action[l]);
               }
               return;
             }
@@ -106,15 +98,21 @@ io.logModuleCallback=[];
 io.actionLinstener=[];
 io.queue=new Queue();
 
+
+
 io.router.post('/', function(req, res) {
+
   var b=req.body;
-  var elem=Object.keys(b)[0];
-  var ek1=JSON.parse(elem);
-  io.queue.AddElement(ek1);
+  console.log(b);
+  // b as form {ip:ipofdevice, action:actionToDo} ex {ip:"10.20.6.137",action:[{pin4:true}]}
+  io.queue.AddElement(b);
   res.status(200).end();
 });
 
+io.sendMessage=function(json){
+  io.queue.AddElement(json);
 
+}
 
 io.server1=http.createServer(function (req, res) {
   var body = "";
