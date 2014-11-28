@@ -4,14 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var l=require("./routes/arduinoComunication")
 var http = require('http');
 
 
 
 var mongoose = require('mongoose');
 
-mongoose.createConnection("mongodb://localhost/" + "HOMEAUTO");
+mongoose.connect("mongodb://localhost/" + "HOMEAUTO");
 
 
 require('./models');
