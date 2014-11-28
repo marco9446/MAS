@@ -60,8 +60,8 @@ router.put('/:deviceid', function(req, res, next) {
             if (req.body.position) {
                 device.position = req.body.position;
             }
-            console.log(device);
-            device.save(function(err){console.log(err)});
+
+            device.save(onModelSave(res));
         }
     });
 })
