@@ -1,6 +1,6 @@
 body {
+    font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
     margin:0;
-    font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial, serif;
     background-color: #ffffff;
 }
 #cards {
@@ -18,4 +18,50 @@ polymer-ui-card {
     width: 300px;
     margin: 20px auto;
     padding: 30px;
+}
+
+#avatarImage{
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+
+.inputLogin{
+    /*border-radius: 10px;*/
+    /*color:#ffffff;*/
+    /*padding: 5px;*/
+    /*background: #ffffff;*/
+    width: 100%;
+}
+
+#usernameInput{
+    margin-bottom: 5px;
+}
+#passwordInput{
+
+}
+#container{
+    width: 100%;
+    color: rgba(0, 0, 0, 0.72);
+
+}
+
+paper-button.colored {
+    margin-top: 30px;
+    background: #4285f4;
+    color:#ffffff ;
+
+}
+
+#title{
+    text-align: center;
+    margin: 20px auto;
+    font-weight: bold;
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.72);
 }

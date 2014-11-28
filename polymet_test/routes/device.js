@@ -46,7 +46,7 @@ router.get('/', function( req, res, next) {
 //update device
 
 router.put('/:deviceid', function(req, res, next) {
-    Device.findOne({_id:req.params.deviceid}).lean().exec(function(err, device) {
+    Device.findOne({_id:req.params.deviceid}).exec(function(err, device) {
         if (err) return next (err);
 
         if (device) {
@@ -60,8 +60,8 @@ router.put('/:deviceid', function(req, res, next) {
             if (req.body.position) {
                 device.position = req.body.position;
             }
-            console.log(device);
-            device.save(function(err){console.log(err)});
+
+            device.save(onModelSave(res));
         }
     });
 })
