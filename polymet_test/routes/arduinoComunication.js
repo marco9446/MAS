@@ -96,10 +96,11 @@ io.addNewModuleCallback=[];
 io.addNewDeviceCallback=[];
 io.logModuleCallback=[];
 io.actionLinstener=[];
+
+
 io.queue=new Queue();
 
-
-
+/*
 io.router.post('/', function(req, res) {
 
   var b=req.body;
@@ -107,11 +108,10 @@ io.router.post('/', function(req, res) {
   // b as form {ip:ipofdevice, action:actionToDo} ex {ip:"10.20.6.137",action:[{pin4:true}]}
   io.queue.AddElement(b);
   res.status(200).end();
-});
-
+});*/
+//{ip:"10.20.6.137",action:[{pin4:true}]}
 io.sendMessage=function(json){
   io.queue.AddElement(json);
-
 }
 
 io.server1=http.createServer(function (req, res) {

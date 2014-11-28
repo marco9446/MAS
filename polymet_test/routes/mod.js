@@ -7,6 +7,9 @@ var middleware =  require('./middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Module = mongoose.model('Module');
+var Device = mongoose.model('Device');
+var arduino = require("./arduinoComunication");
+
 
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST'));
@@ -53,6 +56,27 @@ router.post('/', function(req, res, next) {
 });
 
 
+function saveAndSend(json) {
+  Module.findOne({devices : json.id},function(err,found){
+      Device.findOne({_id:json.id},function(err,found1){
+      var pin=found1.pin;
+      arduino.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
+      found1.state=json.status;
+      found1.save(function(err,saved){console.log(err,saved)});
+    });
+  });
+}
+
+
+router.post('/send', function(req, res, next) {
+    saveAndSend(req.body);
+});
+
+
+
+
+
+
 function onModelSave(res, status, sendItAsResponse){
   var statusCode = status || 204;
   var sendItAsResponse = sendItAsResponse || false;
@@ -80,5 +104,12 @@ function onModelSave(res, status, sendItAsResponse){
     }
   }
 };
+
+
+
+
+
+
+
 
 module.exports = router;
