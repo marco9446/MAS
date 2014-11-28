@@ -13,7 +13,7 @@
 
 
         <template >
-            <core-ajax id="post" method="POST" url="/action" ></core-ajax>
+            <core-ajax id="post" contentType="application/json" method="POST" url="/log" ></core-ajax>
             <script src="../javascripts/functions.js"></script>
             <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
             <figure id="blueprint-container" center layout  >
@@ -22,7 +22,7 @@
                 <!--<paper-fab mini icon="device:brightness-high" id="paper_fab3" class="btHome" on-tap={{tappato}} style="top: 48%;left: 15%" ></paper-fab>-->
                 <!--<paper-fab mini icon="settings-remote" id="paper_fab4"  on-tap={{tappato2}} style="top: 45%;left: 49%"></paper-fab>-->
                 <!--<paper-fab mini icon="device:brightness-high" id="paper_fab5" class="btHome" on-tap={{tappato}} style="top: 27%;left: 55%"></paper-fab>-->
-                <paper-fab mini icon="device:brightness-high" id="paper_fab6" class="btHome" on-tap={{tappato}} style="top: 70%;left: 60%" ></paper-fab>
+                <paper-fab mini icon="device:brightness-high" id="paper_fab6" class="btHome" on-tap={{postolino}} style="top: 70%;left: 60%" ></paper-fab>
                 <!--<paper-fab mini icon="device:brightness-high" id="paper_fab7" class="btHome" on-tap={{tappato}} style="top: 65%;left: 25%"></paper-fab>-->
 
                 <paper-dialog id="dialog">
@@ -122,28 +122,12 @@
 
 
                         },
-//                        dragStart: function(ev) {
-//                            if (this.dragged) return;
-//                            draginfo=this;
-//                            this.dragged=true;
-//                            console.log("dragstart");
-//                            console.log(draginfo)
-//                        },
-//                        allowDrop: function(ev){
-//                            //console.log(ev);
-//                            ev.dataTransfer.setData("X", ev.clientX);
-//                            ev.dataTransfer.setData("Y", ev.clientY);
-//                            ev.preventDefault();
-//                        },
-//                        dragStop: function(ev){
-//                            console.log(ev.dataTransfer.getData("Y"));
-//                            if (draginfo=="") return;
-//                            ev.preventDefault();
-//                            var parent=this.parentNode
-//                            draginfo.dragged=false;
-//                            parent.insertBefore(draginfo,this)
-//                            draginfo="";
-//                        }
+                        postolino :function(){
+                            var ajax = this.$.post;
+                            console.log("ftaeufaswgyfqgk");
+                            ajax.body='{"msg": "canedi polymer" }';
+                            ajax.go();
+                        }
 //
 
 

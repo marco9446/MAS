@@ -1,6 +1,5 @@
 body {
-  margin-top: -8px;
-margin-left: -8px;
+  margin:0;
   font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
   background-color: #E5E5E5;
 }
@@ -87,8 +86,8 @@ a {
   line-height: 64px;
   font-size: 20px;
   text-align: center;
-  height: 64px;
-  width: 64px;
+  height: 74px;
+  width: 74px;
   border-radius: 90%;
   background: #ddd;
   margin: 5px;

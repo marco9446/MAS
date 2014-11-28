@@ -1,23 +1,23 @@
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 
 
-<polymer-element name="new-page">
+<polymer-element name="Log-page">
 
 
 
     <template  >
         <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
         <core-ajax auto =true
-                   url="/users/"
+                   url="/log"
                    handleAs="json"
                    response="{{res}}"
                    on-core-response="{{handleResponse}}"
                    class=""></core-ajax>
 
-        <template  repeat="{{log in res.log}}"  >
+        <template  repeat="{{log in res}}"  >
             <div class="logContainer"  layout horizontal center>
-                <div class="logContainerHour">{{log.hour}}</div>
-                <div class="logContainerMessage" flex>{{log.message}}</div>
+                <div class="logContainerHour">{{log.hours}}:{{log.minutes}}</div>
+                <div class="logContainerMessage" flex>{{log.msg}}</div>
             </div>
 
         </template>
@@ -25,7 +25,7 @@
 
     </template>
     <script>
-        Polymer("new-page",{
+        Polymer("Log-page",{
             ready : function(){
                 console.log("{{log}}");
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Auto login</title>
+    <script src="../components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/loginCss.css">
+    <link rel="import" href="../components/font-roboto/roboto.html">
+    <link rel="import" href="../components/core-icons/core-icons.html">
+    <link rel="import" href="../components/core-icon/core-icon.html">
+    <link rel="import" href="../components/core-animation/core-animation-group.html">
+    <link rel="import" href="../components/core-animation/core-animation.html">
+    <link rel="import" href="../components/polymer-ui-card-master/polymer-ui-card.html">
+</head>
+
+<body unresolved>
+<core-animation id="fadein" duration="5500">
+    <core-animation-keyframe>
+        <core-animation-prop name="opacity" value="0"></core-animation-prop>
+    </core-animation-keyframe>
+    <core-animation-keyframe>
+        <core-animation-prop name="opacity" value="1"></core-animation-prop>
+    </core-animation-keyframe>
+</core-animation>
+
+<!--<div id="el" center-center layout>Fade me out</div>-->
+<div id="cards" >
+
+    <polymer-ui-card>
+        <div>image</div>
+        <div>pass</div>
+        <div>username</div>
+    </polymer-ui-card>
+
+</div>
+
+
+</body>
+<script>
+    window.onload = function() {
+        var animation = document.getElementById('fadein');
+        animation.target = document.getElementById('cards');
+        animation.play();
+        console.log("pino")
+    };
+</script>
+</html>
