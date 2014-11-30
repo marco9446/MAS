@@ -128,8 +128,10 @@ paper-input, paper-input-decorator{
   -moz-user-select: none;
   z-index: 10;
   color:#000000;
-  position: absolute;
   background: #ffffff;
+}
+.btHomeContainer{
+  position: absolute;
 }
 
 
@@ -197,8 +199,25 @@ core-submenu::shadow > #submenuItem {
   height: 30px;
   border-radius: 90%;
 }
+#editButton{
+  position: fixed;
+  margin-top: 60px;
+  margin-left: 88%;
+  background-color: #f50057;
+}
+#listDeviceContainer{
+  width: 100%;
+}
 
-
+.edit_element{
+  display: none;
+}
+.btHomeContainer{
+  text-align: center;
+  width: 70px;
+  border-radius: 5px;
+  padding: 6px;
+}
 
 @media screen and (max-width: 700px) {
   body {

@@ -1,5 +1,6 @@
 <link rel="import" href="../components/core-icons/core-icons.html">
 <link rel="import" href="../components/core-icons/device-icons.html">
+<link rel="import" href="../components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../components/paper-toast/paper-toast.html">
@@ -13,18 +14,29 @@
 
 
         <template >
-            <core-ajax id="post" contentType="application/json" method="POST" url="/log" ></core-ajax>
+
+            <core-ajax id="Getdevice" auto response="{{listOfdevices}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
+            <core-ajax id="ChangeState" contentType="application/json"  method="POST" url="/mod/send"  ></core-ajax>
+            <core-ajax id="RemoveDevice"  contentType="application/json" method="PUT"   ></core-ajax>
             <script src="../javascripts/functions.js"></script>
             <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+
+
             <figure id="blueprint-container" center layout  >
+                <core-ajax id="changePosition" contentType="application/json" method="PUT"  ></core-ajax>
+                <template repeat="{{buttons in listOfdevices}}">
+                    <template if="{{buttons.position[0]}}">
+                        <div class="btHomeContainer" id="{{buttons._id}}"  style="top: {{buttons.position[1]}}%;left: {{buttons.position[0]}}%">
+                            <paper-fab  mini icon="device:brightness-high" class="btHome" on-tap={{tappato}}
+                                        style="background: {{buttons.state== 'true'? '#ffeb3b':'#ffffff'}}" ></paper-fab>
+                            <div>
+                                {{buttons.name}}
+                            </div>
+                            <core-icon-button class="edit_element" on-tap="{{deleteElem}}" icon="clear"></core-icon-button>
 
-                <paper-fab mini icon="device:brightness-high" id="paper_fab2" class="btHome" on-tap={{tappato}} style="top: 25%;left: 25%" ></paper-fab>
-                <!--<paper-fab mini icon="device:brightness-high" id="paper_fab3" class="btHome" on-tap={{tappato}} style="top: 48%;left: 15%" ></paper-fab>-->
-                <!--<paper-fab mini icon="settings-remote" id="paper_fab4"  on-tap={{tappato2}} style="top: 45%;left: 49%"></paper-fab>-->
-                <!--<paper-fab mini icon="device:brightness-high" id="paper_fab5" class="btHome" on-tap={{tappato}} style="top: 27%;left: 55%"></paper-fab>-->
-                <paper-fab mini icon="device:brightness-high" id="paper_fab6" class="btHome" on-tap={{postolino}} style="top: 70%;left: 60%" ></paper-fab>
-                <!--<paper-fab mini icon="device:brightness-high" id="paper_fab7" class="btHome" on-tap={{tappato}} style="top: 65%;left: 25%"></paper-fab>-->
-
+                        </div>
+                    </template>
+                </template>
                 <paper-dialog id="dialog">
                     <div>
                         <div class="dialog" center horizontal layout>
@@ -38,22 +50,28 @@
                     </div>
                 </paper-dialog>
 
+                <paper-fab  icon="create" id="editButton"  on-tap={{edit}}  ></paper-fab>
                 <img id="house" src="../images/map-house-2-Metaform.jpeg" draggable="false" >
 
             </figure>
-            <div style="border: 1px dotted silver;">
+            <div id="listDeviceContainer" center style="display: none; width: 100%">
 
                 <core-drag-drop></core-drag-drop>
+                <template repeat="{{device in listOfdevices}}">
+                    <template if="{{device.type == 'o' && !device.position[0]}}">
+                        <div center-center vertical inline layout draggable="false">
+                            <img id="{{device._id}}" src="../images/light-bulb.png" width="80px" draggable="false">
+                            <div draggable="false">{{device.name}}</div>
+                        </div>
+                        
 
-                <div class="box" style="background-color: lightblue;" draggable="false"></div>
+                    </template>
+                </template>
 
-                <div class="box" style="background-color: orange;" draggable="false"></div>
-
-                <div class="box" style="background-color: lightgreen;" draggable="false"></div>
 
             </div>
 
-            <paper-toast id="toast" class="capsule" style="padding-right: 60px;"></paper-toast>
+            <paper-toast id="toast" class="capsule" style="padding-right: 60px; text-align: center"></paper-toast>
         </template >
 
 
@@ -74,60 +92,66 @@
             var draginfo="";
             Polymer('bluePrint-page', {
                         ready: function () {
-                            console.log('bluePrint ready');
 
                         },
                       
 
                         tappato: function (a,b,target) {
-                            var id = target.id;
-                            var ajax = this.$.post;
-                            if (status[id].status == "on") {
-                                console.log("spento");
-                                this.$.toast.text = status[id].position + "off";
+                            var id = target.parentElement.id;
+                            var ajax = this.$.ChangeState;
+                            if (target.style.backgroundColor== 'rgb(255, 235, 59)') {
+                                this.$.toast.text = "off";
                                 target.style.background = "#ffffff";
-                                status[id].status = "off"
                                 ajax.bodyType="json";
-                                ajax.body='{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "'+status[id].action+'": false }}';
-                                ajax.go();                            
+                                ajax.body='{ "id" :"'+id+'" ,"status" :"false"}';
+                                ajax.go();
 
                             } else {
-                                console.log("acceso");
-                                this.$.toast.text = status[id].position + "on";;
+                                this.$.toast.text =  "on";
                                 target.style.background = "#ffeb3b";
-                                status[id].status = "on";
                                 ajax.bodyType="json";
-                                ajax.body='{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "'+status[id].action+'": true }}';
+                                ajax.body='{ "id" :"'+id+'" ,"status" :"true"}';
                                 ajax.go();
                             }
                             this.$.toast.show();
                         },
 
 
-                        tappato2: function (a,b,target) {
-                            var ajax = this.$.post;
-                            //var dialog = this.$.dialog.toggle();
-                            if(status[id].status == "on") {
-                                this.$.toast.text = status[id].position + "on";
-                                ajax.bodyType = "json";
-                                ajax.body = '{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "' + status[id].action + '": true }}';
-                                ajax.go();
+                        deleteElem :function(a,b,target){
+                            var aja = this.$.RemoveDevice;
+                            var container = target.parentElement;
+                            var id = container.id;
+                            aja.url="/device/"+id;
+                            aja.body = '{"position":"[]"}';
+                            aja.go()
+                            container.parentElement.removeChild(container);
+                        },
+                        edit: function(a,b,target){
+                            var hiddenElements =document.querySelectorAll('html /deep/ .edit_element');
+                            var hiddenElementsContainer = document.querySelectorAll('html /deep/ .btHomeContainer');
+                            var visibility = this.$.listDeviceContainer.style.display;
+                            if (visibility == "none") {
+                                this.$.listDeviceContainer.style.display = "inline";
+                                target.icon = 'check';
+                                for ( var i=0; i<hiddenElements.length;i++){
+                                    hiddenElements[i].style.display = "inline"
+                                }
+                                for ( var e=0; e<hiddenElementsContainer.length;e++){
+                                    hiddenElementsContainer[e].style.background = "#E5E5E5"
+                                }
+
                             }else{
-                                this.$.toast.text = status[id].position + "on";
-                                ajax.bodyType = "json";
-                                ajax.body = '{ "ID" : "54737f184158a1bae31a551d" ,"PARAM" :  { "' + status[id].action + '": false }}';
-                                ajax.go();
+                                this.$.listDeviceContainer.style.display = "none"
+                                target.icon = 'create';
+//                                for ( var i=0; i<hiddenElements.length;i++){
+//                                    hiddenElements[i].style.display = "none"
+//                                }
+                                document.querySelector('app-router').go('/home');
+
                             }
-                            this.$.toast.show();
 
-
-                        },
-                        postolino :function(){
-                            var ajax = this.$.post;
-                            console.log("ftaeufaswgyfqgk");
-                            ajax.body='{"msg": "canedi polymer" }';
-                            ajax.go();
                         }
+
 //
 
 

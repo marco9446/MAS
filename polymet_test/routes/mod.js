@@ -53,6 +53,7 @@ router.get('/bydevice/:deviceid', function(req, res, next) {
 router.post('/', function(req, res, next) {
     var newModule = new Module(req.body);
     newModule.save(onModelSave(res, 201, true));
+
 });
 
 
@@ -69,7 +70,9 @@ function saveAndSend(json) {
 
 
 router.post('/send', function(req, res, next) {
+    console.log(req.body);
     saveAndSend(req.body);
+    res.status(200).end();
 });
 
 

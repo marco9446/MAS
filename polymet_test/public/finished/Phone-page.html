@@ -1,67 +1,32 @@
 <link rel="import" href="../components/core-icons/core-icons.html">
 <link rel="import" href="../components/core-icons/maps-icons.html">
-
+<link rel="import" href="../components/core-ajax/core-ajax.html">
 <link rel="import" href="../components/core-menu/core-menu.html">
 <link rel="import" href="../components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../components/core-menu/core-submenu.html">
+<link rel="import" href="../components/paper-toast/paper-toast.html">
 <link rel="import" href="../components/core-media-query/core-media-query.html">
 <polymer-element name="Phone-page">
 
     <template  >
-
-
+        <core-ajax id="Getdevice" auto response="{{listOfdevices}}" handleAs="json" method="GET" url="/device/" on-core-response="{{handleResponse}}"></core-ajax>
+        <core-ajax id="ChangeState" contentType="application/json"  method="POST" url="/mod/send"  ></core-ajax>
 
         <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
         <core-menu selectedindex="1">
-            <core-submenu class="core_submenu" icon="home" label="Living room">
-                <div class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex >Light </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
-                <div class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex >Light </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
-                <div class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex >Light </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
-                <div class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex >Light </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
+            <template repeat="{{device in listOfdevices}}">
+                <template if="{{device.type == 'o'}}">
+                    <core-submenu  class="core_submenu" icon="home" label="{{device.name}}">
+                        <div  class="subMenuContainer" center horizontal layout>
+                            <div class="subMenuTitle" flex>Light </div>
+                            <paper-toggle-button class="toggleBt" id="{{device._id}}" on-core-change="{{change}}" ></paper-toggle-button>
+                        </div>
 
-
-            </core-submenu>
-            <core-submenu  class="core_submenu" icon="home" label="Bathroom">
-                <div  class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex>Light  </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
-
-            </core-submenu>
-            <core-submenu  class="core_submenu" icon="maps:hotel" label="Bed room1">
-                <div  class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex>Light  </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
-
-            </core-submenu>
-            <core-submenu  class="core_submenu" icon="maps:hotel" label="Bed room2">
-                <div  class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex>Light  </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
-
-            </core-submenu>
-            <core-submenu  class="core_submenu" icon="maps:hotel" label="Bed room3">
-                <div  class="subMenuContainer" center horizontal layout>
-                    <div class="subMenuTitle" flex>Light  </div>
-                    <paper-toggle-button class="toggleBt" checked></paper-toggle-button>
-                </div>
-
-            </core-submenu>
+                    </core-submenu>
+                </template>
+            </template>
         </core-menu>
+        <paper-toast id="toast" class="capsule" style="padding-right: 60px; text-align: center"></paper-toast>
     </template>
     <script>
         Polymer("Phone-page",{
@@ -69,6 +34,21 @@
                         console.log("edit page ready");
 
 
+                    },
+                    change:function(a,b,target){
+                        var aja = this.$.ChangeState;
+                        aja.bodyType="json";
+
+                        if(target.checked == true){
+                            aja.body='{ "id" :"'+target.id+'" ,"status" :"true"}';
+                            this.$.toast.text = "on";
+                            aja.go();
+                        }else{
+                            this.$.toast.text = "off";
+                            aja.body='{ "id" :"'+target.id+'" ,"status" :"false"}';
+                            aja.go();
+                        }
+                        this.$.toast.show()
                     }
                 }
         )

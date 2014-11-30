@@ -1,50 +1,46 @@
 /**
  * Created by marcoravazzini on 21/11/14.
  */
-function cinghiale() {
-    console.log("dagsdgghvj");
-    var cd = document.getElementById("sdv").value;
-    document.getElementById("hh").value = cd;
-}
 
 addEventListener('drag-start', function(e) {
     var dragInfo = e.detail;
-    //console.log(dragInfo.event.path[0]);
     // flaw #2: e vs dragInfo.event
-    var color = dragInfo.event.target.style.backgroundColor;
-    dragInfo.avatar.style.cssText = 'border: 3px solid ' + color + '; width: 32px; height: 32px; border-radius: 32px; background-color: whitesmoke';
-    dragInfo.avatar.innerHTML =  "<div>ciao</div>";
+    var id = dragInfo.event.target.id;
+    dragInfo.avatar.style.cssText = 'border: 3px solid blue; width: 32px; height: 32px; border-radius: 32px; background-color: whitesmoke';
+    dragInfo.avatar.id = id;
     dragInfo.drag = function() {};
     dragInfo.drop = drop;
 
 });
-count =0;
-function drop(dragInfo) {
-    var color = dragInfo.avatar.style.borderColor;
-    var dropTarget = dragInfo.event.relatedTarget;
-    //chceck if the droptarget is the figure
-    //
 
-    console.log(dropTarget.offsetWidth);
-    console.log(dragInfo.event.clientHeight);
+function drop(dragInfo) {
+
+    var id = dragInfo.avatar.id;
+    var dropTarget = dragInfo.event.relatedTarget;
+    //chceck if the droptarget is the figur
+
     var f = dragInfo.framed;
     var d = document.createElement('div');
     d.className = 'dropped';
-    d.onclick = function(event){
+    d.id = id;
 
-        var hue = 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
-        console.log(event.target);
-        event.target.style.backgroundColor = hue;
-    };
-    d.style.left = (f.x *100)/dropTarget.offsetWidth + '%';
-    d.style.top = (f.y* 100)/dropTarget.offsetHeight  + '%';
+
+    var changePosition = dropTarget.querySelector("#changePosition");
+    //changestate.body='{ "id" :"'+event.target.id+'" ,"status" :"switch"}';
+
+    var x_position = (f.x *100)/dropTarget.offsetWidth;
+    var y_position = (f.y* 100)/dropTarget.offsetHeight;
+    d.style.left = x_position + '%';
+    d.style.top = y_position  + '%';
     //d.style.backgroundColor = color;
 
+    changePosition.url="/device/"+id;
+    changePosition.body = '{"position":"'+JSON.stringify([x_position- 1 ,y_position])+'"}';
+
     dropTarget.appendChild(d);
-    console.log(f);
-    count++;
-    if (count >= 6){
-        dragInfo.event.path[0].parentNode.removeChild(dragInfo.event.path[0]);
+    if (dropTarget.id == "blueprint-container") {
+        dragInfo.event.path[0].parentNode.parentNode.removeChild(dragInfo.event.path[0].parentNode);
+        changePosition.go();
     }
 }
 

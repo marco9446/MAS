@@ -46,6 +46,7 @@ router.get('/', function( req, res, next) {
 //update device
 
 router.put('/:deviceid', function(req, res, next) {
+    console.log(req.body);
     Device.findOne({_id:req.params.deviceid}).exec(function(err, device) {
         if (err) return next (err);
 
@@ -58,11 +59,17 @@ router.put('/:deviceid', function(req, res, next) {
                 device.state = req.body.state;
             }
             if (req.body.position) {
-                device.position = req.body.position;
+                device.position = JSON.parse(req.body.position);
             }
 
             device.save(onModelSave(res));
+        }else{
+            res.json({
+                statusCode: 404,
+                message: "no device found"
+            });
         }
+
     });
 })
 

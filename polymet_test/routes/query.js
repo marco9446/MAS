@@ -83,6 +83,7 @@ query.changeIp=function(json,modulesID,callback){
 query.addNewDevice=function(json,callback){
 
 	var myNewModule=new Device();
+	myNewModule.name  = json.pin;
 	myNewModule.pin   = json.pin;
 	myNewModule.type  = json.type;
 	myNewModule.state = json.state;
