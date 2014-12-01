@@ -246,12 +246,8 @@ function init() {
         $(go.Node, "Table",
             { locationObjectName: "BODY",
                 locationSpot: go.Spot.Center,
-                selectionObjectName: "BODY",
-                contextMenu: nodeMenu,
-                mouseDragEnter: function(e, nod, prev) { highlightGroup(e, nod.containingGroup, true); },
-                mouseDragLeave: function(e, nod, next) { highlightGroup(e, nod.containingGroup, false); },
-                // dropping on a Node is the same as dropping on its containing Group, if any
-                mouseDrop: function(e, nod) { finishDrop(e, nod.containingGroup)}
+                selectionObjectName: "BODY"
+                //contextMenu: nodeMenu
             },
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
 
@@ -262,7 +258,8 @@ function init() {
                     mouseDragEnter: function(e, nod, prev) { highlightGroup(e, nod.containingGroup, true); },
                     mouseDragLeave: function(e, nod, next) { highlightGroup(e, nod.containingGroup, false); },
                     // dropping on a Node is the same as dropping on its containing Group, if any
-                    mouseDrop: function(e, nod) { finishDrop(e, nod.containingGroup); }
+                    doubleClick: function(e,nod){myDiagram.model.addNodeData(nod)},
+                    mouseDrop: function(e, nod) { finishDrop(e, nod.containingGroup); console.log("ciao")}
                 },
                 $(go.Shape, "RoundedRectangle",
                     { fill: "black",
