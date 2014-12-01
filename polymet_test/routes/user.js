@@ -7,6 +7,7 @@ var middleware =  require('./middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var User = mongoose.model('User');
+var path = require('path');
 
 var passfilter = {"password": 0};
 //allowed methods
@@ -53,10 +54,34 @@ router.post('/', function(req, res, next) {
 router.get('/', function(req, res, next) {
     User.find({}, passfilter).lean().exec(function(err, users) {
         if (err) return next (err);
-
         res.json(users);
     })
 })
+
+router.get('/logIn',function(req,res){
+  console.log(req.body);
+   res.redirect("/finished");
+});
+router.post('/logIn',function(req,res){
+  console.log(req.body);
+  if(req.body.username=="admin" && req.body.password=="admin"){
+    console.log("redirect")
+      var sess = req.session
+      req.session.logged = true;
+     res.redirect("/finished");
+  }else{
+
+  User.find({name:req.body.username},function(err,found){
+      if(err || !found || found.password!=req.body.password ){
+        res.redirect("/");
+      }else{
+         res.redirect("/finished");
+      }
+
+  });
+}
+
+});
 
 
 

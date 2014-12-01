@@ -24,12 +24,13 @@
 
         <div id="container">
             <form action="/user/logIn" method="post">
-            <paper-input class="inputLogin" label="User Name"  id="usernameInput"  name="username" floatingLabel    ></paper-input>
+            <paper-input-decorator label="Username" class="inputLogin"  floatingLabel  >
+                <input type="text" class="inputLogin" is="core-input"  name="username" id="usernameInput" >
+            </paper-input-decorator>
             <paper-input-decorator label="Password" class="inputLogin"  floatingLabel  >
                 <input type="password" class="inputLogin" is="core-input"  name="password" id="passwordInput" >
             </paper-input-decorator>
-                <input type="submit">
-            </form>
+               
             <div id="error">
                <core-icon icon="clear"></core-icon> wrong username or password
             </div>
@@ -37,6 +38,8 @@
         <div center layout>
             <paper-button raised class="colored" onclick="cliccato()">Login</paper-button>
         </div>
+         <input type="submit">
+            </form>
         <a href="/user/logIn">
 
         </a>
