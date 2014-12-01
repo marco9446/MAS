@@ -23,10 +23,12 @@
         <img id="avatarImage" src="../images/avatar-01.svg" >
 
         <div id="container">
-            <paper-input class="inputLogin" label="User Name"  id="usernameInput" floatingLabel    ></paper-input>
+            <form action="/user/logIn" method="post">
+            <paper-input class="inputLogin" label="User Name"  id="usernameInput"  name="username" floatingLabel    ></paper-input>
             <paper-input-decorator label="Password" class="inputLogin"  floatingLabel  >
-                <input type="password" class="inputLogin" is="core-input"  id="passwordInput" >
+                <input type="password" class="inputLogin" is="core-input"  name="password" id="passwordInput" >
             </paper-input-decorator>
+            </form>
             <div id="error">
                <core-icon icon="clear"></core-icon> wrong username or password
             </div>
@@ -34,6 +36,9 @@
         <div center layout>
             <paper-button raised class="colored" onclick="cliccato()">Login</paper-button>
         </div>
+        <a href="/user/logIn">
+
+        </a>
     </polymer-ui-card>
 
 </div>
