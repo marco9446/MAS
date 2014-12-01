@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
+var session = require('express-session')
 
 
 
@@ -38,7 +39,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+ secret: '1234567890QWERTY'
+}))
 
 
 // app.use('/', indexRouter);
@@ -48,6 +55,10 @@ app.use('/log', logRouter);
 app.use('/mod', modRouter);
 app.use('/program', programRouter);
 
+app.get("/",function(req,res){
+    res.sendFile(path.join(__dirname,"/public/finished/Login-page.html"));
+
+})
 
 
 // catch 404 and forward to error handler
