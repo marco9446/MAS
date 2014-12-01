@@ -1,9 +1,10 @@
+
 function init() {
   //  if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
     var $ = go.GraphObject.make;
-    console.log($);
+
     myDiagram =
-        $(go.Diagram, "test",
+        $(go.Diagram, document.querySelector("html /deep/ #test"),
             {
                 allowDrop: true,
                 // what to do when a drag-drop occurs in the Diagram's background
@@ -30,7 +31,7 @@ function init() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function(e) {
-        var button = document.getElementById("SaveButton");
+        var button = document.querySelector("html /deep/ #SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
         var idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
@@ -246,7 +247,11 @@ function init() {
             { locationObjectName: "BODY",
                 locationSpot: go.Spot.Center,
                 selectionObjectName: "BODY",
-                contextMenu: nodeMenu
+                contextMenu: nodeMenu,
+                mouseDragEnter: function(e, nod, prev) { highlightGroup(e, nod.containingGroup, true); },
+                mouseDragLeave: function(e, nod, next) { highlightGroup(e, nod.containingGroup, false); },
+                // dropping on a Node is the same as dropping on its containing Group, if any
+                mouseDrop: function(e, nod) { finishDrop(e, nod.containingGroup)}
             },
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
 
@@ -408,7 +413,7 @@ function init() {
 
     // initialize the Palette and its contents
     myPalette =
-        $(go.Palette, "myPalette",
+        $(go.Palette, document.querySelector("html /deep/ #myPalette"),
             {
                 nodeTemplateMap: myDiagram.nodeTemplateMap,
                 groupTemplateMap: myDiagram.groupTemplateMap,
@@ -417,10 +422,12 @@ function init() {
     myPalette.model = new go.GraphLinksModel([
         { text: "Conditions", isGroup:true, category:"OfNodes"},
         { text: "IF",isGroup:true,category:"OfGroups" ,color: "#FFDD33",  "bottomArray":[ {"portColor":"red", "portId":""},{"portColor":"green", "portId":""}] },
-        { text: "Condition", color: "lightblue", source:"res/sensor.png" }
+        { text: "Condition", color: "lightblue", source:"../GUI-Graphs/res/sensor.png" },
+        {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-78,"topArray":[{"portColor":"black", "portId":"from78"}], "bottomArray":[{"portcolor":"black", "pordId":"to78"}]},
+        {"text":"Window1",  "source":"../GUI-Graphs/res/window.png", "key":15,"topArray":[{"portColor":"black", "portId":"from15"}],"bottomArray":[{"portcolor":"black", "pordId":"to15"}]}
     ]);
 
-    var slider = document.getElementById("levelSlider");
+    var slider = document.querySelector("html /deep/ #levelSlider");
     slider.addEventListener('change', reexpand);
     slider.addEventListener('input', reexpand);
 
@@ -441,7 +448,7 @@ function expandGroups(g, i, level) {
 }
 function reexpand(e) {
     myDiagram.startTransaction("reexpand");
-    var level = parseInt(document.getElementById("levelSlider").value);
+    var level = parseInt(document.querySelector("html /deep/ #levelSlider").value);
     myDiagram.findTopLevelGroups().each(function(g) { expandGroups(g, 0, level); })
     myDiagram.commitTransaction("reexpand");
 }
@@ -622,10 +629,10 @@ function changeColor(port) {
 
 // save a model to and load a model from Json text, displayed below the Diagram
 function save() {
-    document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+    document.querySelector("html /deep/ #mySavedModel").value = myDiagram.model.toJson();
     myDiagram.isModified = false;
 }
 function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+    myDiagram.model = go.Model.fromJson(document.querySelector("html /deep/ #mySavedModel").value);
 }
 init();
