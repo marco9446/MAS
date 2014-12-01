@@ -65,3 +65,7 @@ paper-button.colored {
     font-size: 80px;
     color: rgba(0, 0, 0, 0.72);
 }
+#error{
+    color: red ;
+    display: none;
+}

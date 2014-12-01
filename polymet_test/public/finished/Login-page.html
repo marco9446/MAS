@@ -6,27 +6,19 @@
     <script src="../components/webcomponentsjs/webcomponents.js"></script>
     <link rel="stylesheet" type="text/css" href="../stylesheets/loginCss.css">
     <link rel="import" href="../components/font-roboto/roboto.html">
-    <link rel="import" href="../components/core-animation/core-animation-group.html">
-    <link rel="import" href="../components/core-animation/core-animation.html">
     <link rel="import" href="../components/paper-input/paper-input.html">
     <link rel="import" href="../components/paper-button/paper-button.html">
+    <link rel="import" href="../components/core-ajax/core-ajax.html">
     <link rel="import" href="../components/polymer-ui-card-master/polymer-ui-card.html">
 </head>
 
 <body unresolved>
-<core-animation id="fadein" duration="3000">
-    <core-animation-keyframe>
-        <core-animation-prop name="opacity" value="0"></core-animation-prop>
-    </core-animation-keyframe>
-    <core-animation-keyframe>
-        <core-animation-prop name="opacity" value="1"></core-animation-prop>
-    </core-animation-keyframe>
-</core-animation>
+
 
 <!--<div id="el" center-center layout>Fade me out</div>-->
 <div id="title">Modular Automation System</div>
 <div id="cards" >
-
+    <core-ajax id="LoginMessage" contentType="application/json"  method="POST" url="/user/logIn" response="{{resp}}" on-core-response="responce()"  ></core-ajax>
     <polymer-ui-card center-center vertical layout>
         <img id="avatarImage" src="../images/avatar-01.svg" >
 
@@ -35,6 +27,9 @@
             <paper-input-decorator label="Password" class="inputLogin"  floatingLabel  >
                 <input type="password" class="inputLogin" is="core-input"  id="passwordInput" >
             </paper-input-decorator>
+            <div id="error">
+               <core-icon icon="clear"></core-icon> wrong username or password
+            </div>
         </div>
         <div center layout>
             <paper-button raised class="colored" onclick="cliccato()">Login</paper-button>
@@ -47,17 +42,31 @@
 </body>
 <script>
     window.onload = function() {
-        var animation = document.getElementById('fadein');
-        animation.target = document.getElementById('cards');
-        animation.play();
-        console.log("pino")
+//        var animation = document.getElementById('fadein');
+//        animation.target = document.getElementById('cards');
+//        animation.play();
+//        console.log("pino")
 
     };
+    var ajax = document.querySelector("core-ajax");
+    ajax.addEventListener("core-response",
+            function(e) {
+                console.log( e.detail.response);
+
+            }
+    );
 
     function cliccato(){
+        var ajax = document.querySelector("core-ajax");
         var user = document.getElementById('usernameInput').value;
         var pass = document.getElementById('passwordInput').value;
         console.log(user, pass)
+        ajax.body= '{"username":"'+user+'", "password":"'+pass+'"}';
+        ajax.go()
+        document.getElementById("error").style.display = "inline";
+    }
+    function responce(){
+
     }
 
 </script>
