@@ -70,7 +70,7 @@ query.pushDevices=function(json,moduleID,callback){
 
 //Change the ip of some 
 //TODO modules must be replace wuith Id module
-query.changeIp=function(json,modulesID,callback){
+query.changeIp=function(json,moduleID,callback){
 	//TODO search the module and in the callback do the stuff below
 	Module.findOne({_id:moduleID},function(err,found){
 	if(found){

@@ -128,7 +128,7 @@ io.server1=http.createServer(function (req, res) {
               var ip=content[1].replace(/(\r\n|\n|\r)/gm,""); 
               if(found.ip!=ip){
                 //change IP
-                query.changeIp({ip:ip},found,function(){});
+                query.changeIp({ip:ip},found._id,function(){});
               
               }
               //call calback
