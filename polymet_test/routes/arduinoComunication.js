@@ -35,7 +35,9 @@ var Queue=function(){
                     path:finalMsg,
                     method: 'GET'
           };
-          http.get(options);
+          http.get(options).on('error', function(e) {
+            console.log("Got error: " + e.message);
+          });
       }catch(err){
         console.log(err);
       }
