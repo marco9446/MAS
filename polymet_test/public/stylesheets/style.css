@@ -83,7 +83,7 @@ a {
 }
 .logContainerHour{
 
-  line-height: 64px;
+  line-height: 20px;
   font-size: 20px;
   text-align: center;
   height: 74px;
@@ -92,6 +92,11 @@ a {
   background: #ddd;
   margin: 5px;
 }
+.logHours{
+  color: #666;
+  padding-top: 16px;
+}
+
 .logContainerMessage{
   padding: 5px;
   margin-left: 20px;

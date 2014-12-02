@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
     //console.log(logs);
     for (var i=0; i<logs.length;i++){
       console.log(logs[i]);
-      logs[i].time=logs[i].time.getDate()+"/"+ logs[i].time.getMonth() +"/"+ logs[i].time.getYear() +"  "+logs[i].time.getHours() +":"+logs[i].time.getMinutes();
+      logs[i].time=logs[i].time.getDate()+"-"+ logs[i].time.getMonth()  +"  "+logs[i].time.getHours() +":"+logs[i].time.getMinutes();
     }
     res.json(logs);
   });

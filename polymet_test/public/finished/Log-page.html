@@ -16,7 +16,9 @@
 
         <template  repeat="{{log in res}}"  >
             <div class="logContainer"  layout horizontal center>
-                <div class="logContainerHour">{{log.hours}}:{{log.minutes}}</div>
+                <div class="logContainerHour" center-center layout>
+                    <div class="logHours">{{log.time}}</div>
+                </div>
                 <div class="logContainerMessage" flex>{{log.msg}}</div>
             </div>
 
