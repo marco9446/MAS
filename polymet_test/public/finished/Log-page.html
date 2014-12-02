@@ -19,7 +19,10 @@
                 <div class="logContainerHour" center-center layout>
                     <div class="logHours">{{log.time}}</div>
                 </div>
-                <div class="logContainerMessage" flex>{{log.msg}}</div>
+                <div class="logContainerMessage" flex>
+                    <div class="logTitle">{{log.title}}</div>
+                    <div>{{log.msg}}</div>
+                </div>
             </div>
 
         </template>

@@ -96,6 +96,11 @@ a {
   color: #666;
   padding-top: 16px;
 }
+.logTitle{
+  color: #ddd;
+  font-size: 22px;
+  
+}
 
 .logContainerMessage{
   padding: 5px;
