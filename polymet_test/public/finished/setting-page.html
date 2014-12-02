@@ -1,4 +1,4 @@
-
+<link rel="import" href="../components/paper-toast/paper-toast.html">
 <link rel="import" href="../components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/core-icons/core-icons.html">
 <link rel="import" href="../components/core-icons/av-icons.html">
@@ -9,8 +9,9 @@
 
     <template >
         <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
-        <core-ajax id="post"
-                    url="/users"
+        <core-ajax contentType="application/json"
+                   id="post"
+                    url="/user"
                    class=""></core-ajax>
 
 
@@ -22,7 +23,7 @@
             </div>
             <div>
                 <div class="settingFields" inline  horizontal layout>User Name</div>
-                <paper-input label="User Name"  id="paper_input2" floatingLabel   inline ></paper-input>
+                <paper-input label="User Name"  id="paper_input2"  value="{{username}}" floatingLabel   inline ></paper-input>
             </div>
             <div >
                 <div class="settingFields" inline   horizontal layout>Password</div>
@@ -39,7 +40,7 @@
             </div>
         </div>
 
-
+        <paper-toast id="toast" class="capsule" style="padding-right: 60px; text-align: center"></paper-toast>
 
     </template>
     <script>
@@ -60,13 +61,18 @@
                         }
                     },
                     tappato: function(){
-                        console.log("ho tappato");
-//                        var ajax = this.$.post;
-//                        ajax.method = 'POST';
-//
-//                        ajax.body = {cacca : 'molle'};
-//
-//                        ajax.go();
+                        if (this.pass == this.conf && this.pass) {
+                            console.log("ho tappato");
+                            var ajax = this.$.post;
+                            ajax.method = 'POST';
+                            this.$.toast.text = "new user added";
+                            ajax.body = '{"name":"'+this.username+'", "password":"'+this.pass+'"}';
+
+                            ajax.go();
+                        }else{
+                            this.$.toast.text = "wrong parameters";
+                        }
+                        this.$.toast.show();
                     }
 
                 }

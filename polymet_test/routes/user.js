@@ -44,6 +44,7 @@ router.get('/byname/:username', function(req, res, next) {
 
 //create new user
 router.post('/', function(req, res, next) {
+    console.log(req.body);
     var newUser = new User(req.body);
     newUser.save(onModelSave(res, 201, true));
 });
@@ -71,7 +72,7 @@ router.post('/logIn',function(req,res){
      res.redirect("/finished");
   }else{
 
-  User.find({name:req.body.username},function(err,found){
+  User.findOne({name:req.body.username},function(err,found){
       if(err || !found || found.password!=req.body.password ){
         res.redirect("/");
       }else{
