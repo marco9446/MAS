@@ -69,3 +69,13 @@ paper-button.colored {
     color: red ;
     display: none;
 }
+
+#submitBt{
+    width: 90px;
+    height: 40px;
+    background: #4285f4;
+    color:#ffffff ;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: 35%;
+}
