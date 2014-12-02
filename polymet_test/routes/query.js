@@ -43,7 +43,8 @@ query.addNewModule = function(json,callback){
 		callback(err,saved);
 	});
 	var log= new Log();
-	log.msg="New Module Added. Type: "+json.type+";"
+	log.title="New Module Added";
+	log.msg="Type: "+json.type+";"
 	log.save();
 
 
@@ -98,7 +99,8 @@ query.addNewDevice=function(json,callback){
 			callback(err,saved);
 	});
 	var log= new Log();
-		log.msg="New Device Added. Name:"+myNewModule.name +"; Pinout: "+json.type+";"
+		log.title="New Device Added."
+		log.msg= "Name:"+myNewModule.name +"; Pinout: "+json.type+";"
 		log.save();
 
 }
@@ -122,7 +124,8 @@ query.updateDevieState = function(id,newState,callback){
 	query.getDevice({id:id},function(err,found){
 		found.state=newState;
 		var log= new Log();
-		log.msg="Update Device State. Name:"+found.name;
+		log.title="Update Device State.";
+		log.msg="Name:"+found.name;
 		log.save();
 		found.markModified("state");
 		found.save(function(err,saved){callback(err,saved)});

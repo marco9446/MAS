@@ -63,6 +63,11 @@ function saveAndSend(json) {
       Device.findOne({_id:json.id},function(err,found1){
       if(found1){
       var pin=found1.pin;
+
+      var log= new Log();
+     log.title="Change Device State.";
+    log.msg="Name:"+found.name;
+    log.save();
       arduino.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
       found1.state=json.status;
       found1.save(function(err,saved){console.log(err,saved)});
