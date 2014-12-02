@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
       console.log(logs[i]);
       logs[i].time=logs[i].time.getDate()+"-"+ logs[i].time.getMonth()  +"  "+logs[i].time.getHours() +":"+logs[i].time.getMinutes();
     }
-    res.json(logs);
+    res.json(logs.reverse());
   });
 });
 

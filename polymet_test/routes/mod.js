@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Module = mongoose.model('Module');
 var Device = mongoose.model('Device');
+var Log = mongoose.model('Log');
+
 var arduino = require("./arduinoComunication");
 
 
