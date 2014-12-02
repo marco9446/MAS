@@ -59,12 +59,16 @@ router.post('/', function(req, res, next) {
 
 function saveAndSend(json) {
   Module.findOne({devices : json.id},function(err,found){
+    if(found){
       Device.findOne({_id:json.id},function(err,found1){
+      if(found1){
       var pin=found1.pin;
       arduino.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
       found1.state=json.status;
       found1.save(function(err,saved){console.log(err,saved)});
-    });
+      }});
+
+    }
   });
 }
 

@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Module = mongoose.model('Module');
 var Device = mongoose.model('Device');
+var Log = mongoose.model('Log');
+
 
 
 //######################################## ____ Module Method ____#####################################
@@ -40,6 +42,10 @@ query.addNewModule = function(json,callback){
 	myNewModule.save(function(err, saved){
 		callback(err,saved);
 	});
+	var log= new Log();
+	log.msg="New Module Added. Type: "+json.type+";"
+	log.save();
+
 
 } 
 
@@ -50,6 +56,7 @@ query.pushDevices=function(json,moduleID,callback){
 	Module.findOne({_id:moduleID},function(err,found){
 	if(found){
 	//search the module and in the callback do the stuff below
+		
 		found.devices.push(json.id);
 		found.markModified("devices");
 		found.save(function(err,upp){console.log("pushed",err,upp,found);callback(err,found)});
@@ -89,7 +96,10 @@ query.addNewDevice=function(json,callback){
 	myNewModule.state = json.state;
 	myNewModule.save(function(err,saved){
 			callback(err,saved);
-	})
+	});
+	var log= new Log();
+		log.msg="New Device Added. Name:"+myNewModule.name +"; Pinout: "+json.type+";"
+		log.save();
 
 }
 
@@ -107,11 +117,17 @@ query.getOneDeviceFromArrayPin= function(arr,pin,callback){
 
 query.updateDevieState = function(id,newState,callback){
 	
+
+
 	query.getDevice({id:id},function(err,found){
 		found.state=newState;
+		var log= new Log();
+		log.msg="Update Device State. Name:"+found.name;
+		log.save();
 		found.markModified("state");
 		found.save(function(err,saved){callback(err,saved)});
 	});
+	
 
 } 
 
