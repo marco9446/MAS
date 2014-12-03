@@ -26,9 +26,6 @@
 // 	pridat wait(hodnota);
 // 	zavolej FUNCTION na NEXT
 
-fs = require('fs');
-output = "";
-
 //whoaaaa
 var variable = { "class": "go.GraphLinksModel",
         "linkFromPortIdProperty": "fromPort",
@@ -49,6 +46,9 @@ compile(variable);
 
 //the interface for the library. basically call this to twerk
 function compile(program) {
+	fs = require('fs');
+	output = "";
+	sensors = [];
 	var filename = "output.js";
 	if (!program) {
 		throw new Error("no program input to compile!");
@@ -62,8 +62,11 @@ function compile(program) {
 		return obj.text == "Start";
 	})[0];
 
+	//GO GO GADGET
 	exec(program, getNext(program, startNode));
+	console.log("Used sensors:" + sensors);
 	fs.writeFileSync(filename, output);
+	//save to database
 
 }
 
@@ -110,29 +113,6 @@ function getConditions(program, node) {
 //this function basically does everything
 //maybe except for cooking bacon and pancakes
 //TO DO: in version 1.2, enable bacon and pancake functionality
-// << FUNCTION
-// 4. vzit node, zjistit typ
-// 5a. podminka? 
-// 	pridat if( s condition na VSECHNY podminky)
-// 	zacala zavorka
-// 	zavolej FUNCTION na YES
-// 	skoncila zavorka
-// 	5a.1
-// 		existuje NO cesta?
-// 		pridat else {
-// 		zavolej FUNCTION na NO
-// 		pridat }
-// 	5a.2
-// 		neexistuje NO cesta?
-// 		pridat }
-
-// 5b. akce?
-// 	pridat action( );
-// 	zavolej FUNCTION na NEXT
-
-// 5c. cekani?
-// 	pridat wait(hodnota);
-// 	zavolej FUNCTION na NEXT
 function exec(program, node) {
 	if (!node)
 		return 0;
@@ -163,6 +143,8 @@ function execIfNode(program, node) {
 			// , between arguments if this isn't the last one
 			if (i != conditions.length-1)
 				output += ", ";
+			//add condition to list of sensors!
+			sensors.push(conditions[i].text);
 		};
 		output += ")";
 	}
@@ -190,7 +172,7 @@ function execAction(program, node) {
 
 //parse a delay node
 function execDelay(program, node) {
-	console.log("not implemented yet m8");
+	console.log("not implemented yet m8 :^)");
 }
 
 
