@@ -2,6 +2,7 @@
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 <link rel="import" href="../components/paper-button/paper-button.html">
 <link rel="import" href="../components/paper-fab/paper-fab.html">
+ <link rel="import" href="../components/paper-input/paper-input.html">
 
 
  <link rel="import" href="edit-page.html">
@@ -14,10 +15,18 @@
                 document.querySelector('app-router').go("/editor/:"+elem);
 
             }
+            function tappato1(elem){
+
+                var ajaxino=document.querySelector("html /deep/ #myOnLoad");
+                var namino=document.querySelector("html /deep/ #nameInput");
+                console.log(namino.value)
+                ajaxino.params='{"name":"'+namino.value+'","code":"none"}'
+                ajaxino.go();
+            }
 
         </script>
         <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
-                 <paper-fab  icon="add" id="editButton"   ></paper-fab>
+                 <paper-fab  icon="add" id="editButton" on-tap="{{addNew}}"  ></paper-fab>
 
          <div horizontal center-justified layout style="width:100%;">
                  <div>
@@ -28,7 +37,33 @@
 
                  </div>
         </div>
+        
+         <core-ajax auto =false
+                   method=POST
+                   content-type="appllication/json"
+                   url="/design"
+                   handleAs="json"
+                   response="{{res2}}"
+                   on-core-response="{{handleResponse1}}"
+                   class="" id="myOnLoad"></core-ajax>
 
+
+
+        <div class="logContainer" id="inputName"  layout horizontal center  style="width:70%; text-allign:right; display:none;" >
+                 <div style=" margin-left:30px;margin-right:30px">
+                <paper-input-decorator label="Name" class="inputLogin"  floatingLabel  style="width:100%">
+                    <input type="text" class="inputLogin" is="core-input"  name="name" id="nameInput" >
+                </paper-input-decorator>
+                </div>
+
+               <div flex horizontal center-justified layout >
+                 <div>
+                    <paper-button raised  onclick='tappato1()' style="margin-right:30px;margin-bottom:30px">Save</paper-button>
+                 </div>
+
+                </div>
+              
+            </div>
 
         <core-ajax auto =true
                    url="/design"
@@ -65,6 +100,15 @@
                     ready: function () {
                         console.log("edit page ready");
                         document.querySelector("paper-tabs").selected = "3";
+                    },
+                    addNew: function(){
+
+                        this.$.inputName.style.display="block"
+                    },
+                    handleResponse1 : function(){
+                        console.log(this.res2._id);
+                        document.querySelector('app-router').go("/editor/:"+this.res2._id);
+
                     }
                 }
         )
