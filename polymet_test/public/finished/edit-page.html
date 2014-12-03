@@ -1,7 +1,7 @@
 <script src="../GUI-Graphs/js/go-debug.js"></script>
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 <link rel="import" href="../components/core-drag-drop/core-drag-drop.html">
-<polymer-element name="edit-page">
+<polymer-element name="edit-page" attributes="pathArg1">
 
     <template  >
         <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
@@ -73,6 +73,7 @@
         Polymer("edit-page", {
                     ready: function () {
                         console.log("edit page ready");
+                        console.log(this.pathArg1);
 
                     }
                 }

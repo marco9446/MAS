@@ -65,7 +65,8 @@
         <app-route path="/home" import="my-element.html"  element="my-element"></app-route>
         <app-route path="/log" import="Log-page.html" element="Log-page" ></app-route>
         <app-route path="/settings" import="setting-page.html"  element="setting-page" ></app-route>
-        <app-route path="/edit" import="edit-page.html" element="edit-page"></app-route>
+        <app-route path="/edit" import="edit-index.html" element="edit-index"></app-route>
+        <app-route path="/editor/:pathArg1" import="edit-page.html" element="edit-page"></app-route>
         <app-route path="*" redirect="/home"></app-route>
       </app-router>
     </section>

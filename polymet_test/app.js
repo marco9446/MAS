@@ -22,6 +22,7 @@ var usersRouter = require('./routes/user');
 var deviceRouter = require('./routes/device');
 var logRouter = require('./routes/log');
 var modRouter = require('./routes/mod');
+var designRouter = require('./routes/Design');
 
 
 
@@ -54,6 +55,7 @@ app.use('/device', deviceRouter);
 app.use('/log', logRouter);
 app.use('/mod', modRouter);
 app.use('/program', programRouter);
+app.use('/Design',designRouter);
 
 app.get("/",function(req,res){
     res.sendFile(path.join(__dirname,"/public/finished/Login-page.html"));

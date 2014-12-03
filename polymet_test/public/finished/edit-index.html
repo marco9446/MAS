@@ -1,0 +1,73 @@
+<script src="../GUI-Graphs/js/go-debug.js"></script>
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/paper-button/paper-button.html">
+<link rel="import" href="../components/paper-fab/paper-fab.html">
+
+
+ <link rel="import" href="edit-page.html">
+
+<polymer-element name="edit-index">
+
+    <template>
+        <script type="text/javascript">
+            function tappato(elem){
+                document.querySelector('app-router').go("/editor/:"+elem);
+
+            }
+
+        </script>
+        <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+                 <paper-fab  icon="add" id="editButton"   ></paper-fab>
+
+         <div horizontal center-justified layout style="width:100%;">
+                 <div>
+
+                 <div>
+                      <h1> Your Home Design</h1> 
+                 </div>
+
+                 </div>
+        </div>
+
+
+        <core-ajax auto =true
+                   url="/design"
+                   handleAs="json"
+                   response="{{res}}"
+                   on-core-response="{{handleResponse}}"
+                   class=""></core-ajax>
+
+
+        <template  repeat="{{des in res}}"  >
+            <div class="logContainer"  layout horizontal center  style="width:70%; text-allign:right">
+
+               <h1 style="margin-left:30px"> {{des.name}} </h1>
+               <div horizontal end-justified layout style="width:100%;">
+                 <div>
+                      <paper-button raised  onclick='tappato("{{des._id}}")' style="margin-right:30px">Open</paper-button>
+                 </div>
+                </div>
+              
+            </div>
+      
+        </template>
+        <template>
+        <edit-page cosa={{res}}></edit-page>
+
+        </template>
+
+     </template>
+
+    <script>
+
+        Polymer("edit-index", {
+                    pathArg1:"cabe",
+                    ready: function () {
+                        console.log("edit page ready");
+
+                    }
+                }
+        )
+    </script>
+
+</polymer-element>
