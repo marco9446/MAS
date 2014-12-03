@@ -409,20 +409,20 @@ function init() {
     };
 
     // initialize the Palette and its contents
-    myPalette =
-        $(go.Palette, document.querySelector("html /deep/ #myPalette"),
-            {
-                nodeTemplateMap: myDiagram.nodeTemplateMap,
-                groupTemplateMap: myDiagram.groupTemplateMap,
-                layout: $(go.GridLayout, { wrappingColumn: 1, alignment: go.GridLayout.Position })
-            });
-    myPalette.model = new go.GraphLinksModel([
-        { text: "Conditions", isGroup:true, category:"OfNodes"},
-        { text: "IF",isGroup:true,category:"OfGroups" ,color: "#FFDD33",  "bottomArray":[ {"portColor":"red", "portId":""},{"portColor":"green", "portId":""}] },
-        { text: "Condition", color: "lightblue", source:"../GUI-Graphs/res/sensor.png" },
-        {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-78,"topArray":[{"portColor":"black", "portId":"from78"}], "bottomArray":[{"portcolor":"black", "pordId":"to78"}]},
-        {"text":"Window1",  "source":"../GUI-Graphs/res/window.png", "key":15,"topArray":[{"portColor":"black", "portId":"from15"}],"bottomArray":[{"portcolor":"black", "pordId":"to15"}]}
-    ]);
+    //myPalette =
+    //    $(go.Palette, document.querySelector("html /deep/ #myPalette"),
+    //        {
+    //            nodeTemplateMap: myDiagram.nodeTemplateMap,
+    //            groupTemplateMap: myDiagram.groupTemplateMap,
+    //            layout: $(go.GridLayout, { wrappingColumn: 1, alignment: go.GridLayout.Position })
+    //        });
+    //myPalette.model = new go.GraphLinksModel([
+    //    { text: "Conditions", isGroup:true, category:"OfNodes"},
+    //    { text: "IF",isGroup:true,category:"OfGroups" ,color: "#FFDD33",  "bottomArray":[ {"portColor":"red", "portId":""},{"portColor":"green", "portId":""}] },
+    //    { text: "Condition", color: "lightblue", source:"../GUI-Graphs/res/sensor.png" },
+    //    {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-78,"topArray":[{"portColor":"black", "portId":"from78"}], "bottomArray":[{"portcolor":"black", "pordId":"to78"}]},
+    //    {"text":"Window1",  "source":"../GUI-Graphs/res/window.png", "key":15,"topArray":[{"portColor":"black", "portId":"from15"}],"bottomArray":[{"portcolor":"black", "pordId":"to15"}]}
+    //]);
 
     var slider = document.querySelector("html /deep/ #levelSlider");
     slider.addEventListener('change', reexpand);

@@ -3,13 +3,18 @@
  */
 
 addEventListener('drag-start', function(e) {
+
     var dragInfo = e.detail;
+
     // flaw #2: e vs dragInfo.event
-    var id = dragInfo.event.target.id;
-    dragInfo.avatar.style.cssText = 'border: 3px solid blue; width: 32px; height: 32px; border-radius: 32px; background-color: whitesmoke';
-    dragInfo.avatar.id = id;
-    dragInfo.drag = function() {};
-    dragInfo.drop = drop;
+    if( dragInfo.event.target.className == "homepageDrug") {
+        var id = dragInfo.event.target.id;
+        dragInfo.avatar.style.cssText = 'border: 3px solid blue; width: 32px; height: 32px; border-radius: 32px; background-color: whitesmoke';
+        dragInfo.avatar.id = id;
+        dragInfo.drag = function () {
+        };
+        dragInfo.drop = drop;
+    }
 
 });
 
