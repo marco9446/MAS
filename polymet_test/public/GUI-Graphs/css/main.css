@@ -53,27 +53,46 @@
     overflow-x: auto;
     margin-right: 3px;
     margin-left: 114px;
-    height: 100px;
+    height: 120px;
     border: 1px #000000 solid;
 }
 
 .arduino{
+    text-align: center;
     display: inline-block;
     float: left;
     margin: 5px;
+    padding: 6px;
     width: 80px;
     height: 80px;
 }
 
 .arduino_output{
-    background-color: #000066;
+    background: #44CCFF url("../../GUI-Graphs/res/lamp.png");
+    background-size: cover;
+    border: 1px #000000 solid;
+    width: 80px;
+    height: 80px;
+    border-radius: 7px;
 }
 .arduino_sensor{
-background-color: #006600;
+    background: #44CCFF url("../../GUI-Graphs/res/sensor.png");
+    background-size: cover;
+    border-radius: 7px;
+    border: 1px #000000 solid;
+    width: 80px;
+    height: 80px;
 }
 .arduino_switch{
-    background-color: #333333;
+    background: #44CCFF url("../../GUI-Graphs/res/switch.png");
+    background-size: cover;
+    border-radius: 7px;
+    border: 1px #000000 solid;
+    width: 80px;
+    height: 80px;
 }
 .arduino_button{
     background-color: #A37104;
+    width: 80px;
+    height: 80px;
 }
