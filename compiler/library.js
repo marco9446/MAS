@@ -56,8 +56,8 @@ function action(argument) {
 	//resolve module name
 	var module = doRequest("GET", '/mod/bydevice/' + device._id, {});
 	//very politely ask the module to perform shit
-	var postbody = {ID: device._id, PARAM: [ {device.pin: newstate}]};
-	doRequest('POST', "/action/" + module._id, postbody);
+	var postbody = {id: device._id, status: newstate};
+	doRequest('POST', "/send/" + module._id, postbody);
 
 	return true;
 }
