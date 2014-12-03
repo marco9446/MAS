@@ -60,8 +60,20 @@
 .arduino{
     display: inline-block;
     float: left;
-    border: 1px #000000 solid;
     margin: 5px;
     width: 80px;
     height: 80px;
+}
+
+.arduino_output{
+    background-color: #000066;
+}
+.arduino_sensor{
+background-color: #006600;
+}
+.arduino_switch{
+    background-color: #333333;
+}
+.arduino_button{
+    background-color: #A37104;
 }

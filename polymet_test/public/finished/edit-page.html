@@ -27,7 +27,7 @@
 
                 <template repeat="{{device in listOfdevices2}}">
 
-                    <div class="arduino" draggable="true">
+                    <div class="arduino {{device.type | changeClass}}" draggable="true">
                         {{device.type}} <br>
                         {{device.name}}
                     </div>
@@ -74,7 +74,14 @@
                     ready: function () {
                         console.log("edit page ready");
                         console.log(this.pathArg1);
+                        document.querySelector("paper-tabs").selected = "2";
 
+                    },
+                    changeClass: function(type){
+                        if(type=="o"){return "arduino_output"}
+                        else if(type=="s"){return "arduino_sensor"}
+                        else if(type=="w"){return "arduino_switch"}
+                        else if(type=="b"){return "arduino_button"}
                     }
                 }
         )
