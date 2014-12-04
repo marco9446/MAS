@@ -98,8 +98,6 @@ io.addNewModuleCallback=[];
 io.addNewDeviceCallback=[];
 io.logModuleCallback=[];
 io.actionLinstener=[];
-
-
 io.queue=new Queue();
 
 /*

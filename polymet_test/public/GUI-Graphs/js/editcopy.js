@@ -1,6 +1,6 @@
-
+var diagram;
 function init() {
-  //  if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    //  if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
     var $ = go.GraphObject.make;
 
     myDiagram =
@@ -8,29 +8,30 @@ function init() {
             {
                 allowDrop: true,
                 // what to do when a drag-drop occurs in the Diagram's background
-                mouseDrop:
-                    function(e) {
-                        // when the selection is dropped in the diagram's background,
-                        // make sure the selected Parts no longer belong to any Group
-                        var ok = myDiagram.commandHandler.addTopLevelParts(myDiagram.selection, true);
-                        if (!ok) myDiagram.currentTool.doCancel();
-                    },
-                layout:
-                    $(go.GridLayout,
-                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position,
-                            cellSize: new go.Size(1, 1) }),
+                mouseDrop: function (e) {
+                    // when the selection is dropped in the diagram's background,
+                    // make sure the selected Parts no longer belong to any Group
+                    var ok = myDiagram.commandHandler.addTopLevelParts(myDiagram.selection, true);
+                    if (!ok) myDiagram.currentTool.doCancel();
+                },
+                layout: $(go.GridLayout,
+                    {
+                        wrappingWidth: Infinity, alignment: go.GridLayout.Position,
+                        cellSize: new go.Size(1, 1)
+                    }),
                 initialContentAlignment: go.Spot.Center,
                 groupSelectionAdornmentTemplate:  // this applies to all Groups
                     $(go.Adornment, go.Panel.Auto,
                         $(go.Shape, "Rectangle",
-                            { fill: null, stroke: "dodgerblue", strokeWidth: 3 }),
+                            {fill: null, stroke: "dodgerblue", strokeWidth: 3}),
                         $(go.Placeholder)),
-                "commandHandler.archetypeGroupData": { isGroup: true, category: "OfNodes" },
+                "commandHandler.archetypeGroupData": {isGroup: true, category: "OfNodes"},
                 "undoManager.isEnabled": true
             });
+    diagram = myDiagram;
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
-    myDiagram.addDiagramListener("Modified", function(e) {
+    myDiagram.addDiagramListener("Modified", function (e) {
         var button = document.querySelector("html /deep/ #SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
         var idx = document.title.indexOf("*");
@@ -59,68 +60,92 @@ function init() {
         }
         grp.isHighlighted = false;
     }
+
     // upon a drop onto a Group, we try to add the selection as members of the Group;
     // if this is OK, we're done; otherwise we cancel the operation to rollback everything
     function finishDrop(e, grp) {
         var ok = grp !== null && grp.addMembers(grp.diagram.selection, true);
         if (!ok) grp.diagram.currentTool.doCancel();
     }
+
     var portSize = new go.Size(8, 8);
     var portMenu =  // context menu for each port
         $(go.Adornment, "Vertical",
             $("ContextMenuButton",
                 $(go.TextBlock, "Remove port"),
                 // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
-                { click: function (e, obj) { removePort(obj.part.adornedObject); } }),
+                {
+                    click: function (e, obj) {
+                        removePort(obj.part.adornedObject);
+                    }
+                }),
             $("ContextMenuButton",
                 $(go.TextBlock, "Change color"),
-                { click: function (e, obj) { changeColor(obj.part.adornedObject); } }),
+                {
+                    click: function (e, obj) {
+                        changeColor(obj.part.adornedObject);
+                    }
+                }),
             $("ContextMenuButton",
                 $(go.TextBlock, "Remove side ports"),
-                { click: function (e, obj) { removeAll(obj.part.adornedObject); } })
+                {
+                    click: function (e, obj) {
+                        removeAll(obj.part.adornedObject);
+                    }
+                })
         );
     myDiagram.groupTemplateMap.add("OfGroups",
         $(go.Group, go.Panel.Auto,
             {
                 background: "transparent",
                 // highlight when dragging into the Group
-                mouseDragEnter: function(e, grp, prev) { highlightGroup(e, grp, true); },
-                mouseDragLeave: function(e, grp, next) { highlightGroup(e, grp, false); },
+                mouseDragEnter: function (e, grp, prev) {
+                    highlightGroup(e, grp, true);
+                },
+                mouseDragLeave: function (e, grp, next) {
+                    highlightGroup(e, grp, false);
+                },
                 computesBoundsAfterDrag: true,
                 // when the selection is dropped into a Group, add the selected Parts into that Group;
                 // if it fails, cancel the tool, rolling back any changes
                 mouseDrop: finishDrop,
                 // Groups containing Groups lay out their members horizontally
-                layout:
-                    $(go.GridLayout,
-                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position,
-                            cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4) })
+                layout: $(go.GridLayout,
+                    {
+                        wrappingWidth: Infinity, alignment: go.GridLayout.Position,
+                        cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4)
+                    })
             },
             $(go.Panel, go.Panel.Vertical,
                 $(go.Panel, "Horizontal",
                     new go.Binding("itemArray", "topArray"),
-                    { row: 0, column: 1,
-                        itemTemplate:
-                            $(go.Panel,
-                                { _side: "top",
-                                    fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
-                                    fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                    contextMenu: portMenu },
-                                new go.Binding("portId", "portId"),
-                                $(go.Shape, "Rectangle",
-                                    { stroke: null,
-                                        desiredSize: portSize,
-                                        margin: new go.Margin(0, 1) },
-                                    new go.Binding("fill", "portColor"))
-                            )  // end itemTemplate
+                    {
+                        row: 0, column: 1,
+                        itemTemplate: $(go.Panel,
+                            {
+                                _side: "top",
+                                fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
+                                fromLinkable: true, toLinkable: true, cursor: "pointer",
+                                contextMenu: portMenu
+                            },
+                            new go.Binding("portId", "portId"),
+                            $(go.Shape, "Rectangle",
+                                {
+                                    stroke: null,
+                                    desiredSize: portSize,
+                                    margin: new go.Margin(0, 1)
+                                },
+                                new go.Binding("fill", "portColor"))
+                        )  // end itemTemplate
                     }
                 ),
                 $(go.Panel, go.Panel.Horizontal,
-                    { stretch: go.GraphObject.Horizontal, background: "#FFDD33" },
+                    {stretch: go.GraphObject.Horizontal, background: "#FFDD33"},
                     $("SubGraphExpanderButton",
-                        { alignment: go.Spot.Right, margin: 5 }),
+                        {alignment: go.Spot.Right, margin: 5}),
                     $(go.TextBlock,
-                        { alignment: go.Spot.Left, editable: true,
+                        {
+                            alignment: go.Spot.Left, editable: true,
                             margin: 5,
                             font: "bold 18px sans-serif",
                             stroke: "#9A6600"
@@ -128,25 +153,30 @@ function init() {
                         new go.Binding("text", "text").makeTwoWay())
                 ),  // end Horizontal Panel
                 $(go.Placeholder,
-                    { padding: 5, alignment: go.Spot.TopLeft },
-                    new go.Binding("background", "isHighlighted", function(h) { return h ? "red": "transparent"; }).ofObject()
+                    {padding: 5, alignment: go.Spot.TopLeft},
+                    new go.Binding("background", "isHighlighted", function (h) {
+                        return h ? "red" : "transparent";
+                    }).ofObject()
                 ),
                 $(go.Panel, go.Panel.Horizontal,
                     new go.Binding("itemArray", "bottomArray"),
                     {
-                        itemTemplate:
-                            $(go.Panel,
-                                { _side: "bottom",  // internal property to make it easier to tell which side it's on
-                                    fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
-                                    fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                    contextMenu: portMenu },
-                                new go.Binding("portId", "portId"),
-                                $(go.Shape, "Rectangle",
-                                    { stroke: null,
-                                        desiredSize: portSize,
-                                        margin: new go.Margin(5,10) },
-                                    new go.Binding("fill", "portColor"))
-                            )  // end itemTemplate
+                        itemTemplate: $(go.Panel,
+                            {
+                                _side: "bottom",  // internal property to make it easier to tell which side it's on
+                                fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
+                                fromLinkable: true, toLinkable: true, cursor: "pointer",
+                                contextMenu: portMenu
+                            },
+                            new go.Binding("portId", "portId"),
+                            $(go.Shape, "Rectangle",
+                                {
+                                    stroke: null,
+                                    desiredSize: portSize,
+                                    margin: new go.Margin(5, 10)
+                                },
+                                new go.Binding("fill", "portColor"))
+                        )  // end itemTemplate
                     }
                 )
             ),  // end Vertical Panel
@@ -158,7 +188,6 @@ function init() {
                     strokeWidth: 2
                 })
         )
-
     );  // end Group and call to add to template Map
 
     myDiagram.groupTemplateMap.add("OfNodes",
@@ -167,33 +196,42 @@ function init() {
                 background: "transparent",
                 ungroupable: true,
                 // highlight when dragging into the Group
-                mouseDragEnter: function(e, grp, prev) { highlightGroup(e, grp, true); },
-                mouseDragLeave: function(e, grp, next) { highlightGroup(e, grp, false); },
+                mouseDragEnter: function (e, grp, prev) {
+                    highlightGroup(e, grp, true);
+                },
+                mouseDragLeave: function (e, grp, next) {
+                    highlightGroup(e, grp, false);
+                },
                 computesBoundsAfterDrag: true,
                 // when the selection is dropped into a Group, add the selected Parts into that Group;
                 // if it fails, cancel the tool, rolling back any changes
                 mouseDrop: finishDrop,
                 // Groups containing Nodes lay out their members vertically
-                layout:
-                    $(go.GridLayout,
-                        { wrappingColumn: 1, alignment: go.GridLayout.Position,
-                            cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4) })
+                layout: $(go.GridLayout,
+                    {
+                        wrappingColumn: 1, alignment: go.GridLayout.Position,
+                        cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4)
+                    })
             },
             $(go.Panel, go.Panel.Vertical,
                 $(go.Panel, go.Panel.Horizontal,
-                    { stretch: go.GraphObject.Horizontal, background: "#33D3E5" },
+                    {stretch: go.GraphObject.Horizontal, background: "#33D3E5"},
                     $("SubGraphExpanderButton",
-                        { alignment: go.Spot.Right, margin: 2 }),
+                        {alignment: go.Spot.Right, margin: 2}),
                     $(go.TextBlock,
-                        { alignment: go.Spot.Left, editable: true,
+                        {
+                            alignment: go.Spot.Left, editable: true,
                             margin: 5,
                             font: "bold 16px sans-serif",
-                            stroke: "#006080"},
+                            stroke: "#006080"
+                        },
                         new go.Binding("text", "text").makeTwoWay())
                 ),  // end Horizontal Panel
                 $(go.Placeholder,
-                    { padding: 5, alignment: go.Spot.TopLeft },
-                    new go.Binding("background", "isHighlighted", function(h) { return h ? "red" : "transparent"; }).ofObject())
+                    {padding: 5, alignment: go.Spot.TopLeft},
+                    new go.Binding("background", "isHighlighted", function (h) {
+                        return h ? "red" : "transparent";
+                    }).ofObject())
             ),  // end Vertical Panel
             $(go.Shape, "Rectangle",
                 {
@@ -203,21 +241,6 @@ function init() {
                     strokeWidth: 2
                 })
         ));  // end Group and call to add to template Map
-    var nodeMenu =  // context menu for each Node
-        $(go.Adornment, "Vertical",
-            $("ContextMenuButton",
-                $(go.TextBlock, "Add top port"),
-                { click: function (e, obj) { addPort("top"); } }),
-            $("ContextMenuButton",
-                $(go.TextBlock, "Add left port"),
-                { click: function (e, obj) { addPort("left"); } }),
-            $("ContextMenuButton",
-                $(go.TextBlock, "Add right port"),
-                { click: function (e, obj) { addPort("right"); } }),
-            $("ContextMenuButton",
-                $(go.TextBlock, "Add bottom port"),
-                { click: function (e, obj) { addPort("bottom"); } })
-        );
 
     // Nodes have a trivial definition -- the interesting thing is that it handles
     // the mouseDragEnter/mouseDragLeave/mouseDrop events and delegates them to the containing Group.
@@ -244,7 +267,8 @@ function init() {
 
     myDiagram.nodeTemplate =
         $(go.Node, "Table",
-            { locationObjectName: "BODY",
+            {
+                locationObjectName: "BODY",
                 locationSpot: go.Spot.Center,
                 selectionObjectName: "BODY"
                 //contextMenu: nodeMenu
@@ -253,18 +277,29 @@ function init() {
 
             // the body
             $(go.Panel, "Auto",
-                { row: 1, column: 1, name: "BODY",
+                {
+                    row: 1, column: 0, name: "BODY",
                     // highlight when dragging over a Node that is inside a Group
-                    mouseDragEnter: function(e, nod, prev) { highlightGroup(e, nod.containingGroup, true); },
-                    mouseDragLeave: function(e, nod, next) { highlightGroup(e, nod.containingGroup, false); },
+                    mouseDragEnter: function (e, nod, prev) {
+                        highlightGroup(e, nod.containingGroup, true);
+                    },
+                    mouseDragLeave: function (e, nod, next) {
+                        highlightGroup(e, nod.containingGroup, false);
+                    },
                     // dropping on a Node is the same as dropping on its containing Group, if any
-                    doubleClick: function(e,nod){myDiagram.model.addNodeData(nod)},
-                    mouseDrop: function(e, nod) { finishDrop(e, nod.containingGroup); console.log("ciao")}
+                    doubleClick: function (e, nod) {
+                        myDiagram.model.addNodeData(nod);
+                    },
+                    mouseDrop: function (e, nod) {
+                        finishDrop(e, nod.containingGroup);
+                    }
                 },
                 $(go.Shape, "RoundedRectangle",
-                    { fill: "black",
-                        minSize: new go.Size(56, 56) },
-                new go.Binding("fill","color" )),
+                    {
+                        fill: "black",
+                        minSize: new go.Size(56, 56)
+                    },
+                    new go.Binding("fill", "color")),
                 $(go.Panel, "Horizontal",
                     $(go.Panel, "Auto",
                         $(go.Shape, "RoundedRectangle",
@@ -272,113 +307,78 @@ function init() {
                             new go.Binding("fill", "color")
                         ),
                         $(go.Picture,
-                            { margin: 10, width: 50, height: 50, background: "#44CCFF" },
+                            {margin: 10, width: 50, height: 50, background: "#44CCFF"},
                             new go.Binding("source"))
                     ),
-                    $(go.Panel,"Vertical",
+                    $(go.Panel, "Vertical",
                         $(go.TextBlock,
-                            {  textAlign: "center",
-                                stroke:"white" ,
+                            {
+                                textAlign: "center",
+                                stroke: "white",
                                 margin: 5, editable: true,
                                 font: "bold 13px sans-serif"
-                                },
+                            },
                             new go.Binding("text", "text").makeTwoWay()),
                         $(go.TextBlock,
-                            {margin:10, textAlign:"center", stroke:"white"},
+                            {margin: 10, textAlign: "center", stroke: "white"},
                             new go.Binding("text", "fun"))
                     )
-
                 )
-
             )
-        ,  // end Auto Panel body
-        //
-        //    // the Panel holding the left port elements, which are themselves Panels,
-        //    // created for each item in the itemArray, bound to data.leftArray
-            $(go.Panel, "Vertical",
-                new go.Binding("itemArray", "leftArray"),
-                { row: 1, column: 0,
-                    itemTemplate:
-                        $(go.Panel,
-                            { _side: "left",  // internal property to make it easier to tell which side it's on
-                                fromSpot: go.Spot.Left, toSpot: go.Spot.Left,
-                                fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                contextMenu: portMenu },
-                            new go.Binding("portId", "portId"),
-                            $(go.Shape, "Rectangle",
-                                { stroke: null,
-                                    desiredSize: portSize,
-                                    margin: new go.Margin(1,0) },
-                                new go.Binding("fill", "portColor"))
-                        )  // end itemTemplate
-                }
-            ),  // end Vertical Panel
-        //
-        //    // the Panel holding the top port elements, which are themselves Panels,
-        //    // created for each item in the itemArray, bound to data.topArray
+            ,  // end Auto Panel body
+
+            //    // the Panel holding the top port elements, which are themselves Panels,
+            //    // created for each item in the itemArray, bound to data.topArray
             $(go.Panel, "Horizontal",
                 new go.Binding("itemArray", "topArray"),
-                { row: 0, column: 1,
-                    itemTemplate:
-                        $(go.Panel,
-                            { _side: "top",
-                                fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
-                                fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                contextMenu: portMenu },
-                            new go.Binding("portId", "portId"),
-                            $(go.Shape, "Rectangle",
-                                { stroke: null,
-                                    desiredSize: portSize,
-                                    margin: new go.Margin(0, 1) },
-                                new go.Binding("fill", "portColor"))
-                        )  // end itemTemplate
+                {
+                    row: 0, column: 0,
+                    itemTemplate: $(go.Panel,
+                        {
+                            _side: "top",
+                            fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
+                            fromLinkable: true, toLinkable: true, cursor: "pointer",
+                            contextMenu: portMenu
+                        },
+                        new go.Binding("portId", "portId"),
+                        $(go.Shape, "Rectangle",
+                            {
+                                stroke: null,
+                                desiredSize: portSize,
+                                margin: new go.Margin(0, 1)
+                            },
+                            new go.Binding("fill", "portColor"))
+                    )  // end itemTemplate
                 }
             ),  // end Horizontal Panel
-        //
-        //    // the Panel holding the right port elements, which are themselves Panels,
-        //    // created for each item in the itemArray, bound to data.rightArray
-            $(go.Panel, "Vertical",
-                new go.Binding("itemArray", "rightArray"),
-                { row: 1, column: 2,
-                    itemTemplate:
-                        $(go.Panel,
-                            { _side: "right",
-                                fromSpot: go.Spot.Right, toSpot: go.Spot.Right,
-                                fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                contextMenu: portMenu },
-                            new go.Binding("portId", "portId"),
-                            $(go.Shape, "Rectangle",
-                                { stroke: null,
-                                    desiredSize: portSize,
-                                    margin: new go.Margin(1, 0) },
-                                new go.Binding("fill", "portColor"))
-                        )  // end itemTemplate
-                }
-            ),  // end Vertical Panel
+            //
 
-        //    // the Panel holding the bottom port elements, which are themselves Panels,
-        //    // created for each item in the itemArray, bound to data.bottomArray
+            //    // the Panel holding the bottom port elements, which are themselves Panels,
+            //    // created for each item in the itemArray, bound to data.bottomArray
             $(go.Panel, "Horizontal",
                 new go.Binding("itemArray", "bottomArray"),
-                { row: 2, column: 1,
-                    itemTemplate:
-                        $(go.Panel,
-                            { _side: "bottom",
-                                fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
-                                fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                contextMenu: portMenu },
-                            new go.Binding("portId", "portId"),
-                            $(go.Shape, "Rectangle",
-                                { stroke: null,
-                                    desiredSize: portSize,
-                                    margin: new go.Margin(0, 1) },
-                                new go.Binding("fill", "portColor"))
-                        )  // end itemTemplate
+                {
+                    row: 2, column: 0,
+                    itemTemplate: $(go.Panel,
+                        {
+                            _side: "bottom",
+                            fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
+                            fromLinkable: true, toLinkable: true, cursor: "pointer",
+                            contextMenu: portMenu
+                        },
+                        new go.Binding("portId", "portId"),
+                        $(go.Shape, "Rectangle",
+                            {
+                                stroke: null,
+                                desiredSize: portSize,
+                                margin: new go.Margin(0, 1)
+                            },
+                            new go.Binding("fill", "portColor"))
+                    )  // end itemTemplate
                 }
             )  // end Horizontal Panel
         );  // end Node
-
-    //------------------------------------AREA TO MERGE ---------------------------------------------------------//
+    
 
 
     //link Template
@@ -396,12 +396,14 @@ function init() {
             },
             new go.Binding("points").makeTwoWay(),
             $(go.Shape, {strokeWidth: 4},
-                new go.Binding("stroke","color"))  // just a plain black line
+                new go.Binding("stroke", "color"))  // just a plain black line
         );
 
     myDiagram.toolManager.clickCreatingTool.archetypeNodeData = {
+        category: "OfGroups",
+        isGroup: true,
         key: "Unit",
-        leftArray: [],
+        leftArray: [{portId: "", portColor: ""}],
         rightArray: [],
         topArray: [],
         bottomArray: []
@@ -409,6 +411,7 @@ function init() {
     };
 
     // initialize the Palette and its contents
+
     myPalette =
         $(go.Palette, document.querySelector("html /deep/ #myPalette"),
             {
@@ -429,7 +432,21 @@ function init() {
     slider.addEventListener('input', reexpand);
 
     load();
+
 }
+
+function ciao(id, type){
+    myDiagram.toolManager.clickCreatingTool.archetypeNodeData={
+        category: type,
+        isGroup:true,
+        key: id,
+        leftArray: [{portId:"",portColor:""}],
+        rightArray: [],
+        topArray: [],
+        bottomArray: []
+    }
+}
+//ciao("Unit","OfNodes");
 
 function CustomLink() {
     go.Link.call(this);
@@ -539,7 +556,6 @@ function copyNodeData(data) {
     copy.topArray = copyPortArray(data.topArray);
     copy.bottomArray = copyPortArray(data.bottomArray);
     copy.source = data.source;
-    copy.fun=data.fun;
     // if you add data properties, you should copy them here too
     return copy;
 }
@@ -633,3 +649,18 @@ function load() {
     myDiagram.model = go.Model.fromJson(document.querySelector("html /deep/ #mySavedModel").value);
 }
 init();
+
+function cia() {
+    console.log("entrato")
+    diagram.model.addNodeData({
+        category: "OfGroups",
+        isGroup: true,
+        key: "Unit",
+        leftArray: [{portId: "", portColor: ""}],
+        rightArray: [],
+        topArray: [],
+        bottomArray: []
+        // if you add data properties here, you should copy them in copyNodeData below
+    })
+}
+//cia();

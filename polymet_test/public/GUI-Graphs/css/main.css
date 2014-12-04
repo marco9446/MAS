@@ -6,30 +6,93 @@
     border: solid 1px black;
     height: 500px
 }
-
-html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
+#conditionContainer{
+    display: inline;
+    overflow: auto;
+    height: 500px;
+    border: 1px #000000 solid;
+    padding: 10px;
 }
+
 #container{
     height: 50%;
     width: 100%;
     display: flex;
 }
-#arduinos{
-    width: 25%;
-    height: 100%;
-}
+
 #devices{
     width: 25%;
     height: 100%;
     display: block;
 }
-.ardu{
-    background-color: #44CCFF;
-    padding: 5px;
-    border-color: black;
-    border-style: solid;
+
+
+#if_block{
+    margin: 10px 5px 15px 5px;
+    width: 80px;
+    height: 120px;
+    color: #A37104;
     border-radius: 5px;
+    border: 3px #E69900 solid;
+    background: #ffdd33;
+}
+#condition_blockj{
+    border-radius: 5px;
+    margin: 0 5px 15px 5px;
+    width: 80px;
+    height: 120px;
+    background: #33d3e5;
+    border: 3px #0099CC solid;
+}
+.titleCondition{
+    text-align: center;
+    border: 2px #000000 solid;
+}
+
+#arduinoContainer{
+    overflow-x: auto;
+    margin-right: 3px;
+    margin-left: 114px;
+    height: 120px;
+    border: 1px #000000 solid;
+}
+
+.arduino{
+    text-align: center;
+    display: inline-block;
+    float: left;
+    margin: 5px;
+    padding: 6px;
+    width: 80px;
+    height: 80px;
+}
+
+.arduino_output{
+    background: #44CCFF url("../../GUI-Graphs/res/lamp.png");
+    background-size: cover;
+    border: 1px #000000 solid;
+    width: 80px;
+    height: 80px;
+    border-radius: 7px;
+}
+.arduino_sensor{
+    background: #44CCFF url("../../GUI-Graphs/res/sensor.png");
+    background-size: cover;
+    border-radius: 7px;
+    border: 1px #000000 solid;
+    width: 80px;
+    height: 80px;
+}
+.arduino_switch{
+    background: #44CCFF url("../../GUI-Graphs/res/switch.png");
+    background-size: cover;
+    border-radius: 7px;
+    border: 1px #000000 solid;
+    width: 80px;
+    height: 80px;
+}
+.arduino_button{
+    background-color: #A37104;
+    width: 80px;
+    height: 80px;
 }

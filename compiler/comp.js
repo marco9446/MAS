@@ -26,6 +26,9 @@
 // 	pridat wait(hodnota);
 // 	zavolej FUNCTION na NEXT
 
+fs = require('fs');
+output = "";
+
 //whoaaaa
 var variable = { "class": "go.GraphLinksModel",
         "linkFromPortIdProperty": "fromPort",
@@ -41,14 +44,34 @@ var variable = { "class": "go.GraphLinksModel",
         		{"text":"Lamp3",  "source":"res/lamp.png", "key":-25,"topArray":[{"portColor":"black", "portId":"from1"}]}
         ],
         "linkDataArray": [ {"from":1,"to":-25,"fromPort":"no0","toPort":"from1"},{"from":1, "to":-16, "fromPort":"yes0", "toPort":"top0", "points":[187.27919515455795,361.86464030911594,187.27919515455795,371.86464030911594,187.27919515455795,372,356,372,356,-12,716,-12,716,50.52284749830794,859,50.52284749830794,869,50.52284749830794]},{"from":-16,"to":-3,"fromPort":"next0","toPort":"from0"},{"from":-13, "to":1, "fromPort":"start", "toPort":"fromStart0"} ]};
-
-compile(variable);
+var variab = { "class": "go.GraphLinksModel",
+  "linkFromPortIdProperty": "fromPort",
+  "linkToPortIdProperty": "toPort",
+  "nodeDataArray": [ 
+{"key":1, "text":"IF", "isGroup":true, "category":"OfGroups", "bottomArray":[ {"portColor":"red", "portId":"no0"},{"portColor":"green", "portId":"yes0"} ], "topArray":[ {"portColor":"#356853", "portId":"fromStart0"} ]},
+{"key":2, "text":"Conditions", "isGroup":true, "category":"OfNodes", "group":1},
+{"text":"Sensor1", "key":-7, "loc":"84.17372640455788 119.34179281080793", "group":2, "color":"lightblue", "source":"res/sensor.png"},
+{"text":"Sensor2", "group":2, "key":-8, "loc":"84.17372640455794 209.34179281080793", "color":"lightblue", "source":"res/sensor.png"},
+{"text":"Start", "source":"res/start.png", "key":-13, "loc":"259.3319295295579 41.522847498307925", "bottomArray":[ {"portColor":"black", "portId":"start"} ]},
+{"key":-16, "loc":"408.4732869514328 50.522847498307954", "source":"res/lamp.png", "text":"Lamp1", "leftArray":[  ], "topArray":[ {"portColor":"#d488a2", "portId":"top0"} ], "bottomArray":[ {"portColor":"#316571", "portId":"next0"} ], "rightArray":[  ]},
+{"text":"Lamp2", "source":"res/lamp.png", "key":-3, "loc":"562.4732869514332 50.522847498307925", "topArray":[ {"portColor":"black", "portId":"from0"} ]},
+{"text":"Lamp3", "source":"res/lamp.png", "key":-25, "topArray":[ {"portColor":"black", "portId":"from1"} ], "loc":"716.4732869514324 50.52284749830794"},
+{"text":"Condition", "color":"lightblue", "source":"../GUI-Graphs/res/sensor.png", "key":-5, "loc":"88.84560140455801 299.34179281080793", "group":2},
+{"text":"Lamp3", "source":"../GUI-Graphs/res/lamp.png", "key":-78, "topArray":[ {"portColor":"black", "portId":"from78"} ], "bottomArray":[ {"portcolor":"black", "pordId":"to78"} ], "loc":"870.473286951433 50.52284749830794"},
+{"text":"Lamp3", "source":"../GUI-Graphs/res/lamp.png", "key":-11, "topArray":[ {"portColor":"black", "portId":"from78"} ], "bottomArray":[ {"portcolor":"black", "pordId":"to78"} ], "loc":"1024.4732869514328 50.522847498307954"}
+ ],
+  "linkDataArray": [ 
+{"from":1, "to":-25, "fromPort":"no0", "toPort":"from1", "points":[74.34560140455794,370.86464030911594,74.34560140455794,388.86464030911594,74.34560140455794,388.86464030911594,188,388.86464030911594,188,-12,716.4732869514329,-12,716.4732869514329,-14,716.4732869514329,0]},
+{"from":1, "to":-16, "fromPort":"yes0", "toPort":"top0", "points":[103.34560140455794,370.86464030911594,103.34560140455794,380.86464030911594,103.34560140455794,380.86464030911594,188,380.86464030911594,188,-12,408.47328695143295,-12,408.47328695143295,-14,408.47328695143295,0]},
+{"from":-16, "to":-3, "fromPort":"next0", "toPort":"from0", "points":[408.47328695143295,101.04569499661588,408.47328695143295,111.04569499661588,408.47328695143295,111.04569499661588,484,111.04569499661588,484,-12,562.4732869514329,-12,562.4732869514329,-14,562.4732869514329,0]},
+{"from":-13, "to":1, "fromPort":"start", "toPort":"fromStart0", "points":[259.33192952955795,92.04569499661588,259.33192952955795,106.04569499661588,185.84560140455795,106.04569499661588,185.84560140455795,-9,88.84560140455794,-9,88.84560140455794,1]},
+{"from":-25, "to":-78, "fromPort":"from1", "toPort":"from78", "points":[716.4732869514329,0,716.4732869514329,-10,716.4732869514329,-14,793.4732869514329,-14,870.4732869514329,-14,870.4732869514329,0]},
+{"from":-16, "to":-11, "fromPort":"next0", "toPort":"from78", "points":[408.47328695143295,101.04569499661588,408.47328695143295,111.04569499661588,408.47328695143295,111.04569499661588,484,111.04569499661588,484,-12,1024.4732869514328,-12,1024.4732869514328,-14,1024.4732869514328,0]}
+ ]};
+compile(variab);
 
 //the interface for the library. basically call this to twerk
 function compile(program) {
-	fs = require('fs');
-	output = "";
-	sensors = [];
 	var filename = "output.js";
 	if (!program) {
 		throw new Error("no program input to compile!");
@@ -62,11 +85,8 @@ function compile(program) {
 		return obj.text == "Start";
 	})[0];
 
-	//GO GO GADGET
 	exec(program, getNext(program, startNode));
-	console.log("Used sensors:" + sensors);
 	fs.writeFileSync(filename, output);
-	//save to database
 
 }
 
@@ -113,6 +133,29 @@ function getConditions(program, node) {
 //this function basically does everything
 //maybe except for cooking bacon and pancakes
 //TO DO: in version 1.2, enable bacon and pancake functionality
+// << FUNCTION
+// 4. vzit node, zjistit typ
+// 5a. podminka? 
+// 	pridat if( s condition na VSECHNY podminky)
+// 	zacala zavorka
+// 	zavolej FUNCTION na YES
+// 	skoncila zavorka
+// 	5a.1
+// 		existuje NO cesta?
+// 		pridat else {
+// 		zavolej FUNCTION na NO
+// 		pridat }
+// 	5a.2
+// 		neexistuje NO cesta?
+// 		pridat }
+
+// 5b. akce?
+// 	pridat action( );
+// 	zavolej FUNCTION na NEXT
+
+// 5c. cekani?
+// 	pridat wait(hodnota);
+// 	zavolej FUNCTION na NEXT
 function exec(program, node) {
 	if (!node)
 		return 0;
@@ -143,8 +186,6 @@ function execIfNode(program, node) {
 			// , between arguments if this isn't the last one
 			if (i != conditions.length-1)
 				output += ", ";
-			//add condition to list of sensors!
-			sensors.push(conditions[i].text);
 		};
 		output += ")";
 	}
@@ -172,7 +213,7 @@ function execAction(program, node) {
 
 //parse a delay node
 function execDelay(program, node) {
-	console.log("not implemented yet m8 :^)");
+	console.log("not implemented yet m8");
 }
 
 

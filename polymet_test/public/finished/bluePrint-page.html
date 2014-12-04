@@ -59,9 +59,9 @@
                 <core-drag-drop></core-drag-drop>
                 <template repeat="{{device in listOfdevices}}">
                     <template if="{{device.type == 'o' && !device.position[0]}}">
-                        <div center-center vertical inline layout draggable="false">
-                            <img id="{{device._id}}" src="../images/light-bulb.png" width="80px" draggable="false">
-                            <div draggable="false">{{device.name}}</div>
+                        <div center-center vertical inline layout draggable="false" class="homepageDrug">
+                            <img class="homepageDrug" id="{{device._id}}" src="../images/light-bulb.png" width="80px" draggable="false">
+                            <div  class="homepageDrug"draggable="false">{{device.name}}</div>
                         </div>
                         
 
@@ -92,7 +92,7 @@
             var draginfo="";
             Polymer('bluePrint-page', {
                         ready: function () {
-                           
+                           document.querySelector("paper-tabs").selected = "1";
                         },
                       
 

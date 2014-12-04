@@ -1,16 +1,40 @@
 <script src="../GUI-Graphs/js/go-debug.js"></script>
-<polymer-element name="edit-page">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/core-drag-drop/core-drag-drop.html">
+<polymer-element name="edit-page" attributes="pathArg1">
 
     <template  >
         <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
         <link rel="stylesheet" type="text/css" href="../GUI-Graphs/css/main.css">
+        <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <div style="width:100%; white-space:nowrap;">
-    <span style="display: inline-block; vertical-align: top; padding: 5px; width:200px">
-      <div id="myPalette" style="border: solid 1px black; height: 500px"></div>
-    </span>
-    <span style="display: inline-block; vertical-align: top; padding: 5px; width:80%">
-      <div id="test" style="border: solid 1px black; height: 500px"></div>
-    </span>
+
+            <div inline flex horizontal layout style="width: 100%">
+                <core-drag-drop></core-drag-drop>
+                <div id="conditionContainer" >
+                    <div id="if_block" draggable="true">
+                        <div class="titleCondition" style="border: 2px #E69900 solid ">IF</div>
+
+                    </div>
+                    <div id="condition_blockj" draggable="true">
+                        <div class="titleCondition" style="color:#046887;border:  2px #0099CC solid;">Conditions</div>
+                    </div>
+
+                </div>
+                <div id="test" style="border: solid 1px black; height: 500px; width: 80%" inline flex  layout></div>
+            </div>
+            <div id="arduinoContainer" center-center layout >
+
+                <template repeat="{{device in listOfdevices2}}">
+
+                    <div class="arduino {{device.type | changeClass}}" draggable="true">
+                        {{device.type}} <br>
+                        {{device.name}}
+                    </div>
+
+                </template>
+
+            </div>
         </div>
         Semantic zoom level: <input id="levelSlider" type="range" min="0" max="5" value="3">
 
@@ -49,7 +73,19 @@
         Polymer("edit-page", {
                     ready: function () {
                         console.log("edit page ready");
+<<<<<<< HEAD
+                        
+=======
+                        console.log(this.pathArg1);
+                        document.querySelector("paper-tabs").selected = "2";
 
+                    },
+                    changeClass: function(type){
+                        if(type=="o"){return "arduino_output"}
+                        else if(type=="s"){return "arduino_sensor"}
+                        else if(type=="w"){return "arduino_switch"}
+                        else if(type=="b"){return "arduino_button"}
+>>>>>>> FETCH_HEAD
                     }
                 }
         )

@@ -33,6 +33,7 @@
         Polymer("Log-page",{
             ready : function(){
                 console.log("{{log}}");
+                document.querySelector("paper-tabs").selected = "4";
 
             },
             handleResponse:function(a,b,c){
