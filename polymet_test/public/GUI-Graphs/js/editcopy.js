@@ -349,8 +349,6 @@ function init() {
     slider.addEventListener('change', reexpand);
     slider.addEventListener('input', reexpand);
 
-    load();
-
 }
 
 function CustomLink() {
@@ -508,8 +506,8 @@ function save() {
     document.querySelector("html /deep/ #mySavedModel").value = myDiagram.model.toJson();
     myDiagram.isModified = false;
 }
-function load() {
-    myDiagram.model = go.Model.fromJson(document.querySelector("html /deep/ #mySavedModel").value);
+function load(json) {
+    myDiagram.model = go.Model.fromJson(json);
 }
 init();
 /*You to call this function with four arguments key:that would be the "id" of the node, text: would be the text displayed in the node
