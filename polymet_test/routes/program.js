@@ -39,7 +39,7 @@ router.get('/', function(req, res, next) {
 
 //create new program
 router.post('/', function(req, res, next) {
-    var compiled = compiler(req.body.code);
+    var compiled = compiler(JSON.parse(req.body.code));
     var newProgram = new Program({name:req.body.name, code: compiled.code, sensors: compiled.sensors});
     newProgram.save(onModelSave(res, 201, true));
 });
