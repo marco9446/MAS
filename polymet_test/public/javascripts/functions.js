@@ -79,7 +79,7 @@ function dropArduino(draginfo){
         }else if(type == 'button'){
             newNode(id, name, "../GUI-Graphs/res/button.png", 'Sensor')
         }else if(type == 'if'){
-            newNode(id, name.toUpperCase(), "", 'OfGroups')
+            newNode('', name.toUpperCase(), "", 'OfGroups')
         }else if(type == 'switch' ){
             newNode(id, name, "../GUI-Graphs/res/switch.png", 'Sensor')
         }else if(type == 'output' ){
