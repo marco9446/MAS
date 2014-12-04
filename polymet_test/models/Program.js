@@ -7,7 +7,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var ProgramSchema = new mongoose.Schema(
 {
 	name: {type: String, default: "new program"},
-	filename: {type: String, required: true},
+	code: (type: String, required: true),
 	sensors: {type: [ObjectId], ref: "Device"}
 }
 );

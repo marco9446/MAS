@@ -7,6 +7,7 @@ var middleware =  require('./middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Program = mongoose.model('Program');
+var compiler = require('./../compiler/compiler.js');
 
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST'));
@@ -38,7 +39,8 @@ router.get('/', function(req, res, next) {
 
 //create new program
 router.post('/', function(req, res, next) {
-    var newProgram = new Program(req.body);
+    var compiled = compiler(req.body.code);
+    var newProgram = new Program({name:req.body.name, code: compiled.code, sensors: compiled.sensors});
     newProgram.save(onModelSave(res, 201, true));
 });
 

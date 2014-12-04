@@ -1,4 +1,6 @@
-ss": "go.GraphLinksModel",
+var compiler = require('./compiler');
+
+var variable = { "class": "go.GraphLinksModel",
         "linkFromPortIdProperty": "fromPort",
         "linkToPortIdProperty": "toPort",
         "nodeDataArray": [
@@ -13,3 +15,5 @@ ss": "go.GraphLinksModel",
         ],
         "linkDataArray": [ {"from":1,"to":-25,"fromPort":"no0","toPort":"from1"},{"from":1, "to":-16, "fromPort":"yes0", "toPort":"top0", "points":[187.27919515455795,361.86464030911594,187.27919515455795,371.86464030911594,187.27919515455795,372,356,372,356,-12,716,-12,716,50.52284749830794,859,50.52284749830794,869,50.52284749830794]},{"from":-16,"to":-3,"fromPort":"next0","toPort":"from0"},{"from":-13, "to":1, "fromPort":"start", "toPort":"fromStart0"} ]};
 
+
+console.log(compiler(variable));
