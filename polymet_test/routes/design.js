@@ -4,9 +4,10 @@ var middleware =  require('./middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Design = mongoose.model('Design');
+var Program= mongoose.model('Program')
 
 //allowed methods
-router.all('/', middleware.supportedMethods('GET, POST'));
+router.all('/', middleware.supportedMethods('GET, POST',"DELETE"));
 
 
 //get all Project
@@ -18,11 +19,51 @@ router.get('/', function(req, res, next) {
     })
 });
 
-
+//add new Design
 router.post('/', function(req, res, next) {
     var newDesign = new Design(req.body);
     newDesign.save(onModelSave(res, 201, true));
 });
+
+
+router.post('/paramID',function(req,res,next){
+  Design.findOne({_id:req.params.paramID},function(err,found){
+    if(!err && found){
+      if(req.body.name){
+        found.name=req.body.name;
+      }
+      if(req.body.program){
+        found.program=req.body.program;
+      }
+      if(req.body.code){
+        found.code=req.body.code;
+      }
+      found.save(function(err,saved){if(!err){res.status(200).end()}else{res.status(404).end()}});
+
+    }else{
+      res.status(404).end();
+    }
+  });
+});
+
+
+//delete design and the program associated.
+router.delete('/:paramID', function(req, res, next) {
+    Design.findOne({_id: req.params.paramID},function(err,found){
+      if(!err && found){
+          Program.remove({ _id: found.program},function(){});
+          Design.remove({ _id: req.params.paramID }, function(err) {
+          if (err) {
+                  res.status(404).end();
+          }
+          else {
+                 res.status(200).end();
+          }
+          });
+        }
+    });
+  });
+
 
 
 
