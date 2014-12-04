@@ -58,7 +58,7 @@ app.use('/program', programRouter);
 app.use('/Design',designRouter);
 
 app.get("/",function(req,res){
-    res.sendFile(path.join(__dirname,"/public/finished/Login-page.html"));
+    res.sendFile(path.join(__dirname,"/public/finished/vulcanizedLogin.html"));
 
 })
 

@@ -92,7 +92,10 @@
     height: 80px;
 }
 .arduino_button{
-    background-color: #A37104;
+    background: #44CCFF url("../../GUI-Graphs/res/button.png");
+    background-size: cover;
+    border-radius: 7px;
+    border: 1px #000000 solid;
     width: 80px;
     height: 80px;
 }

@@ -14,22 +14,42 @@ addEventListener('drag-start', function(e) {
         dragInfo.drag = function () {
         };
         dragInfo.drop = drop;
-    }
+    }else if( dragInfo.event.target.className.indexOf( "arduino_")>-1){
+        var element = dragInfo.event.target;
+        var elemId = element.parentElement.id;
+        dragInfo.avatar.style.cssText = 'border: 3px solid blue; width: 60px; height: 60px; background-color: whitesmoke';
+        dragInfo.avatar.id = elemId;
+        dragInfo.avatar.title = element.parentElement.title;
+        dragInfo.avatar.className = dragInfo.event.target.className.substring(9);
+        dragInfo.drag = function () {
+        };
+        dragInfo.drop = dropArduino;
+    }else if(dragInfo.event.target.id =='if_block'||dragInfo.event.target.id =='condition_blockj' ){
+        var element2 = dragInfo.event.target;
+        console.log(dragInfo.event.target);
+        dragInfo.avatar.style.cssText = 'border: 3px solid blue; width: 60px; height: 60px; background-color: whitesmoke';
+        dragInfo.avatar.className = element2.id.substring(0,element2.id.indexOf("_"));
+        dragInfo.avatar.title = element2.id.substring(0,element2.id.indexOf("_"));
+        dragInfo.drag = function () {
+        };
+        dragInfo.drop = dropArduino;
 
+    }else{
+        console.log("wrong element");
+    }
 });
 
 function drop(dragInfo) {
 
     var id = dragInfo.avatar.id;
     var dropTarget = dragInfo.event.relatedTarget;
+
     //chceck if the droptarget is the figur
 
     var f = dragInfo.framed;
     var d = document.createElement('div');
     d.className = 'dropped';
     d.id = id;
-
-
     var changePosition = dropTarget.querySelector("#changePosition");
     //changestate.body='{ "id" :"'+event.target.id+'" ,"status" :"switch"}';
 
@@ -38,7 +58,6 @@ function drop(dragInfo) {
     d.style.left = x_position + '%';
     d.style.top = y_position  + '%';
     //d.style.backgroundColor = color;
-
     changePosition.url="/device/"+id;
     changePosition.body = '{"position":"'+JSON.stringify([x_position- 1 ,y_position])+'"}';
 
@@ -49,3 +68,23 @@ function drop(dragInfo) {
     }
 }
 
+function dropArduino(draginfo){
+    var id = draginfo.avatar.id;
+    var type =draginfo.avatar.className;
+    var name  = draginfo.avatar.title;
+    var dropTarget = draginfo.event.relatedTarget;
+    if(dropTarget.tagName == "CANVAS"){
+        if (type == 'sensor'){
+            newNode(id, name, "../GUI-Graphs/res/sensor.png", 'Sensor')
+        }else if(type == 'button'){
+            newNode(id, name, "../GUI-Graphs/res/button.png", 'Sensor')
+        }else if(type == 'if'){
+            newNode(id, name.toUpperCase(), "", 'OfGroups')
+        }else if(type == 'switch' ){
+            newNode(id, name, "../GUI-Graphs/res/switch.png", 'Sensor')
+        }else if(type == 'output' ){
+            newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
+        }
+
+    }
+}

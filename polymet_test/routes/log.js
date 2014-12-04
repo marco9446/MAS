@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
     if (err) return next (err);
     //console.log(logs);
     for (var i=0; i<logs.length;i++){
-      console.log(logs[i]);
+     // console.log(logs[i]);
       logs[i].time=logs[i].time.getDate()+"-"+ logs[i].time.getMonth()  +"  "+logs[i].time.getHours() +":"+logs[i].time.getMinutes();
     }
     res.json(logs.reverse());
@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
 //create new logs
 router.post('/', function(req, res, next) {
     var newLog = new Log(req.body);
-    console.log(req.body)
+   // console.log(req.body)
     newLog.save(onModelSave(res, 201, true));
 });
 
