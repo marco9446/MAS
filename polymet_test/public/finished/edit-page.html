@@ -27,20 +27,19 @@
 
                 <template repeat="{{device in listOfdevices2}}">
 
-<<<<<<< HEAD
                     <div class="arduino {{device.type | changeClass}}" draggable="true">
                         {{device.type}} <br>
                         {{device.name}}
                     </div>
 
-=======
+
                     <div class="arduino" draggable="true">
                         <div class=" {{device.type | changeClass}}"></div>
                         <div>{{device.name}}</div>
                     </div>
 
 
->>>>>>> FETCH_HEAD
+
                 </template>
 
             </div>
@@ -49,7 +48,7 @@
 
 
         <div id="devices">
-            <button onclick="addPort('top')">Top</button>
+            <button onclick="cia()">Top</button>
             <button onclick="addPort('bottom')">Bottom</button>
             <button onclick="addPort('left')">Left</button>
             <button onclick="addPort('right')">Right</button>
@@ -82,34 +81,30 @@
         Polymer("edit-page", {
                     ready: function () {
                         console.log("edit page ready");
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        
-=======
-                        console.log(this.pathArg1);
-                        document.querySelector("paper-tabs").selected = "2";
-
                     },
-                    changeClass: function(type){
-                        if(type=="o"){return "arduino_output"}
-                        else if(type=="s"){return "arduino_sensor"}
-                        else if(type=="w"){return "arduino_switch"}
-                        else if(type=="b"){return "arduino_button"}
->>>>>>> FETCH_HEAD
-=======
-                        console.log(this.pathArg1);
-                        document.querySelector("paper-tabs").selected = "2";
 
-                    },
-                    changeClass: function(type){
 
-                        if(type.indexOf("o") >-1){return "arduino_output"}
-                        else if(type.indexOf("s")>-1){return "arduino_sensor"}
-                        else if(type.indexOf("w") > -1){return "arduino_switch"}
-                        else if(type.indexOf("b") >-1){return "arduino_button"}
->>>>>>> FETCH_HEAD
+                    changeClass: function(type) {
+
+                            if (type.indexOf("o") > -1) {
+                                return "arduino_output"
+                            }
+                            else if (type.indexOf("s") > -1) {
+                                return "arduino_sensor"
+                            }
+                            else if (type.indexOf("w") > -1) {
+                                return "arduino_switch"
+                            }
+                            else if (type.indexOf("b") > -1) {
+                                return "arduino_button"
+                            }
+
+                            console.log(this.pathArg1);
+                            document.querySelector("paper-tabs").selected = "2";
+
+                        }
                     }
-                }
+
         )
     </script>
 

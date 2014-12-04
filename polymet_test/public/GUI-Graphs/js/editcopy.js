@@ -411,7 +411,7 @@ function init() {
     };
 
     // initialize the Palette and its contents
-<<<<<<< HEAD
+
 
     myPalette =
         $(go.Palette, document.querySelector("html /deep/ #myPalette"),
@@ -427,7 +427,7 @@ function init() {
         {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-78,"topArray":[{"portColor":"black", "portId":"from78"}], "bottomArray":[{"portcolor":"black", "pordId":"to78"}]},
         {"text":"Window1",  "source":"../GUI-Graphs/res/window.png", "key":15,"topArray":[{"portColor":"black", "portId":"from15"}],"bottomArray":[{"portcolor":"black", "pordId":"to15"}]}
     ]);
-=======
+
     //myPalette =
     //    $(go.Palette, document.querySelector("html /deep/ #myPalette"),
     //        {
@@ -442,7 +442,7 @@ function init() {
     //    {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-78,"topArray":[{"portColor":"black", "portId":"from78"}], "bottomArray":[{"portcolor":"black", "pordId":"to78"}]},
     //    {"text":"Window1",  "source":"../GUI-Graphs/res/window.png", "key":15,"topArray":[{"portColor":"black", "portId":"from15"}],"bottomArray":[{"portcolor":"black", "pordId":"to15"}]}
     //]);
->>>>>>> FETCH_HEAD
+
 
     var slider = document.querySelector("html /deep/ #levelSlider");
     slider.addEventListener('change', reexpand);
