@@ -26,7 +26,7 @@ router.post('/', function(req, res, next) {
 });
 
 
-router.post('/paramID',function(req,res,next){
+router.post('/:paramID',function(req,res,next){
   Design.findOne({_id:req.params.paramID},function(err,found){
     if(!err && found){
       if(req.body.name){

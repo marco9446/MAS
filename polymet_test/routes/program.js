@@ -41,7 +41,7 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
     var compiled = compiler(JSON.parse(req.body.code));
     var newProgram = new Program({name:req.body.name, code: compiled.code, sensors: compiled.sensors});
-    newProgram.save(onModelSave(res, 201, true));
+    newProgram.save(function(err){console.log(err)});
 });
 
 
@@ -58,7 +58,7 @@ function onModelSave(res, status, sendItAsResponse){
           message: "Bad Request"
         });
       }else{
-        return next (err);
+        //return next(err);
       }
     }
     if( sendItAsResponse){
