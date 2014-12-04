@@ -1,8 +1,6 @@
-var diagram;
-function init() {
-    //  if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
-    var $ = go.GraphObject.make;
 
+function init() {
+    var $ = go.GraphObject.make;
     myDiagram =
         $(go.Diagram, document.querySelector("html /deep/ #test"),
             {
@@ -28,7 +26,6 @@ function init() {
                 "commandHandler.archetypeGroupData": {isGroup: true, category: "OfNodes"},
                 "undoManager.isEnabled": true
             });
-    diagram = myDiagram;
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
@@ -69,31 +66,6 @@ function init() {
     }
 
     var portSize = new go.Size(8, 8);
-    var portMenu =  // context menu for each port
-        $(go.Adornment, "Vertical",
-            $("ContextMenuButton",
-                $(go.TextBlock, "Remove port"),
-                // in the click event handler, the obj.part is the Adornment; its adornedObject is the port
-                {
-                    click: function (e, obj) {
-                        removePort(obj.part.adornedObject);
-                    }
-                }),
-            $("ContextMenuButton",
-                $(go.TextBlock, "Change color"),
-                {
-                    click: function (e, obj) {
-                        changeColor(obj.part.adornedObject);
-                    }
-                }),
-            $("ContextMenuButton",
-                $(go.TextBlock, "Remove side ports"),
-                {
-                    click: function (e, obj) {
-                        removeAll(obj.part.adornedObject);
-                    }
-                })
-        );
     myDiagram.groupTemplateMap.add("OfGroups",
         $(go.Group, go.Panel.Auto,
             {
@@ -126,7 +98,6 @@ function init() {
                                 _side: "top",
                                 fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
                                 fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                contextMenu: portMenu
                             },
                             new go.Binding("portId", "portId"),
                             $(go.Shape, "Rectangle",
@@ -166,7 +137,6 @@ function init() {
                                 _side: "bottom",  // internal property to make it easier to tell which side it's on
                                 fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
                                 fromLinkable: true, toLinkable: true, cursor: "pointer",
-                                contextMenu: portMenu
                             },
                             new go.Binding("portId", "portId"),
                             $(go.Shape, "Rectangle",
@@ -244,26 +214,6 @@ function init() {
 
     // Nodes have a trivial definition -- the interesting thing is that it handles
     // the mouseDragEnter/mouseDragLeave/mouseDrop events and delegates them to the containing Group.
-//------------------------------------AREA TO MERGE ---------------------------------------------------------//
-//    myDiagram.nodeTemplate =
-//        $(go.Node, go.Panel.Auto,
-//            {
-//                // highlight when dragging over a Node that is inside a Group
-//                mouseDragEnter: function(e, nod, prev) { highlightGroup(e, nod.containingGroup, true); },
-//                mouseDragLeave: function(e, nod, next) { highlightGroup(e, nod.containingGroup, false); },
-//                // dropping on a Node is the same as dropping on its containing Group, if any
-//                mouseDrop: function(e, nod) { finishDrop(e, nod.containingGroup); }
-//            },
-//            $(go.Shape, "Rectangle",
-//                { fill: "#ACE600", stroke: "#558000", strokeWidth: 2 },
-//                new go.Binding("fill", "color")),
-//            $(go.TextBlock,
-//                {   margin: 5, editable: true,
-//                    font: "bold 13px sans-serif",
-//                    stroke: "#446700"
-//                },
-//                new go.Binding("text", "text").makeTwoWay())
-//        );
 
     myDiagram.nodeTemplate =
         $(go.Node, "Table",
@@ -338,7 +288,6 @@ function init() {
                             _side: "top",
                             fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
                             fromLinkable: true, toLinkable: true, cursor: "pointer",
-                            contextMenu: portMenu
                         },
                         new go.Binding("portId", "portId"),
                         $(go.Shape, "Rectangle",
@@ -364,7 +313,6 @@ function init() {
                             _side: "bottom",
                             fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
                             fromLinkable: true, toLinkable: true, cursor: "pointer",
-                            contextMenu: portMenu
                         },
                         new go.Binding("portId", "portId"),
                         $(go.Shape, "Rectangle",
@@ -378,8 +326,6 @@ function init() {
                 }
             )  // end Horizontal Panel
         );  // end Node
-    
-
 
     //link Template
 
@@ -410,40 +356,6 @@ function init() {
         // if you add data properties here, you should copy them in copyNodeData below
     };
 
-    // initialize the Palette and its contents
-
-
-    myPalette =
-        $(go.Palette, document.querySelector("html /deep/ #myPalette"),
-            {
-                nodeTemplateMap: myDiagram.nodeTemplateMap,
-                groupTemplateMap: myDiagram.groupTemplateMap,
-                layout: $(go.GridLayout, { wrappingColumn: 1, alignment: go.GridLayout.Position })
-            });
-    myPalette.model = new go.GraphLinksModel([
-        { text: "Conditions", isGroup:true, category:"OfNodes"},
-        { text: "IF",isGroup:true,category:"OfGroups" ,color: "#FFDD33",  "bottomArray":[ {"portColor":"red", "portId":""},{"portColor":"green", "portId":""}] },
-        { text: "Condition", color: "lightblue", source:"../GUI-Graphs/res/sensor.png" },
-        {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-78,"topArray":[{"portColor":"black", "portId":"from78"}], "bottomArray":[{"portcolor":"black", "pordId":"to78"}]},
-        {"text":"Window1",  "source":"../GUI-Graphs/res/window.png", "key":15,"topArray":[{"portColor":"black", "portId":"from15"}],"bottomArray":[{"portcolor":"black", "pordId":"to15"}]}
-    ]);
-
-    //myPalette =
-    //    $(go.Palette, document.querySelector("html /deep/ #myPalette"),
-    //        {
-    //            nodeTemplateMap: myDiagram.nodeTemplateMap,
-    //            groupTemplateMap: myDiagram.groupTemplateMap,
-    //            layout: $(go.GridLayout, { wrappingColumn: 1, alignment: go.GridLayout.Position })
-    //        });
-    //myPalette.model = new go.GraphLinksModel([
-    //    { text: "Conditions", isGroup:true, category:"OfNodes"},
-    //    { text: "IF",isGroup:true,category:"OfGroups" ,color: "#FFDD33",  "bottomArray":[ {"portColor":"red", "portId":""},{"portColor":"green", "portId":""}] },
-    //    { text: "Condition", color: "lightblue", source:"../GUI-Graphs/res/sensor.png" },
-    //    {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-78,"topArray":[{"portColor":"black", "portId":"from78"}], "bottomArray":[{"portcolor":"black", "pordId":"to78"}]},
-    //    {"text":"Window1",  "source":"../GUI-Graphs/res/window.png", "key":15,"topArray":[{"portColor":"black", "portId":"from15"}],"bottomArray":[{"portcolor":"black", "pordId":"to15"}]}
-    //]);
-
-
     var slider = document.querySelector("html /deep/ #levelSlider");
     slider.addEventListener('change', reexpand);
     slider.addEventListener('input', reexpand);
@@ -451,19 +363,6 @@ function init() {
     load();
 
 }
-
-function ciao(id, type){
-    myDiagram.toolManager.clickCreatingTool.archetypeNodeData={
-        category: type,
-        isGroup:true,
-        key: id,
-        leftArray: [{portId:"",portColor:""}],
-        rightArray: [],
-        topArray: [],
-        bottomArray: []
-    }
-}
-//ciao("Unit","OfNodes");
 
 function CustomLink() {
     go.Link.call(this);
@@ -595,50 +494,8 @@ function copyPortData(data) {
     return copy;
 }
 
-
-// Add a port to the specified side of the selected nodes.
-function addPort(side) {
-
-    myDiagram.startTransaction("addPort");
-    myDiagram.selection.each(function(node) {
-        // skip any selected Links
-        if (!(node instanceof go.Node)) return;
-        // compute the next available index number for the side
-        var i = 0;
-        while (node.findPort(side + i.toString()) !== node) i++;
-        // now this new port name is unique within the whole Node because of the side prefix
-        var name = side + i.toString();
-        // get the Array of port data to be modified
-        var arr = node.data[side + "Array"];
-        if (arr) {
-
-            // create a new port data object
-            var newportdata = {
-                portId: name,
-                portColor: go.Brush.randomColor()
-                // if you add port data properties here, you should copy them in copyPortData above
-            };
-            // and add it to the Array of port data
-            myDiagram.model.insertArrayItem(arr, -1, newportdata);
-        }
-    });
-    myDiagram.commitTransaction("addPort");
-}
-
 // Remove the clicked port from the node.
 // Links to the port will be redrawn to the node's shape.
-function removePort(port) {
-    myDiagram.startTransaction("removePort");
-    var pid = port.portId;
-    var arr = port.panel.itemArray;
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].portId === pid) {
-            myDiagram.model.removeArrayItem(arr, i);
-            break;
-        }
-    }
-    myDiagram.commitTransaction("removePort");
-}
 
 // Remove all ports from the same side of the node as the clicked port.
 function removeAll(port) {
@@ -665,11 +522,11 @@ function save() {
 function load() {
     myDiagram.model = go.Model.fromJson(document.querySelector("html /deep/ #mySavedModel").value);
 }
-init();
+init()
 
 function cia() {
     console.log("entrato")
-    diagram.model.addNodeData({
+    myDiagram.model.addNodeData({
         category: "OfGroups",
         isGroup: true,
         key: "Unit",
@@ -679,5 +536,34 @@ function cia() {
         bottomArray: []
         // if you add data properties here, you should copy them in copyNodeData below
     })
+}
+/*You to call this function with four arguments key:that would be the "id" of the node, text: would be the text displayed in the node
+call the function with text "IF" the node is a yellow block, "Conditions" if it is a blue one, or with the name of the device otherwise ("Lamp",
+ "Window"...), source: call with the path of the image if it is a device (ex: "../GUI-Graphs/res/lamp.png") or with an empty string"" otherwise,
+ category: call with "OfGroups" if it is a yellow block, "OfNodes" if it is a blue one,"Sensor" if it is a condition,
+ or without the argument if it is a device.
+*/
+function newNode(key, text, source, category){
+    var newelement={};
+    if(category == "OfGroups"||category == "OfNodes"){
+        newelement.category = category;
+        newelement.isGroup = true;
+    }
+    newelement.key=key;
+    newelement.text=text;
+    if(source){
+        newelement.source = source
+    }
+    if(category == "OfGroups"){
+        newelement.bottomArray=[{portColor:"red",portId:"no"+key},{portColor:"green",portId:"yes"+key}];
+        newelement.topArray=[{portColor:"black",portId:"fromStart"+key}]
+    }else if(category=="Sensor"){
+        newelement.color="lightblue"
+    }
+    else{
+        newelement.topArray=[{portColor:"black",portId:"from"+key}];
+        newelement.bottomArray=[{portColor:"black",portId:"to"+key}]
+    }
+    myDiagram.model.addNodeData(newelement)
 }
 //cia();
