@@ -1,5 +1,12 @@
 
-function init() {
+
+
+
+var myObject=function(){
+  //must be a singleton
+ 
+ this.init=function(arg) {
+
     var $ = go.GraphObject.make;
     myDiagram =
         $(go.Diagram, document.querySelector("html /deep/ #test"),
@@ -12,12 +19,12 @@ function init() {
                     var ok = myDiagram.commandHandler.addTopLevelParts(myDiagram.selection, true);
                     if (!ok) myDiagram.currentTool.doCancel();
                 },
-                layout: $(go.GridLayout,
+                layout: $(go.TreeLayout,
                     {
-                        wrappingWidth: Infinity, alignment: go.GridLayout.Position,
-                        cellSize: new go.Size(1, 1)
+                        //wrappingWidth: Infinity, alignment: go.GridLayout.Position,
+                        //cellSize: new go.Size(1, 1)
                     }),
-                initialContentAlignment: go.Spot.Center,
+                initialContentAlignment: go.Spot.TopLeft,
                 groupSelectionAdornmentTemplate:  // this applies to all Groups
                     $(go.Adornment, go.Panel.Auto,
                         $(go.Shape, "Rectangle",
@@ -97,7 +104,7 @@ function init() {
                             {
                                 _side: "top",
                                 fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
-                                fromLinkable: true, toLinkable: true, cursor: "pointer",
+                                fromLinkable: true, toLinkable: true, cursor: "pointer"
                             },
                             new go.Binding("portId", "portId"),
                             $(go.Shape, "Rectangle",
@@ -129,7 +136,7 @@ function init() {
                         return h ? "red" : "transparent";
                     }).ofObject()
                 ),
-                $(go.Panel, go.Panel.Horizontal,
+                $(go.Panel, go.Panel.Vertical,
                     new go.Binding("itemArray", "bottomArray"),
                     {
                         itemTemplate: $(go.Panel,
@@ -237,9 +244,7 @@ function init() {
                         highlightGroup(e, nod.containingGroup, false);
                     },
                     // dropping on a Node is the same as dropping on its containing Group, if any
-                    doubleClick: function (e, nod) {
-                        myDiagram.model.addNodeData(nod);
-                    },
+                    
                     mouseDrop: function (e, nod) {
                         finishDrop(e, nod.containingGroup);
                     }
@@ -330,44 +335,28 @@ function init() {
     //link Template
 
     myDiagram.linkTemplate =
-        $(CustomLink,  // defined below
-            {
-                routing: go.Link.AvoidsNodes,
-                corner: 4,
-                curve: go.Link.JumpGap,
-                reshapable: true,
-                resegmentable: true,
-                relinkableFrom: true,
-                relinkableTo: true
-            },
-            new go.Binding("points").makeTwoWay(),
-            $(go.Shape, {strokeWidth: 4},
-                new go.Binding("stroke", "color"))  // just a plain black line
-        );
+       $(go.Link,
+        
+         { routing: go.Link.AvoidsNodes,
+        corner: 10 },                // with rounded corners
+      $(go.Shape,  { strokeWidth: 4, stroke: "#00a4a4" })
+    );
 
-    myDiagram.toolManager.clickCreatingTool.archetypeNodeData = {
-        category: "OfGroups",
-        isGroup: true,
-        key: "Unit",
-        leftArray: [{portId: "", portColor: ""}],
-        rightArray: [],
-        topArray: [],
-        bottomArray: []
-        // if you add data properties here, you should copy them in copyNodeData below
-    };
+
 
     var slider = document.querySelector("html /deep/ #levelSlider");
     slider.addEventListener('change', reexpand);
     slider.addEventListener('input', reexpand);
 
-    load();
+    load(arg)
 
 }
 
-function CustomLink() {
+var CustomLink=function() {
     go.Link.call(this);
 };
-go.Diagram.inherit(CustomLink, go.Link);
+
+//go.Diagram.inherit(CustomLink, go.Link);
 
 function expandGroups(g, i, level) {
     if (!(g instanceof go.Group)) return;
@@ -514,56 +503,68 @@ function changeColor(port) {
     myDiagram.commitTransaction("colorPort");
 }
 
-// save a model to and load a model from Json text, displayed below the Diagram
-function save() {
-    document.querySelector("html /deep/ #mySavedModel").value = myDiagram.model.toJson();
-    myDiagram.isModified = false;
+this.getJSON=function(){
+    return myDiagram.model.toJson();
 }
-function load() {
-    myDiagram.model = go.Model.fromJson(document.querySelector("html /deep/ #mySavedModel").value);
-}
-init()
 
-function cia() {
-    console.log("entrato")
-    myDiagram.model.addNodeData({
-        category: "OfGroups",
-        isGroup: true,
-        key: "Unit",
-        leftArray: [{portId: "", portColor: ""}],
-        rightArray: [],
-        topArray: [],
-        bottomArray: []
-        // if you add data properties here, you should copy them in copyNodeData below
-    })
+// save a model to and load a model from Json text, displayed below the Diagram
+
+function load(json) {
+    myDiagram.model = go.Model.fromJson(json);
 }
+//init();
 /*You to call this function with four arguments key:that would be the "id" of the node, text: would be the text displayed in the node
 call the function with text "IF" the node is a yellow block, "Conditions" if it is a blue one, or with the name of the device otherwise ("Lamp",
  "Window"...), source: call with the path of the image if it is a device (ex: "../GUI-Graphs/res/lamp.png") or with an empty string"" otherwise,
  category: call with "OfGroups" if it is a yellow block, "OfNodes" if it is a blue one,"Sensor" if it is a condition,
  or without the argument if it is a device.
 */
-function newNode(key, text, source, category){
-    var newelement={};
-    if(category == "OfGroups"||category == "OfNodes"){
-        newelement.category = category;
-        newelement.isGroup = true;
-    }
-    newelement.key=key;
-    newelement.text=text;
-    if(source){
-        newelement.source = source
-    }
+
+function getNewId(){
+
+    return "_"+Math.random().toString(36).substr(2, 9);
+}
+ this.newNode=function(key, text, source, category){
     if(category == "OfGroups"){
-        newelement.bottomArray=[{portColor:"red",portId:"no"+key},{portColor:"green",portId:"yes"+key}];
-        newelement.topArray=[{portColor:"black",portId:"fromStart"+key}]
+        var c= getNewId()
+        var newelement={};
+        var subgrp ={};
+        newelement.key=c;
+        newelement.category=category;
+        newelement.text=text;
+        newelement.isGroup=true;
+        subgrp.category="OfNodes";
+        subgrp.isGroup=true;
+        subgrp.group=c;
+        subgrp.text="Conditions";
+        newelement.bottomArray=[{portColor:"red",portId:"no"+newelement.key.toString()},{portColor:"green",portId:"yes"+newelement.key.toString()}];
+        newelement.topArray=[{portColor:"black",portId:"fromStart"+newelement.key}];
+        myDiagram.model.addNodeData(newelement);
+        myDiagram.model.addNodeData(subgrp);
+
     }else if(category=="Sensor"){
-        newelement.color="lightblue"
+        var newSensor={};
+        newSensor.source=source;
+        newSensor.key=key;
+        newSensor.text=text;
+        myDiagram.model.addNodeData(newSensor);
     }
     else{
-        newelement.topArray=[{portColor:"black",portId:"from"+key}];
-        newelement.bottomArray=[{portColor:"black",portId:"to"+key}]
+        var newDevice={};
+        newDevice.key=key;
+        newDevice.text=text;
+        newDevice.source=source;
+        newDevice.topArray=[{portColor:"black",portId:"from"+key}];
+        newDevice.bottomArray=[{portColor:"black",portId:"to"+key}];
+        myDiagram.model.addNodeData(newDevice)
     }
-    myDiagram.model.addNodeData(newelement)
 }
-//cia();
+}
+
+function getInstance(){
+        if(arguments.callee.instance==undefined){
+            arguments.callee.instance=new myObject();    
+        }
+        return arguments.callee.instance;
+}
+
