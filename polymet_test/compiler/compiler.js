@@ -123,6 +123,8 @@ function execIfNode(program, node) {
 		return undefined
 	} else {
 		output += "library.condition(";
+		output += "db, ";
+		output += "[";
 		for (var i = 0; i < conditions.length; i++) {
 			output += "'" + conditions[i].key + "'";
 			// , between arguments if this isn't the last one
@@ -131,6 +133,7 @@ function execIfNode(program, node) {
 			//add condition to list of sensors!
 			sensors.push(conditions[i].key);
 		};
+		output += "]"
 		output += ")";
 	}
 	//end of the bracket, start of curly bracket;
