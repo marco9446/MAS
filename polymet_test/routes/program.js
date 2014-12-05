@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Program = mongoose.model('Program');
 var compiler = require('./../compiler/compiler.js');
+var library = require('./../compiler/library.js');
+
 
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST'));
@@ -15,15 +17,15 @@ router.all('/', middleware.supportedMethods('GET, POST'));
 //get program with id
 router.get('/:programid', function(req, res, next) {
 
-  Program.findById(req.params.userid).lean().exec(function(err, program){
+  Program.findById(req.params.programid).lean().exec(function(err, program){
     if (err) return next (err);
 
     if (!program) {
     	res.status(404);
     	res.json({message: "not found"});
-    }
+    }else{res.json(program);}
 
-    res.json(program);
+    
   });
 });
 
@@ -43,6 +45,23 @@ router.post('/', function(req, res, next) {
     var newProgram = new Program({name:req.body.name, code: compiled.code, sensors: compiled.sensors});
     newProgram.save(function(err){console.log(err)});
 });
+
+
+
+router.get('/run/:id',function(req,res,next){
+
+   Program.findById(req.params.id).lean().exec(function(err, program){
+    if(!err && program){
+
+    
+      var func=Function("library",program.code);
+      func(library);
+    }
+
+   });
+
+});
+
 
 
 function onModelSave(res, status, sendItAsResponse){

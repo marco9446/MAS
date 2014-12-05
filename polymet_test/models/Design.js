@@ -8,7 +8,9 @@ var DesignSchema = new mongoose.Schema(
 {
 	name: {type: String, default: "new Design"},
 	code: {type: Object, required: true},
-	program: {type: ObjectId, ref: "Program"}
+	program: {type: String},
+	sensors: {type: [ObjectId], ref: "Device"},
+	active: {type: Boolean, default: true}
 }
 );
 

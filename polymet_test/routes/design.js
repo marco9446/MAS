@@ -6,6 +6,8 @@ var ObjectId = mongoose.Types.ObjectId;
 var Design = mongoose.model('Design');
 var Program= mongoose.model('Program')
 var compiler = require('./../compiler/compiler.js');
+var library = require('./../compiler/library.js');
+
 
 
 //allowed methods
@@ -59,9 +61,9 @@ router.put('/:paramID',function(req,res,next){
 
         found.code=JSON.parse(context.code);
         var compiled = compiler(found.code);
-        console.log((compiled));
-       // var newProgram = new Program({name:req.body.name, code: compiled.code, sensors: compiled.sensors});
-        //newProgram.save(function(err){console.log(err)});
+        found.program=compiled.code;
+        found.sensors=compiled.sensors;
+        
         
       }
       found.save(function(err,saved){if(!err){res.status(200).end()}else{res.status(404).end()}});
@@ -71,6 +73,22 @@ router.put('/:paramID',function(req,res,next){
     }
   });
 });
+
+router.get('/run/:id',function(req,res,next){
+
+   Design.findById(req.params.id).lean().exec(function(err, design){
+    if(!err && design){
+
+      console.log(design);
+      var func=Function("library",design.program);
+      func(library);
+    }
+
+   });
+   res.status(200).end();
+
+});
+
 
 
 //delete design and the program associated.

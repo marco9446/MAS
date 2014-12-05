@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Device = mongoose.model('Device');
 var Module = mongoose.model('Module');
-var ac = require('./../routes/arduinoCommunication');
+var Log = mongoose.model('Log');
+var ac = require('../routes/arduinoComunication');
 
 function doRequest(method, url, data) {
 	if (!method || !url)
@@ -34,55 +35,87 @@ function doRequest(method, url, data) {
 
 //evaluate the IF condition
 //takes a list of arguments, check each of them for AND
-var condition = function condition(arguments) {
+var condition = function condition(arg) {
+	console.log("condition",arg)
+
 	var runningQueries = 0;
 	var passing = true;
-	for (var i = 0; i < arguments.length; i++) {
+	if (!(arg.constructor === Array)) {
+		arg=[arg];
+	} 
+	for (var i = 0; i < arg.length; i++) {
+		console.log(i)
 		++runningQueries;
 		//resolve sensor into pin and device name
-		Device.findById(arguments[i]._id).exec(function(err, device) {
+		console.log(arg[i]);
+		Device.findById(arg[i],function(err, device) {
+			console.log(err,device.type)
 			if (err) {
 				throw new Error("no devices found! reboot or something");
 			}
 			--runningQueries;
-			if (device.type != "input") {
+			if (device.type.indexOf("o")!=-1) {
 				throw new Error("runLoop: bad type of device:" + device._id);
 			}
+			console.log(device.state,"fjbaskjfhjakshlkashd")
 			if (device.state != "true") {
+				console.log("passing is false")
 				passing = false;
 			}
+			if(runningQueries===0){console.log("return ",passing);return passing;}
 
 		});
 	};
 
-	//I didn't want to write this, but javascript and mongo forced me to
-	while(1) {
-		if (runningQueries === 0) {
-			return passing;
-		}
-	}
+	
+	console.log("bye");
 	return true;
 }
 
 var action = function action(argument) {
+	console.log("action",argument)
 	//resolve device name
-	Device.findById(argument._id).exec(function(err, device) {
-		if (device.type != "output") {
+	Device.findById(argument).exec(function(err, device) {
+		console.log(device,"admdMuasd")
+		if (err) {
+				throw new Error("no devices found! reboot or something");
+			}
+		if (device.type == "o") {
 			throw new Error("runLoop: bad type of device:" + device._id);
 		}
 		var newstate = (device.state == "true") ? "false" : "true";
-		Module.find({devices: req.params.deviceid}).exec(function(err, modules) {
-			for (var i = 0; i < modules.length; i++) {
-				var msg = {ip: modules[i].ip, action : []};
-				msg.action[device.pin] = newstate;
-				ac.sendMessage(msg);
-			};
-		});
+		console.log(device.state,newstate)
+		saveAndSend({id:argument,status:newstate});
+		
 
 	});
 
 	return true;
 }
+
+
+
+function saveAndSend(json) {
+	console.log(json);
+  Module.findOne({devices : json.id},function(err,found){
+    if(found){
+      Device.findOne({_id:json.id},function(err,found1){
+      if(found1){
+      var pin=found1.pin;
+
+      var log= new Log();
+     log.title="Change Device State.";
+    log.msg="Name:"+found.name;
+    log.save();
+      ac.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
+      found1.state=json.status;
+      found1.save(function(err,saved){console.log(err,saved)});
+      }});
+
+    }
+  });
+}
+
 
 module.exports.condition = condition;
 module.exports.action = action;
