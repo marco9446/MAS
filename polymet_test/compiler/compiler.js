@@ -121,7 +121,7 @@ function execIfNode(program, node) {
 	if (conditions.length < 1) {
 		return undefined
 	} else {
-		output += "condition(";
+		output += "library.condition(";
 		for (var i = 0; i < conditions.length; i++) {
 			output += "'" + conditions[i].key + "'";
 			// , between arguments if this isn't the last one
@@ -148,7 +148,7 @@ function execIfNode(program, node) {
 
 //parse an action node
 function execAction(program, node) {
-	output += "action(" + "'" + node.key + "'" + ");\n";
+	output += "library.action(" + "'" + node.key + "'" + ");\n";
 	if (getNext(program, node))
 		exec(program, getNext(program, node));
 
