@@ -12,7 +12,7 @@
 
     <template>
         <script type="text/javascript">
-        
+
             function tappato(elem){
                 document.querySelector('app-router').go("/editor/:"+elem);
             }
@@ -20,7 +20,15 @@
               var ajaxino=document.querySelector("html /deep/ #myOnLoad");
               var namino=document.querySelector("html /deep/ #nameInput");
               //console.log(namino.value)
-              ajaxino.params='{"name":"'+namino.value+'","code":"none"}'
+              var defaul={ class: "go.GraphLinksModel",
+            linkFromPortIdProperty: "fromPort",
+            linkToPortIdProperty: "toPort",
+            nodeDataArray: [
+            {text:"Start",source:"../GUI-Graphs/res/start.png", key:-13, loc:"450.00 200.00",bottomArray:[{portColor:"black",portId:"start"}]}],
+            linkDataArray: [ ]};
+
+               console.log("asdadasdadad",defaul);
+              ajaxino.body=JSON.stringify({name:namino.value,code:JSON.stringify(defaul)});
               ajaxino.go();
             }
 
@@ -118,7 +126,6 @@
                     },
                     addNew: function(){
                         this.cosa="hidden";
-
                         this.$.inputName.style.display="block"
                     },
                     handleResponse1 : function(){

@@ -68,22 +68,28 @@ function drop(dragInfo) {
     }
 }
 
+
+//TODO
+//must be a class
+
 function dropArduino(draginfo){
+    console.log(this.graph);
+    var graph = getInstance();
     var id = draginfo.avatar.id;
     var type =draginfo.avatar.className;
     var name  = draginfo.avatar.title;
     var dropTarget = draginfo.event.relatedTarget;
     if(dropTarget.tagName == "CANVAS"){
         if (type == 'sensor'){
-            newNode(id, name, "../GUI-Graphs/res/sensor.png", 'Sensor')
+            graph.newNode(id, name, "../GUI-Graphs/res/sensor.png", 'Sensor')
         }else if(type == 'button'){
-            newNode(id, name, "../GUI-Graphs/res/button.png", 'Sensor')
+            graph.newNode(id, name, "../GUI-Graphs/res/button.png", 'Sensor')
         }else if(type == 'if'){
-            newNode('', name.toUpperCase(), "", 'OfGroups')
+            graph.newNode('', name.toUpperCase(), "", 'OfGroups')
         }else if(type == 'switch' ){
-            newNode(id, name, "../GUI-Graphs/res/switch.png", 'Sensor')
+            graph.newNode(id, name, "../GUI-Graphs/res/switch.png", 'Sensor')
         }else if(type == 'output' ){
-            newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
+            graph.newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
         }
 
     }

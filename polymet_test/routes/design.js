@@ -19,9 +19,24 @@ router.get('/', function(req, res, next) {
     })
 });
 
+router.get('/:paramID', function(req, res, next) {
+
+    Design.findOne({_id:req.params.paramID}).lean().exec(function(err, projects) {
+        if (err) return next (err);
+        res.json(projects);
+    })
+});
+
 //add new Design
 router.post('/', function(req, res, next) {
-    var newDesign = new Design(req.body);
+
+     console.log(req.body);
+    console.log(JSON.parse(Object.keys(req.body)[0]));
+
+    var newDesign = new Design();
+    newDesign.name=JSON.parse(Object.keys(req.body)[0]).name
+    newDesign.code=JSON.parse(JSON.parse(Object.keys(req.body)[0]).code);
+    console.log(newDesign);
     newDesign.save(onModelSave(res, 201, true));
 });
 

@@ -1,5 +1,12 @@
 
-function init() {
+
+
+
+var myObject=function(){
+  //must be a singleton
+
+
+ this.init=function(arg) {
     var $ = go.GraphObject.make;
     myDiagram =
         $(go.Diagram, document.querySelector("html /deep/ #test"),
@@ -349,11 +356,14 @@ function init() {
     slider.addEventListener('change', reexpand);
     slider.addEventListener('input', reexpand);
 
+    load(arg)
+
 }
 
 function CustomLink() {
     go.Link.call(this);
 };
+
 go.Diagram.inherit(CustomLink, go.Link);
 
 function expandGroups(g, i, level) {
@@ -501,6 +511,12 @@ function changeColor(port) {
     myDiagram.commitTransaction("colorPort");
 }
 
+this.getJSON=function(){
+    myDiagram.isModified = false;
+    return myDiagram.model.toJson();
+
+}
+
 // save a model to and load a model from Json text, displayed below the Diagram
 function save() {
     document.querySelector("html /deep/ #mySavedModel").value = myDiagram.model.toJson();
@@ -509,7 +525,7 @@ function save() {
 function load(json) {
     myDiagram.model = go.Model.fromJson(json);
 }
-init();
+//init();
 /*You to call this function with four arguments key:that would be the "id" of the node, text: would be the text displayed in the node
 call the function with text "IF" the node is a yellow block, "Conditions" if it is a blue one, or with the name of the device otherwise ("Lamp",
  "Window"...), source: call with the path of the image if it is a device (ex: "../GUI-Graphs/res/lamp.png") or with an empty string"" otherwise,
@@ -527,7 +543,7 @@ function getNewId(){
     console.log(arguments.callee.number);
     return "A"+arguments.callee.number+"B";
 }
-function newNode(key, text, source, category){
+ this.newNode=function(key, text, source, category){
     if(category == "OfGroups"){
         var c= getNewId()
         var newelement={};
@@ -562,3 +578,12 @@ function newNode(key, text, source, category){
         myDiagram.model.addNodeData(newDevice)
     }
 }
+}
+
+function getInstance(){
+        if(arguments.callee.instance==undefined){
+            arguments.callee.instance=new myObject();    
+        }
+        return arguments.callee.instance;
+}
+
