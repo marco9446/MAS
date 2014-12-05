@@ -9,6 +9,8 @@ var ObjectId = mongoose.Types.ObjectId;
 var Module = mongoose.model('Module');
 var Device = mongoose.model('Device');
 var Log = mongoose.model('Log');
+var Design = mongoose.model('Design');
+var library = require('./../compiler/library.js');
 
 var arduino = require("./arduinoComunication");
 
@@ -79,6 +81,56 @@ function saveAndSend(json) {
   });
 }
 
+function sendRequestTo(design){
+  var i=0;
+  var db={};
+  function loop(){
+        console.log(design.sensors);
+        if(i<design.sensors.length){
+          Device.findOne({_id:design.sensors[i]},function(err1,found){
+            console.log(err1,found,"asdjaslkjdlkas")
+            if(!err1){
+                db[found._id]=found.state=="true"?true:false;
+                i++;
+                loop();
+            }
+          })
+
+        }else{
+          console.log(db,"db");
+          var func=Function("db","library",design.program);
+          func(db,library);
+        }
+      }
+      loop(); 
+
+
+}
+
+
+arduino.actionLinstener.push(function(msg){
+
+  console.log(msg);
+  Design.find({sensors:msg._id},function(err,found){
+    if(found){
+    for(var lala=0;lala<found.length;lala++){
+      sendRequestTo(found[lala]);
+      
+
+    }
+  }
+
+
+
+
+
+
+
+
+  })
+
+
+});
 
 router.post('/send', function(req, res, next) {
     console.log(req.body);

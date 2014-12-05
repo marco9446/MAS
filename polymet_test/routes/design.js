@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Design = mongoose.model('Design');
 var Program= mongoose.model('Program')
+var Device=mongoose.model('Device')
 var compiler = require('./../compiler/compiler.js');
 var library = require('./../compiler/library.js');
 
@@ -78,12 +79,28 @@ router.get('/run/:id',function(req,res,next){
 
    Design.findById(req.params.id).lean().exec(function(err, design){
     if(!err && design){
+      var i=0;
+      var db={};
+      function loop(){
+        console.log(design.sensors);
+        if(i<design.sensors.length){
+          Device.findOne({_id:design.sensors[i]},function(err1,found){
+            console.log(err1,found,"asdjaslkjdlkas")
+            if(!err1){
+                db[found._id]=found.state=="true"?true:false;
+                i++;
+                loop();
+            }
+          })
 
-      console.log(design);
-      var func=Function("library",design.program);
-      func(library);
+        }else{
+          console.log(db,"db");
+          var func=Function("db","library",design.program);
+          func(db,library);
+        }
+      }
+      loop();      
     }
-
    });
    res.status(200).end();
 
