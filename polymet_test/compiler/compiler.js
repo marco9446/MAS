@@ -123,7 +123,7 @@ function execIfNode(program, node) {
 	} else {
 		output += "condition(";
 		for (var i = 0; i < conditions.length; i++) {
-			output += conditions[i].text;
+			output += "'" + conditions[i].key + "'";
 			// , between arguments if this isn't the last one
 			if (i != conditions.length-1)
 				output += ", ";
@@ -148,7 +148,7 @@ function execIfNode(program, node) {
 
 //parse an action node
 function execAction(program, node) {
-	output += "action(" + node.text + ");\n";
+	output += "action(" + "'" + node.key + "'" + ");\n";
 	if (getNext(program, node))
 		exec(program, getNext(program, node));
 
