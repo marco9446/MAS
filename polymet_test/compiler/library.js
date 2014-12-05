@@ -34,7 +34,7 @@ function doRequest(method, url, data) {
 
 //evaluate the IF condition
 //takes a list of arguments, check each of them for AND
-function condition(arguments) {
+var condition = function condition(arguments) {
 	var runningQueries = 0;
 	var passing = true;
 	for (var i = 0; i < arguments.length; i++) {
@@ -64,7 +64,7 @@ function condition(arguments) {
 	return true;
 }
 
-function action(argument) {
+var action = function action(argument) {
 	//resolve device name
 	Device.findById(argument._id).exec(function(err, device) {
 		if (device.type != "output") {
@@ -73,7 +73,9 @@ function action(argument) {
 		var newstate = (device.state == "true") ? "false" : "true";
 		Module.find({devices: req.params.deviceid}).exec(function(err, modules) {
 			for (var i = 0; i < modules.length; i++) {
-				ac.sendMessage({ip: modules[i].ip, action: [device.pin: newstate]});
+				var msg = {ip: modules[i].ip, action : []};
+				msg.action[device.pin] = newstate;
+				ac.sendMessage(msg);
 			};
 		});
 
@@ -81,3 +83,6 @@ function action(argument) {
 
 	return true;
 }
+
+module.exports.condition = condition;
+module.exports.action = action;
