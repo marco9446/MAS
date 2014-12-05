@@ -38,38 +38,16 @@ function doRequest(method, url, data) {
 var condition = function condition(arg) {
 	console.log("condition",arg)
 
-	var runningQueries = 0;
 	var passing = true;
 	if (!(arg.constructor === Array)) {
 		arg=[arg];
 	} 
 	for (var i = 0; i < arg.length; i++) {
-		console.log(i)
-		++runningQueries;
-		//resolve sensor into pin and device name
-		console.log(arg[i]);
-		Device.findById(arg[i],function(err, device) {
-			console.log(err,device.type)
-			if (err) {
-				throw new Error("no devices found! reboot or something");
-			}
-			--runningQueries;
-			if (device.type.indexOf("o")!=-1) {
-				throw new Error("runLoop: bad type of device:" + device._id);
-			}
-			console.log(device.state,"fjbaskjfhjakshlkashd")
-			if (device.state != "true") {
-				console.log("passing is false")
-				passing = false;
-			}
-			if(runningQueries===0){console.log("return ",passing);return passing;}
-
-		});
+		if (db[arg[i]] != true) {
+			passing = false;
+		}
 	};
-
-	
-	console.log("bye");
-	return true;
+	return passing;
 }
 
 var action = function action(argument) {
