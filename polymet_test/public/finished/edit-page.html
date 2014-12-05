@@ -71,7 +71,7 @@
                     attached: function () {
                         console.log("edit page ready");
                         console.log(this.pathArg1);
-                       
+                        document.querySelector("paper-tabs").selected = "2";
                         this.$.requestDesign.url="/design/"+this.pathArg1.replace(":","");
                         this.$.requestDesign.go();
 
