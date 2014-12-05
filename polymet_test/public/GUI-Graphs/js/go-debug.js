@@ -12197,7 +12197,7 @@
                 }
             }, !1);
             c.W = a;
-            a.vy = d[t.Ma("7eba17a4ca3b1a8346")][t.Ma("78a118b7")](d, t.Ql, 4, 4);
+            a.vy = d[t.Ma("7eba17a4ca3b1a8346")][t.Ma("78a118b7")](d, t.Ql, -30004, -30004);
             a.Rb.insertBefore(c, a.Rb.firstChild);
             d = document.createElement("canvas");
             d.width = 1;
@@ -13158,7 +13158,7 @@
             g = f.length;
             for (l = 0; l < g; l++)c(f[l]);
             this.Hj = [];
-            this.Tk ? this.Tk.Ql(this) && this.vy() : this.dm = function () {
+            this.Tk ? this.Tk.Ql(this) : this.dm = function () {
             };
             k && (a.restore(), da(this, a), e && e.YI && e.XI(p, a, this));
             e && (e.rA || e.gj) && e.qA(a, this, n);
