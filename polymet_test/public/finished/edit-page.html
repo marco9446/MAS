@@ -26,10 +26,7 @@
         <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="Getdevice" auto response="{{code}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="GetNewId"  response="{{newIp}}" handleAs="json" contentType="application/json" method="POST" on-core-response="{{newIpAssigner}}"></core-ajax>
-        <div style="width:100%; white-space:nowrap;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;"
-             unselectable='on'
-             onselectstart='return false;'
-             onmousedown='return false;'>
+        <div style="width:100%; white-space:nowrap;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
 
             <div inline flex horizontal layout style="width: 100%">
 
