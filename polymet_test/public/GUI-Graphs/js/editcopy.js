@@ -244,9 +244,7 @@ var myObject=function(){
                         highlightGroup(e, nod.containingGroup, false);
                     },
                     // dropping on a Node is the same as dropping on its containing Group, if any
-                    doubleClick: function (e, nod) {
-                        myDiagram.model.addNodeData(nod);
-                    },
+                    
                     mouseDrop: function (e, nod) {
                         finishDrop(e, nod.containingGroup);
                     }
@@ -343,6 +341,7 @@ var myObject=function(){
         corner: 10 },                // with rounded corners
       $(go.Shape,  { strokeWidth: 4, stroke: "#00a4a4" })
     );
+
 
 
     var slider = document.querySelector("html /deep/ #levelSlider");
@@ -523,13 +522,7 @@ call the function with text "IF" the node is a yellow block, "Conditions" if it 
 
 function getNewId(){
 
-    if(arguments.callee.number==undefined){
-        arguments.callee.number=1000;
-    }else{
-        arguments.callee.number++;
-    }
-    console.log(arguments.callee.number);
-    return "A"+arguments.callee.number+"B";
+    return "_"+Math.random().toString(36).substr(2, 9);
 }
  this.newNode=function(key, text, source, category){
     if(category == "OfGroups"){

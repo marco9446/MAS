@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Design = mongoose.model('Design');
 var Program= mongoose.model('Program')
+var compiler = require('./../compiler/compiler.js');
+
 
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST',"DELETE"));
@@ -54,7 +56,13 @@ router.put('/:paramID',function(req,res,next){
         found.program=JSON.parse(context.program);
       }
       if(context.code){
+
         found.code=JSON.parse(context.code);
+        var compiled = compiler(found.code);
+        console.log((compiled));
+       // var newProgram = new Program({name:req.body.name, code: compiled.code, sensors: compiled.sensors});
+        //newProgram.save(function(err){console.log(err)});
+        
       }
       found.save(function(err,saved){if(!err){res.status(200).end()}else{res.status(404).end()}});
 
