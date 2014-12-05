@@ -1,13 +1,24 @@
 <script src="../GUI-Graphs/js/go-debug.js"></script>
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 <link rel="import" href="../components/core-drag-drop/core-drag-drop.html">
+<link rel="import" href="../components/paper-button/paper-button.html">
 <polymer-element name="edit-page" attributes="pathArg1">
 
     <template  >
+      <core-ajax 
+                    id="requestDesign"
+                   auto =false
+                   url="/design"
+                   handleAs="json"
+                   response="{{res}}"
+                   on-core-response="{{handleResponse}}"
+                   class="">
+        </core-ajax>
 
         <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
         <link rel="stylesheet" type="text/css" href="../GUI-Graphs/css/main.css">
         <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
+        <core-ajax id="Getdevice" auto response="{{code}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <div style="width:100%; white-space:nowrap;">
 
             <div inline flex horizontal layout style="width: 100%">
@@ -18,12 +29,12 @@
                         <div class="titleCondition" style="border: 2px #E69900 solid ">IF</div>
 
                     </div>
-                    <div id="condition_blockj" draggable="false">
-                        <div class="titleCondition" style="color:#046887;border:  2px #0099CC solid;">Conditions</div>
+                    <div id="delay_blockj" draggable="false">
+                        <div class="titleCondition" style="color:#046887;border:  2px #0099CC solid;">DELAY</div>
                     </div>
 
                 </div>
-                <div id="test" style="border: solid 1px black; height: 500px; width: 80%" inline flex  layout></div>
+                <div id="test" style="border: solid 1px black; " inline flex  layout></div>
             </div>
             <div id="arduinoContainer" center-center layout >
                 <core-drag-drop></core-drag-drop>
@@ -43,41 +54,28 @@
         Semantic zoom level: <input id="levelSlider" type="range" min="0" max="5" value="3">
 
 
-        <div id="devices">
-            <button onclick="newNode('53', 'Sensor53', '../GUI-Graphs/res/sensor.png','Sensor')">Top</button>
-            <button onclick="newNode('53','Lamp53', '../GUI-Graphs/res/lamp.png')">Bottom</button>
-            <button onclick="newNode('53','IF', '','OfGroups')">Left</button>
-            <button onclick="newNode('53','Conditions', '','OfNodes')">Right</button>
-            <button id="SaveButton" onclick="save()">Save</button>
-            <button onclick="load()">Load</button>
-        </div>
-        <textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",
-            "linkFromPortIdProperty": "fromPort",
-            "linkToPortIdProperty": "toPort",
-            "nodeDataArray": [
-            {"key":1, "text":"IF", "isGroup":true, "category":"OfGroups", "bottomArray":[ {"portColor":"red", "portId":"no0"},{"portColor":"green", "portId":"yes0"} ], "topArray":[{"portColor":"#356853","portId":"fromStart0"}]},
-            {"key":2, "text":"Conditions", "isGroup":true, "category":"OfNodes", "group":1},
-            {"text":"Sensor1", "key":-7, "loc":"791.3023885139328 41.52284749830794", "group":2, "color":"lightblue", "source":"../GUI-Graphs/res/sensor.png"},
-            {"text":"Sensor2", "group":2, "key":-8, "loc":"87.77919515455794 110.34179281080793","color":"lightblue", "source":"../GUI-Graphs/res/sensor.png"},
-            {"text":"Start","source":"../GUI-Graphs/res/start.png", "key":-13, "loc":"450.7791951545578 200.34179281080796","bottomArray":[{"portColor":"black","portId":"start"}]},
-            {"key":-16, "loc":"619.3023885139328 339.34179281080816", "source":"../GUI-Graphs/res/lamp.png",  "text":"Lamp1", "leftArray":[ ], "topArray":[ {"portColor":"#d488a2", "portId":"top0"} ], "bottomArray":[ {"portColor":"#316571", "portId":"next0"} ], "rightArray":[ ]},
-            {"text":"Lamp2",  "source":"../GUI-Graphs/res/lamp.png", "key":-3, "loc":"88.84560140455795 200.34179281080796","topArray":[{"portColor":"black", "portId":"from0"}]},
-            {"text":"Lamp3",  "source":"../GUI-Graphs/res/lamp.png", "key":-25,"topArray":[{"portColor":"black", "portId":"from1"}]}
-            ],
-            "linkDataArray": [ {"from":1,"to":-25,"fromPort":"no0","toPort":"from1"},{"from":1, "to":-16, "fromPort":"yes0", "toPort":"top0", "points":[187.27919515455795,361.86464030911594,187.27919515455795,371.86464030911594,187.27919515455795,372,356,372,356,-12,716,-12,716,50.52284749830794,859,50.52284749830794,869,50.52284749830794]},{"from":-16,"to":-3,"fromPort":"next0","toPort":"from0"},{"from":-13, "to":1, "fromPort":"start", "toPort":"fromStart0"} ]}
-
-        </textarea>
+       
+        <paper-button raised  inline on-tap="{{save}}">Save</paper-button>
 
         <script src="../javascripts/functions.js"></script>
-        <script src="../GUI-Graphs/js/editcopy.js"></script>
+        
+   
     </template>
-
+<script src="../GUI-Graphs/js/editcopy.js"></script>
+        
 
     <script>
 
         Polymer("edit-page", {
-                    ready: function () {
+                    graph:null,
+                    attached: function () {
                         console.log("edit page ready");
+                        console.log(this.pathArg1);
+                        document.querySelector("paper-tabs").selected = "2";
+                        this.$.requestDesign.url="/design/"+this.pathArg1.replace(":","");
+                        this.$.requestDesign.go();
+
+
                     },
 
 
@@ -102,6 +100,25 @@
                         },
                     dragStart: function(){
                         console.log("start")
+
+                    },
+                    handleResponse:function(){
+                        this.graph=getInstance();
+                    
+                        this.graph.init(this.res.code);
+                        //init(this.res.code);
+                        //load(this.res.code)
+
+                    },
+                    save:function(){
+
+                        console.log(this.graph.getJSON());
+                         this.$.requestDesign.method="PUT"
+                        this.$.requestDesign.url="/design/"+this.pathArg1.replace(":","");
+                        this.$.requestDesign.body=JSON.stringify({code:this.graph.getJSON()});
+                        this.$.requestDesign.go();
+
+
                     }
                 }
 

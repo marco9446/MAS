@@ -1,4 +1,5 @@
 <link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/paper-shadow/paper-shadow.html">
 
 
 <polymer-element name="Log-page">
@@ -15,16 +16,23 @@
                    class=""></core-ajax>
 
         <template  repeat="{{log in res}}"  >
+          
             <div class="logContainer"  layout horizontal center>
+               
                 <div class="logContainerHour" center-center layout>
+                
                     <div class="logHours">{{log.time}}</div>
+                
                 </div>
+                
                 <div class="logContainerMessage" flex>
+
                     <div class="logTitle">{{log.title}}</div>
                     <div>{{log.msg}}</div>
                 </div>
-            </div>
 
+            </div>
+        
         </template>
 
 

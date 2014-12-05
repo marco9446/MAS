@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Design = mongoose.model('Design');
 var Program= mongoose.model('Program')
+var compiler = require('./../compiler/compiler.js');
+
 
 //allowed methods
 router.all('/', middleware.supportedMethods('GET, POST',"DELETE"));
@@ -19,24 +21,48 @@ router.get('/', function(req, res, next) {
     })
 });
 
+router.get('/:paramID', function(req, res, next) {
+
+    Design.findOne({_id:req.params.paramID}).lean().exec(function(err, projects) {
+        if (err) return next (err);
+        res.json(projects);
+    })
+});
+
 //add new Design
 router.post('/', function(req, res, next) {
-    var newDesign = new Design(req.body);
+
+     console.log(req.body);
+    console.log(JSON.parse(Object.keys(req.body)[0]));
+
+    var newDesign = new Design();
+    newDesign.name=JSON.parse(Object.keys(req.body)[0]).name
+    newDesign.code=JSON.parse(JSON.parse(Object.keys(req.body)[0]).code);
+    console.log(newDesign);
     newDesign.save(onModelSave(res, 201, true));
 });
 
 
-router.post('/:paramID',function(req,res,next){
+router.put('/:paramID',function(req,res,next){
+   console.log(req.body);
+   var context=JSON.parse(Object.keys(req.body)[0]);
+   console.log(context);
   Design.findOne({_id:req.params.paramID},function(err,found){
     if(!err && found){
-      if(req.body.name){
-        found.name=req.body.name;
+      if(context.name){
+        found.name=JSON.parse(context.name);
       }
-      if(req.body.program){
-        found.program=req.body.program;
+      if(context.program){
+        found.program=JSON.parse(context.program);
       }
-      if(req.body.code){
-        found.code=req.body.code;
+      if(context.code){
+
+        found.code=JSON.parse(context.code);
+        var compiled = compiler(found.code);
+        console.log((compiled));
+       // var newProgram = new Program({name:req.body.name, code: compiled.code, sensors: compiled.sensors});
+        //newProgram.save(function(err){console.log(err)});
+        
       }
       found.save(function(err,saved){if(!err){res.status(200).end()}else{res.status(404).end()}});
 
