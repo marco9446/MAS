@@ -41,17 +41,20 @@ router.post('/', function(req, res, next) {
 });
 
 
-router.post('/:paramID',function(req,res,next){
+router.put('/:paramID',function(req,res,next){
+   console.log(req.body);
+   var context=JSON.parse(Object.keys(req.body)[0]);
+   console.log(context);
   Design.findOne({_id:req.params.paramID},function(err,found){
     if(!err && found){
-      if(req.body.name){
-        found.name=req.body.name;
+      if(context.name){
+        found.name=JSON.parse(context.name);
       }
-      if(req.body.program){
-        found.program=req.body.program;
+      if(context.program){
+        found.program=JSON.parse(context.program);
       }
-      if(req.body.code){
-        found.code=req.body.code;
+      if(context.code){
+        found.code=JSON.parse(context.code);
       }
       found.save(function(err,saved){if(!err){res.status(200).end()}else{res.status(404).end()}});
 

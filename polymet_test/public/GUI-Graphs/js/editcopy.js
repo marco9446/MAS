@@ -4,9 +4,9 @@
 
 var myObject=function(){
   //must be a singleton
-
-
+ 
  this.init=function(arg) {
+
     var $ = go.GraphObject.make;
     myDiagram =
         $(go.Diagram, document.querySelector("html /deep/ #test"),
@@ -337,20 +337,13 @@ var myObject=function(){
     //link Template
 
     myDiagram.linkTemplate =
-        $(CustomLink,  // defined below
-            {
-                routing: go.Link.AvoidsNodes,
-                corner: 4,
-                curve: go.Link.JumpGap,
-                reshapable: true,
-                resegmentable: true,
-                relinkableFrom: true,
-                relinkableTo: true
-            },
-            new go.Binding("points").makeTwoWay(),
-            $(go.Shape, {strokeWidth: 4},
-                new go.Binding("stroke", "color"))  // just a plain black line
-        );
+       $(go.Link,
+        
+         { routing: go.Link.AvoidsNodes,
+        corner: 10 },                // with rounded corners
+      $(go.Shape,  { strokeWidth: 4, stroke: "#00a4a4" })
+    );
+
 
     var slider = document.querySelector("html /deep/ #levelSlider");
     slider.addEventListener('change', reexpand);
@@ -360,11 +353,11 @@ var myObject=function(){
 
 }
 
-function CustomLink() {
+var CustomLink=function() {
     go.Link.call(this);
 };
 
-go.Diagram.inherit(CustomLink, go.Link);
+//go.Diagram.inherit(CustomLink, go.Link);
 
 function expandGroups(g, i, level) {
     if (!(g instanceof go.Group)) return;
@@ -512,16 +505,11 @@ function changeColor(port) {
 }
 
 this.getJSON=function(){
-    myDiagram.isModified = false;
     return myDiagram.model.toJson();
-
 }
 
 // save a model to and load a model from Json text, displayed below the Diagram
-function save() {
-    document.querySelector("html /deep/ #mySavedModel").value = myDiagram.model.toJson();
-    myDiagram.isModified = false;
-}
+
 function load(json) {
     myDiagram.model = go.Model.fromJson(json);
 }

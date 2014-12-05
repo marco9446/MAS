@@ -54,7 +54,7 @@
 
 
        
-        <paper-button raised  inline onclick='salva()'>Save</paper-button>
+        <paper-button raised  inline on-tap="{{save}}">Save</paper-button>
 
         <script src="../javascripts/functions.js"></script>
         
@@ -110,7 +110,12 @@
                     },
                     save:function(){
 
-                        console.log(this.graph.hetJSON());
+                        console.log(this.graph.getJSON());
+                         this.$.requestDesign.method="PUT"
+                        this.$.requestDesign.url="/design/"+this.pathArg1.replace(":","");
+                        this.$.requestDesign.body=JSON.stringify({code:this.graph.getJSON()});
+                        this.$.requestDesign.go();
+
                     }
                 }
 
