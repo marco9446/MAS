@@ -17,7 +17,7 @@ addEventListener('drag-start', function(e) {
     }else if( dragInfo.event.target.className.indexOf( "arduino_")>-1){
         var element = dragInfo.event.target;
         var elemId = element.parentElement.id;
-        dragInfo.avatar.style.cssText = 'border: 3px solid blue; width: 60px; height: 60px; background-color: whitesmoke';
+        dragInfo.avatar.style.cssText = 'border: 3px solid blue;border-radius: 5px; width: 60px; height: 60px; background-color: #33d3e5';
         dragInfo.avatar.id = elemId;
         dragInfo.avatar.title = element.parentElement.title;
         dragInfo.avatar.className = dragInfo.event.target.className.substring(9);
@@ -27,14 +27,24 @@ addEventListener('drag-start', function(e) {
     }else if(dragInfo.event.target.id =='if_block'||dragInfo.event.target.id =='condition_blockj' ){
         var element2 = dragInfo.event.target;
         console.log(dragInfo.event.target);
-        dragInfo.avatar.style.cssText = 'border: 3px solid blue; width: 60px; height: 60px; background-color: whitesmoke';
+        dragInfo.avatar.style.cssText = 'border: 3px solid blue;border-radius: 5px; width: 70px; height: 90px; background-color: #ffdd33;';
         dragInfo.avatar.className = element2.id.substring(0,element2.id.indexOf("_"));
         dragInfo.avatar.title = element2.id.substring(0,element2.id.indexOf("_"));
         dragInfo.drag = function () {
         };
         dragInfo.drop = dropArduino;
 
-    }else{
+    }else if(dragInfo.event.target.id =='delay_blockj' ){
+        var element3 = dragInfo.event.target;
+        console.log(dragInfo.event.target);
+        dragInfo.avatar.style.cssText = 'border-radius: 5px; width: 70px; height: 90px; background: #33d3e5;border: 3px #0099CC solid;';
+        dragInfo.avatar.className = element3.id.substring(0,element3.id.indexOf("_"));
+        dragInfo.avatar.title = "delay 5";
+        dragInfo.drag = function () {
+        };
+        dragInfo.drop = dropArduino;
+
+    } else{
         console.log("wrong element");
     }
 });
@@ -84,6 +94,8 @@ function dropArduino(draginfo){
             newNode(id, name, "../GUI-Graphs/res/switch.png", 'Sensor')
         }else if(type == 'output' ){
             newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
+        }else if(type == 'delay' ){
+            newNode('', name, "../GUI-Graphs/res/time.png", '')
         }
 
     }
