@@ -136,11 +136,13 @@ function execIfNode(program, node) {
 	//end of the bracket, start of curly bracket;
 	output += ") {\n";
 	//evaluate the YES branch
+	output += "console.log('TOOK YES BRANCH')\n";
 	exec(program, getNext(program, node, "yes"));
 	output += "}";
 	//if we have a NO branch
 	if (getNext(program, node, "no")) {
 		output += " else {\n";
+		output += "console.log('TOOK NO BRANCH')\n";
 		exec(program, getNext(program, node, "no"));
 		output += "}";
 	}
