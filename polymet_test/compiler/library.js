@@ -47,7 +47,9 @@ var condition = function condition(arg) {
 			passing = false;
 		}
 	};
+
 	return passing;
+
 }
 
 var action = function action(argument) {
@@ -58,7 +60,7 @@ var action = function action(argument) {
 		if (err) {
 				throw new Error("no devices found! reboot or something");
 			}
-		if (device.type == "o") {
+		if (device.type != "o") {
 			throw new Error("runLoop: bad type of device:" + device._id);
 		}
 		var newstate = (device.state == "true") ? "false" : "true";
