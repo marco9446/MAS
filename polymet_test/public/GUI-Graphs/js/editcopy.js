@@ -163,6 +163,7 @@ function init() {
     myDiagram.groupTemplateMap.add("OfNodes",
         $(go.Group, go.Panel.Auto,
             {
+
                 background: "transparent",
                 ungroupable: true,
                 // highlight when dragging into the Group
@@ -183,7 +184,7 @@ function init() {
                         cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4)
                     })
             },
-            $(go.Panel, go.Panel.Vertical,
+            $(go.Panel, go.Panel.Vertical,{ minSize: new go.Size(100, 100)},
                 $(go.Panel, go.Panel.Horizontal,
                     {stretch: go.GraphObject.Horizontal, background: "#33D3E5"},
                     $("SubGraphExpanderButton",
@@ -198,13 +199,14 @@ function init() {
                         new go.Binding("text", "text").makeTwoWay())
                 ),  // end Horizontal Panel
                 $(go.Placeholder,
-                    {padding: 5, alignment: go.Spot.TopLeft},
+                    {padding: 5, alignment: go.Spot.Center},
                     new go.Binding("background", "isHighlighted", function (h) {
                         return h ? "red" : "transparent";
                     }).ofObject())
             ),  // end Vertical Panel
             $(go.Shape, "Rectangle",
                 {
+
                     isPanelMain: true,
                     fill: null,
                     stroke: "#0099CC",
@@ -529,7 +531,7 @@ function getNewId(){
 }
 function newNode(key, text, source, category){
     if(category == "OfGroups"){
-        var c= getNewId()
+        var c= getNewId();
         var newelement={};
         var subgrp ={};
         newelement.key=c;
