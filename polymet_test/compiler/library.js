@@ -1,3 +1,9 @@
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
+var Device = mongoose.model('Device');
+var Module = mongoose.model('Module');
+var ac = require('./../routes/arduinoCommunication');
+
 function doRequest(method, url, data) {
 	if (!method || !url)
 		throw new Error("bad doRequest parameter");
@@ -29,35 +35,49 @@ function doRequest(method, url, data) {
 //evaluate the IF condition
 //takes a list of arguments, check each of them for AND
 function condition(arguments) {
+	var runningQueries = 0;
+	var passing = true;
 	for (var i = 0; i < arguments.length; i++) {
+		++runningQueries;
 		//resolve sensor into pin and device name
-		var device = doRequest("GET", "/device/" + arguments[i]._id, {});
-		//check database for validity
-		if (device.type != "input") {
-			throw new Error("bad type of device:" device._id);
-		};
-		//return false or continue
-		if (device.state != "true") {
-			return false;
-		}
+		Device.findById(arguments[i]._id).exec(function(err, device) {
+			if (err) {
+				throw new Error("no devices found! reboot or something");
+			}
+			--runningQueries;
+			if (device.type != "input") {
+				throw new Error("runLoop: bad type of device:" + device._id);
+			}
+			if (device.state != "true") {
+				passing = false;
+			}
+
+		});
 	};
 
+	//I didn't want to write this, but javascript and mongo forced me to
+	while(1) {
+		if (runningQueries === 0) {
+			return passing;
+		}
+	}
 	return true;
 }
 
 function action(argument) {
 	//resolve device name
-	var device = doRequest("GET", '/device/' + argument._id, {});
-	if (device.type != "output") {
-		throw new Error("bad type of device:" + device._id);
-	};
+	Device.findById(argument._id).exec(function(err, device) {
+		if (device.type != "output") {
+			throw new Error("runLoop: bad type of device:" + device._id);
+		}
+		var newstate = (device.state == "true") ? "false" : "true";
+		Module.find({devices: req.params.deviceid}).exec(function(err, modules) {
+			for (var i = 0; i < modules.length; i++) {
+				ac.sendMessage({ip: modules[i].ip, action: [device.pin: newstate]});
+			};
+		});
 
-	var newstate = (device.state == "true") ? "false" : "true";
-	//resolve module name
-	var module = doRequest("GET", '/mod/bydevice/' + device._id, {});
-	//very politely ask the module to perform shit
-	var postbody = {id: device._id, status: newstate};
-	doRequest('POST', "/send/" + module._id, postbody);
+	});
 
 	return true;
 }
