@@ -83,7 +83,7 @@ function drop(dragInfo) {
 //must be a class
 
 function dropArduino(draginfo){
-    console.log(this.graph);
+    //console.log(this.graph);
     var graph = getInstance();
     var id = draginfo.avatar.id;
     var type =draginfo.avatar.className;
@@ -99,7 +99,10 @@ function dropArduino(draginfo){
         }else if(type == 'switch' ){
             graph.newNode(id, name, "../GUI-Graphs/res/switch.png", 'Sensor')
         }else if(type == 'output' ){
-            graph.newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
+            document.querySelector("html /deep/ #dialog2 > #idDeviceHidden").innerHTML = id;
+            document.querySelector("html /deep/ #dialog2 > #nameDeviceHidden").innerHTML = name;
+            document.querySelector("html /deep/ #dialog2").toggle();
+            //graph.newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
         }else if(type == 'delay' ){
             graph.newNode('', name, "../GUI-Graphs/res/time.png", '')
         }

@@ -229,8 +229,30 @@ core-submenu::shadow > #submenuItem {
   padding: 6px;
 }
 
+.activeProgramm{
+  margin-left:15px ;
+
+}
+.deleteBt{
 
 
+  display: inline-flex;
+  background-color:gray;
+}
+.openBt{
+
+  text-align: center;
+  display: inline-flex;
+}
+html /deep/ paper-button[autofocus] {
+  color: #4285f4;
+  float: right;
+}
+
+html /deep/ .dropdown{
+  width: 50%;
+  height: 148px;
+}
 @media screen and (max-width: 700px) {
   body {
 

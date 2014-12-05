@@ -2,6 +2,7 @@
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 <link rel="import" href="../components/paper-button/paper-button.html">
 <link rel="import" href="../components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/paper-checkbox/paper-checkbox.html">
  <link rel="import" href="../components/paper-input/paper-input.html">
   <link rel="import" href="../components/paper-shadow/paper-shadow.html">
 
@@ -97,13 +98,15 @@
 
         <template  repeat="{{des in res}}"  >
                   
-            <div class="logContainer"  layout horizontal center id="A{{des._id}}" style="width:70%; text-allign:right; visibility:{{cosa}}">
+            <div class="logContainer"  layout horizontal center id="A{{des._id}}" style="width:70%; visibility:{{cosa}}">
+                <paper-checkbox class="activeProgramm" on-core-change="{{ uscabau }}" ></paper-checkbox>
+
                <h1 style="margin-left:30px"> {{des.name}} </h1>
                <div horizontal end-justified  layout style="width:100%;">
-                 <div  style="margin-right:30px">
-                      <paper-button raised  inline onclick='tappato("{{des._id}}")'>Open</paper-button>
-                      <paper-fab  inline mini icon="delete"  onclick='deleteDesign("{{des._id}}")' style="background-color:gray;" ></paper-fab>
-                 </div>      
+                 <div  style="margin-right:30px; position: relative">
+                      <paper-button class="openBt" raised   onclick='tappato("{{des._id}}")'>Open</paper-button>
+                      <paper-fab class="deleteBt"   mini icon="delete"  onclick='deleteDesign("{{des._id}}")' ></paper-fab>
+                 </div>
               </div>  
             </div>
             
@@ -135,7 +138,11 @@
                     },
                     handleResponse2 : function(){
 
+                    },
+                    uscabau: function(a,b,target){
+                        console.log(target.parentElement.id, target.checked);
                     }
+
                 }
         )
     </script>

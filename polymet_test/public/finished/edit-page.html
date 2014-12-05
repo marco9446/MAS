@@ -1,7 +1,13 @@
 <script src="../GUI-Graphs/js/go-debug.js"></script>
 <link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/core-menu/core-menu.html">
 <link rel="import" href="../components/core-drag-drop/core-drag-drop.html">
 <link rel="import" href="../components/paper-button/paper-button.html">
+<link rel="import" href="../components/paper-item/paper-item.html">
+<link rel="import" href="../components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../components/paper-dialog/paper-action-dialog.html">
 <polymer-element name="edit-page" attributes="pathArg1">
 
     <template  >
@@ -19,6 +25,7 @@
         <link rel="stylesheet" type="text/css" href="../GUI-Graphs/css/main.css">
         <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="Getdevice" auto response="{{code}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
+        <core-ajax id="GetNewId"  response="{{newIp}}" handleAs="json" contentType="application/json" method="POST" on-core-response="{{newIpAssigner}}"></core-ajax>
         <div style="width:100%; white-space:nowrap;">
 
             <div inline flex horizontal layout style="width: 100%">
@@ -56,10 +63,28 @@
 
        
         <paper-button raised  inline on-tap="{{save}}">Save</paper-button>
+        <paper-dialog id="dialog2" backdrop transition="core-transition-bottom" style="width: 600px">
 
+            <h1>Decide the behavior of the device</h1>
+            <p>select the action that will happen when the device will be triggered</p>
+            <div id="idDeviceHidden" style="display: none"></div>
+            <div id="nameDeviceHidden" style="display: none"></div>
+            <paper-dropdown-menu  label="what will i do?" style="position: static">
+                <paper-dropdown class="dropdown">
+                    <core-menu class="menu">
+                        <paper-item>Tourn on</paper-item>
+                        <paper-item>Tourn off</paper-item>
+                        <paper-item>Switch</paper-item>
+                    </core-menu>
+                </paper-dropdown>
+            </paper-dropdown-menu>
+
+            <paper-button affirmative autofocus on-tap="{{decision}}" >OK</paper-button>
+            <br><br>
+            <br> <br><br>
+
+        </paper-dialog>
         <script src="../javascripts/functions.js"></script>
-        
-   
     </template>
 <script src="../GUI-Graphs/js/editcopy.js"></script>
         
@@ -119,6 +144,35 @@
                         this.$.requestDesign.go();
 
 
+                    },
+                    //TODO
+                    decision: function(){
+                        /*
+                         oldId = id dell'elemento trascinato
+                         selectedDecision = elemento selezionato nel menu. potrá essere "Tourn on", "Tourn off", "Switch" o "";
+                         quando il server risponderá, verrá chiamata la funzione newIpAssigner, da dove bisognerá creare il nuovo oggetto.
+
+                         */
+                        var oldId =  document.querySelector("html /deep/ #dialog2 > #idDeviceHidden").innerHTML;
+                        var selectedDecision = document.querySelector("html /deep/ paper-dropdown-menu").selectedItemLabel;
+                        var postAjax = this.$.GetNewId;
+                        console.log(postAjax, oldId , selectedDecision);
+                        if (selectedDecision.length>1){
+
+                            //TODO do the ajax request
+
+                            //postAjax.body =
+                            //postAjax.go()
+                            document.querySelector("html /deep/ #dialog2").toggle();
+                        }
+
+
+                    }//TODO
+                    , newIpAssigner: function(){
+                        var name = document.querySelector("html /deep/ #dialog2 > #nameDeviceHidden").innerHTML;
+                        var responce  =  this.newIp;//risposta delll'ajax request
+
+                        //graph.newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
                     }
                 }
 
