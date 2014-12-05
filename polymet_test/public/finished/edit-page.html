@@ -26,7 +26,10 @@
         <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="Getdevice" auto response="{{code}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="GetNewId"  response="{{newIp}}" handleAs="json" contentType="application/json" method="POST" on-core-response="{{newIpAssigner}}"></core-ajax>
-        <div style="width:100%; white-space:nowrap;">
+        <div style="width:100%; white-space:nowrap;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;"
+             unselectable='on'
+             onselectstart='return false;'
+             onmousedown='return false;'>
 
             <div inline flex horizontal layout style="width: 100%">
 
@@ -157,6 +160,7 @@
                         var selectedDecision = document.querySelector("html /deep/ paper-dropdown-menu").selectedItemLabel;
                         var postAjax = this.$.GetNewId;
                         console.log(postAjax, oldId , selectedDecision);
+                        var postDictionary  = {"Tourn on":"","Tourn off":"","Switch":'' };
                         if (selectedDecision.length>1){
 
                             //TODO do the ajax request
