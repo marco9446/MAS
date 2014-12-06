@@ -25,7 +25,7 @@
         <link rel="stylesheet" type="text/css" href="../GUI-Graphs/css/main.css">
         <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="Getdevice" auto response="{{code}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
-        <core-ajax id="GetNewId"  response="{{newIp}}" handleAs="json" contentType="application/json" method="POST" on-core-response="{{newIpAssigner}}"></core-ajax>
+        <core-ajax id="GetNewId"   url="/action" response="{{newIp}}" handleAs="json" contentType="application/json" method="POST" on-core-response="{{newIpAssigner}}"></core-ajax>
         <div style="width:100%; white-space:nowrap;">
 
             <div inline flex horizontal layout style="width: 100%">
@@ -156,13 +156,16 @@
                         var oldId =  document.querySelector("html /deep/ #dialog2 > #idDeviceHidden").innerHTML;
                         var selectedDecision = document.querySelector("html /deep/ paper-dropdown-menu").selectedItemLabel;
                         var postAjax = this.$.GetNewId;
+                        var postDictionary  = {"Tourn on":"true","Tourn off":"false","Switch":'switch' };
                         console.log(postAjax, oldId , selectedDecision);
                         if (selectedDecision.length>1){
+                            console.log(selectedDecision);
+                            
 
                             //TODO do the ajax request
 
-                            //postAjax.body =
-                            //postAjax.go()
+                            postAjax.body = JSON.stringify({state:postDictionary[selectedDecision],device:oldId})
+                            postAjax.go()
                             document.querySelector("html /deep/ #dialog2").toggle();
                         }
 
@@ -171,8 +174,9 @@
                     , newIpAssigner: function(){
                         var name = document.querySelector("html /deep/ #dialog2 > #nameDeviceHidden").innerHTML;
                         var responce  =  this.newIp;//risposta delll'ajax request
-
-                        //graph.newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
+                        console.log(responce);
+                        
+                         this.graph.newNode(responce, name, "../GUI-Graphs/res/lamp.png", '')
                     }
                 }
 

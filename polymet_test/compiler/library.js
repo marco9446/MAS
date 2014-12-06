@@ -3,6 +3,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var Device = mongoose.model('Device');
 var Module = mongoose.model('Module');
 var Log = mongoose.model('Log');
+var Action = mongoose.model('Action');
 var ac = require('../routes/arduinoComunication');
 
 function doRequest(method, url, data) {
@@ -53,9 +54,14 @@ var condition = function condition(db, arg) {
 }
 
 var action = function action(argument) {
+	//get Device from action
+	//do the same stuff
 	console.log("action",argument)
+	Action.findOne({_id:argument},function(err,found){
+	if(!err){
+	console.log("action found ",found)
 	//resolve device name
-	Device.findById(argument).exec(function(err, device) {
+	Device.findById(found.device).exec(function(err, device) {
 		console.log(device,"admdMuasd")
 		if (err) {
 				throw new Error("no devices found! reboot or something");
@@ -63,11 +69,13 @@ var action = function action(argument) {
 		if (device.type != "o") {
 			throw new Error("runLoop: bad type of device:" + device._id);
 		}
-		var newstate = (device.state == "true") ? "false" : "true";
+		var newstate = found.state;
 		console.log(device.state,newstate)
-		saveAndSend({id:argument,status:newstate});
+		saveAndSend({id:device._id,status:newstate});
 		
 
+		});
+	}
 	});
 
 	return true;

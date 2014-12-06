@@ -8,6 +8,7 @@ require('./Module');
 require('./User');
 require('./Program');
 require('./Design');
+require('./Action');
 
 module.exports = {
   'Device' : mongoose.model('Device'),
@@ -15,6 +16,7 @@ module.exports = {
   'Module' : mongoose.model('Module'),
   'User' : mongoose.model('User'),
   'Program' : mongoose.model('Program'),
-  'Design' : mongoose.model('Design')
+  'Design' : mongoose.model('Design'),
+  'Action' : mongoose.model('Action')
 }
 
