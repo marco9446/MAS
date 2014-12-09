@@ -22,7 +22,7 @@
   <link rel="import" href="../components/core-icons/core-icons.html">
   <link rel="import" href="../components/core-icon/core-icon.html">
   <link rel="import" href="../components/core-image/core-image.html">
-  <link rel="import" href="../components/core-ajax/core-ajax.html">
+
   <link rel="import" href="../components/app-router-master/app-router.html">
   <link rel="import" href="../components/core-animated-pages/core-animated-pages.html">
   <link rel="import" href="../components/core-animated-pages/transitions/slide-from-right.html">
@@ -33,7 +33,7 @@
 
 <body unresolved>
 
- <core-ajax id="VoiceControll" contentType="application/json"  method="POST" url="/mod/sendByName"  ></core-ajax>
+
   <core-header-panel mode="waterfall" id="core_header_panel" >
     <core-toolbar id="core_toolbar">
 
@@ -110,19 +110,25 @@
         document.querySelector('app-router').go('/log');
       }else if(e.detail.transcript == "home"|| e.detail.transcript == " home"){
         document.querySelector('app-router').go('/home');
-      }else if(e.detail.transcript.indexOf("turn on")>-1){
-        var rec = e.detail.transcript.substring(8);
-        console.log("accendo", rec.replace(/\s/g, ''));
-        aja.bodyType="json";
-        aja.body='{ "name" :"'+rec+'" ,"status" :"true"}';
-        aja.go();
+      }else if(e.detail.completeTranscript.indexOf("turn on")>-1){
+        var rec = e.detail.completeTranscript.substring(8);
+        if (rec.length>1) {
+          console.log("accendo", rec.replace(/\s/g, ''));
+          aja.bodyType = "json";
+          aja.body = '{ "name" :"' + rec + '" ,"status" :"true"}';
+          aja.go();
+          speechMic.stop()
+        }
 
-      }else if(e.detail.transcript.indexOf("turn off")>-1){
-        var rec2 = e.detail.transcript.substring(8);
-        console.log("spengo", rec2);
-        aja.bodyType="json";
-        aja.body='{ "name" :"'+rec2+'" ,"status" :"false"}';
-        aja.go();
+      }else if(e.detail.completeTranscript.indexOf("turn off")>-1){
+        var rec2 = e.detail.completeTranscript.substring(8);
+        if (rec2.length>1) {
+          console.log("spengo", rec2);
+          aja.bodyType = "json";
+          aja.body = '{ "name" :"' + rec2 + '" ,"status" :"false"}';
+          aja.go();
+          speechMic.stop()
+        }
       }
     });
 

@@ -254,6 +254,63 @@ html /deep/ .dropdown{
   width: 50%;
   height: 148px;
 }
+
+.settingsArdu{
+  border-radius: 5px;
+  margin: 20px auto;
+  width: 80%;
+  background: #ffffff;
+  padding: 20px;
+}
+.arduino_output{
+  background: #44CCFF url("../GUI-Graphs/res/lamp.png");
+  background-size: cover;
+  border: 1px #000000 solid;
+  width: 80px;
+  height: 80px;
+  border-radius: 70px;
+  display: flex;
+  flex-direction: row;
+}
+.arduino_sensor{
+  background: #44CCFF url("../GUI-Graphs/res/sensor.png");
+  background-size: cover;
+  border-radius: 70px;
+  border: 1px #000000 solid;
+  width: 80px;
+  height: 80px;
+}
+.arduino_switch{
+  background: #44CCFF url("../GUI-Graphs/res/switch.png");
+  background-size: cover;
+  border-radius: 70px;
+  border: 1px #000000 solid;
+  width: 80px;
+  height: 80px;
+}
+.arduino_button{
+  background: #44CCFF url("../GUI-Graphs/res/button.png");
+  background-size: cover;
+  border-radius: 90px;
+  border: 1px #000000 solid;
+  width: 80px;
+  height: 80px;
+}
+
+.settingsDeviceContainer{
+  display: inline-block;
+  width: 45%;
+}
+.settingsDevice{
+  display: flex;
+  flex-direction: row;
+}
+
+.settingsDeviceImg{
+  width: 80px;
+  height: 80px;
+}
+
 @media screen and (max-width: 700px) {
   body {
 

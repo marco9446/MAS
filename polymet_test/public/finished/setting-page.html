@@ -4,6 +4,7 @@
 <link rel="import" href="../components/core-icons/av-icons.html">
 <link rel="import" href="../components/paper-input/paper-input.html">
 <link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../components/paper-input/paper-autogrow-textarea.html">
 <link rel="import" href="../components/paper-shadow/paper-shadow.html">
 
@@ -16,8 +17,8 @@
                     url="/user"
                    class=""></core-ajax>
 
-
-
+        <core-ajax id="GetAlldevice" auto response="{{listOfarduinos}}" handleAs="json" method="GET" url="/mod/" ></core-ajax>
+        <core-ajax id="Change_name" contentType="application/json"  method="PUT" ></core-ajax>
         <div id="newUserContainer" vertical layout >
 
             <div class="settingTitle">
@@ -42,6 +43,29 @@
                 <core-icon icon=""  id="verification" inline></core-icon>
             </div>
         </div>
+
+        <template repeat="{{arduinos in listOfarduinos}}">
+            <div class="settingsArdu">
+                <h1>name:{{arduinos.name}}, ip:{{arduinos.ip}} </h1>
+                <template repeat="{{device in arduinos.devices}}">
+                    <div class="settingsDeviceContainer" >
+                        <div class="settingsDevice">
+                            <div class="{{device.type|changeClass}}"></div>
+                            <div style="height: 80px; margin: 5px; padding: 5px">
+                                <div class="tochange">name: {{device.name}}</div>
+                                <div>type: {{device.type}}</div>
+
+                            </div>
+                            <paper-input id="{{device._id}}" label="New Name"  id="settingsInputName"   inline ></paper-input>
+                            <core-icon-button icon="check" style="margin-top: 20px; margin-bottom: 39px" on-tap="{{confirmName}}"></core-icon-button>
+                        </div>
+                    </div>
+                </template>
+
+            </div>
+
+
+        </template >
 
         <paper-toast id="toast" class="capsule" style="padding-right: 60px; text-align: center"></paper-toast>
 
@@ -77,9 +101,36 @@
                             this.$.toast.text = "wrong parameters";
                         }
                         this.$.toast.show();
+                    },changeClass: function(type) {
+
+                        if (type.indexOf("o") > -1) {
+                            return "arduino_output"
+                        }
+                        else if (type.indexOf("s") > -1) {
+                            return "arduino_sensor"
+                        }
+                        else if (type.indexOf("w") > -1) {
+                            return "arduino_switch"
+                        }
+                        else if (type.indexOf("b") > -1) {
+                            return "arduino_button"
+                        }
+
+                    }, confirmName:function(a,b,target){
+                        var ajaxName = this.$.Change_name;
+                        var divName =target.parentElement.querySelector(".tochange");
+                        var paperInp = target.parentElement.querySelector("paper-input");
+                        var deviceId = paperInp.id;
+                        var newName = paperInp.value;
+                        if(newName.length > 1){
+                            ajaxName.url="/device/"+deviceId;
+                            ajaxName.body = '{"name":"'+newName+'"}';
+                            ajaxName.go();
+                            divName.innerHTML= "name: "+newName;
+                        }
                     }
 
-                }
+                    }
         )
     </script>
 </polymer-element>
