@@ -99,12 +99,13 @@ function getConditions(program, node) {
 //maybe except for cooking bacon and pancakes
 //TO DO: in version 1.2, enable bacon and pancake functionality
 function exec(program, node) {
+	var delayRE = new RegExp("delay", "g");
 	if (!node)
 		return 0;
 	//if branch
 	if (node.text == "IF") {
 		execIfNode(program, node);
-	} else if (node.text == "Delay") {
+	} else if (node.text.match(delayRE)) {
 		//tady bude neco
 		execDelay(program, node);
 	} else {
