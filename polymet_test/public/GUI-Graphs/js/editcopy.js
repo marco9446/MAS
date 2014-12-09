@@ -21,7 +21,7 @@ var myObject=function(){
                 },
                 layout: $(go.TreeLayout,
                     {
-                        //wrappingWidth: Infinity, alignment: go.GridLayout.Position,
+                       //wrappingWidth: Infinity, alignment: go.GridLayout.Position,
                         //cellSize: new go.Size(1, 1)
                     }),
                 initialContentAlignment: go.Spot.TopLeft,
@@ -338,10 +338,11 @@ var myObject=function(){
 
     myDiagram.linkTemplate =
        $(go.Link,
-        
          { routing: go.Link.AvoidsNodes,
         corner: 10 },                // with rounded corners
-      $(go.Shape,  { strokeWidth: 4, stroke: "#00a4a4" })
+      $(go.Shape,  { strokeWidth: 2, stroke: "black" }),
+           $(go.Shape,  // the arrowhead
+               { toArrow: "standard", stroke: "black", strokeWidth:3, fill: "black"})
     );
 
 
