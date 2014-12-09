@@ -125,9 +125,10 @@ paper-input, paper-input-decorator{
   padding-bottom: 15px;
 }
 .settingFields{
-  display: inline;
-  text-align: right;
-  width: 200px;
+
+  display: inline-block;
+  text-align: left;
+  width: 160px;
 }
 #paper_fab1{
   position: absolute;
@@ -262,6 +263,9 @@ html /deep/ .dropdown{
     display: none;
   }
   .titleTab{
+    display: none;
+  }
+  html /deep/ .settingFields{
     display: none;
   }
  

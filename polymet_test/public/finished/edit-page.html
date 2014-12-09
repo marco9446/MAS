@@ -26,7 +26,7 @@
         <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="Getdevice" auto response="{{code}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="GetNewId"   url="/action" response="{{newIp}}" handleAs="json" contentType="application/json" method="POST" on-core-response="{{newIpAssigner}}"></core-ajax>
-        <div style="width:100%; white-space:nowrap;">
+        <div style="width:100%; white-space:nowrap;" class="unselectable">
 
             <div inline flex horizontal layout style="width: 100%">
 
@@ -43,7 +43,7 @@
                 </div>
                 <div id="test" style="border: solid 1px black; " inline flex  layout></div>
             </div>
-            <div id="arduinoContainer" center-center layout >
+            <div id="arduinoContainer" class="unselectable" center-center layout >
                 <core-drag-drop></core-drag-drop>
                 <template repeat="{{device in listOfdevices2}}">
 
@@ -165,7 +165,7 @@
                             //TODO do the ajax request
 
                             postAjax.body = JSON.stringify({state:postDictionary[selectedDecision],device:oldId})
-                            postAjax.go()
+                            postAjax.go();
                             document.querySelector("html /deep/ #dialog2").toggle();
                         }
 
