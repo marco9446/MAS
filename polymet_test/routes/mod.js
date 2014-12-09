@@ -119,24 +119,34 @@ arduino.actionLinstener.push(function(msg){
 
     }
   }
-
-
-
-
-
-
-
-
   })
-
-
 });
 
 router.post('/send', function(req, res, next) {
-    console.log(req.body);
+    console.log(req.body.status+"asdasdjhaskjdhaskjdhakjsdhakjshd");
     saveAndSend(req.body);
     res.status(200).end();
 });
+
+router.post('/sendByName', function(req, res, next) {
+    console.log(req.body.state+"asdasdasdasdasdasdasdas");
+    Device.find({name:req.body.name},function(err,found){
+      if(!err && found){
+         for(var i=0;i<found.length;i++){
+            console.log(found[i])
+            if(found[i].type.indexOf("o")!=-1){
+              console.log({id:found[i]._id,status:req.body.status})
+               saveAndSend({id:found[i]._id,status:req.body.status});
+            }
+           
+          }
+         res.status(200).end();
+      }else{
+        res.status(404).end();
+      }
+    });
+});
+
 
 
 

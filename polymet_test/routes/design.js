@@ -67,7 +67,7 @@ router.put('/:paramID',function(req,res,next){
         
         
       }
-      found.save(function(err,saved){if(!err){res.status(200).end()}else{res.status(404).end()}});
+      found.save(function(err,saved){if(!err){res.status(200).end()}else{console.log(err);res.status(404).end()}});
 
     }else{
       res.status(404).end();
