@@ -75,12 +75,14 @@ function getConditions(program, node) {
 //maybe except for cooking bacon and pancakes
 //TO DO: in version 1.2, enable bacon and pancake functionality
 function exec(program, node) {
+	//regexp to find the delay node
+	var re = new RegExp("delay", "g");
 	if (!node)
 		return 0;
 	//if branch
 	if (node.text == "IF") {
 		execIfNode(program, node);
-	} else if (node.text == "Delay") {
+	} else if (node.text.match(re)) {
 		//tady bude neco
 		execDelay(program, node);
 	} else {
@@ -136,7 +138,7 @@ function execAction(program, node) {
 //parse a delay node
 function execDelay(program, node) {
 	//timeout is a fixed value for now, ten of something(?)
-	var timeout = 10;
+	var timeout = 2000;
 	console.log("not implemented yet m8 :^)");
 	// setTimeout(function() {}, 10);
 	output += "setTimeout(function() {";
