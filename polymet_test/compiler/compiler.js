@@ -162,7 +162,11 @@ function execAction(program, node) {
 
 //parse a delay node
 function execDelay(program, node) {
-	console.log("not implemented yet m8 :^)");
+	//timeout is a fixed value for now, ten of something(?)
+	var timeout = 2000;
+	output += "setTimeout(function() {\n";
+	exec(program, getNext(program, node));
+	output += "}, " + timeout + ");\n";
 }
 
 
