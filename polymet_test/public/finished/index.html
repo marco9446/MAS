@@ -13,7 +13,7 @@
   <link rel="import" href="../components/font-roboto/roboto.html">
 
   <link rel="import" href="../components/paper-tabs/paper-tabs.html">
-
+  <link rel="import" href="../components/core-ajax/core-ajax.html">
   <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
   <link rel="import" href="../components/core-icon-button/core-icon-button.html">
   <link rel="import" href="../components/core-toolbar/core-toolbar.html">
@@ -33,7 +33,7 @@
 
 <body unresolved>
 
-
+ <core-ajax id="VoiceControll" contentType="application/json"  method="POST" url="/mod/sendByName"  ></core-ajax>
   <core-header-panel mode="waterfall" id="core_header_panel" >
     <core-toolbar id="core_toolbar">
 
@@ -100,7 +100,8 @@
     var speechMic = document.querySelector('#speech_mic');
 
     speechMic.addEventListener('speech-mic-result', function(e) {
-      console.log(e.detail.transcript);
+      //console.log(e.detail.transcript);
+      var aja = document.querySelector("#VoiceControll");
       if(e.detail.transcript == "settings" || e.detail.transcript == " settings" ){
         document.querySelector('app-router').go('/settings');
       }else if(e.detail.transcript == "edit" ||e.detail.transcript == " edit"){
@@ -109,6 +110,19 @@
         document.querySelector('app-router').go('/log');
       }else if(e.detail.transcript == "home"|| e.detail.transcript == " home"){
         document.querySelector('app-router').go('/home');
+      }else if(e.detail.transcript.indexOf("turn on")>-1){
+        var rec = e.detail.transcript.substring(8);
+        console.log("accendo", rec.replace(/\s/g, ''));
+        aja.bodyType="json";
+        aja.body='{ "name" :"'+rec+'" ,"status" :"true"}';
+        aja.go();
+
+      }else if(e.detail.transcript.indexOf("turn off")>-1){
+        var rec2 = e.detail.transcript.substring(8);
+        console.log("spengo", rec2);
+        aja.bodyType="json";
+        aja.body='{ "name" :"'+rec2+'" ,"status" :"false"}';
+        aja.go();
       }
     });
 
