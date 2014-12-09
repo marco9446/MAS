@@ -4,7 +4,9 @@
 <link rel="import" href="../components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/paper-toast/paper-toast.html">
 <link rel="import" href="../components/core-ajax/core-ajax.html">
+
 <link rel="import" href="../components/core-drag-drop/core-drag-drop.html">
+
 <link rel="import" href="edit-page.html">
 
 <polymer-element name="bluePrint-page"  on-drag='{{dragStart}}'  on-dragover="{{allowDrop}}" on-drop='{{dragStop}}' >
@@ -22,12 +24,14 @@
 
             <figure id="blueprint-container" center layout  >
                 <core-ajax id="changePosition" contentType="application/json" method="PUT"  ></core-ajax>
+
                 <template repeat="{{buttons in listOfdevices}}">
                     <template if="{{buttons.position[0]}}">
                         <div class="btHomeContainer" id="{{buttons._id}}"  style="top: {{buttons.position[1]}}%;left: {{buttons.position[0]}}%">
                             <paper-fab  mini icon="device:brightness-high" class="btHome" on-tap={{tappato}}
                                         style="background: {{buttons.state== 'true'? '#ffeb3b':'#ffffff'}}" ></paper-fab>
-                            <div>
+
+                            <div class="deviceName" contenteditable="true">
                                 {{buttons.name}}
                             </div>
                             <core-icon-button class="edit_element" on-tap="{{deleteElem}}" icon="clear"></core-icon-button>
