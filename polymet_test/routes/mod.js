@@ -36,7 +36,7 @@ router.get('/:moduleid', function(req, res, next) {
 //get all modules
 router.get('/', function(req, res, next) {
 
-    Module.find({}).lean().exec(function(err, modules) {
+    Module.find({}).populate("devices").exec(function(err, modules) {
         if (err) return next (err);
 
         res.json(modules);
@@ -147,6 +147,26 @@ router.post('/sendByName', function(req, res, next) {
     });
 });
 
+
+router.put('/:deviceid', function(req, res, next) {
+    Module.findOne({_id:req.params.deviceid}).exec(function(err, module) {
+        if (err) return next(err);
+
+        if (module) {
+            console.log(module);
+            if (req.body.name) {
+                module.name = req.body.name;
+            }
+            module.save(onModelSave(res));
+        }else{
+            res.json({
+                statusCode: 404,
+                message: "no device found"
+            });
+        }
+
+    });
+})
 
 
 
