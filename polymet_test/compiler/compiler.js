@@ -114,7 +114,7 @@ function execIfNode(program, node) {
 		output += "]"
 		output += ")";
 	}
-	output += ") {";
+	output += ") {\n";
 	//evaluate the YES branch
 	// output += "console.log('TOOK YES BRANCH')\n";
 	exec(program, getNext(program, node, "yes"));
@@ -126,11 +126,12 @@ function execIfNode(program, node) {
 		exec(program, getNext(program, node, "no"));
 		output += "}";
 	}
+	output += "\n";
 }
 
 //parse an action node
 function execAction(program, node) {
-	output += "library.action(" + "'" + node.key + "'" + ");";
+	output += "library.action(" + "'" + node.key + "'" + ");\n";
 	exec(program, getNext(program, node));
 
 }
@@ -139,11 +140,9 @@ function execAction(program, node) {
 function execDelay(program, node) {
 	//timeout is a fixed value for now, ten of something(?)
 	var timeout = 2000;
-	console.log("not implemented yet m8 :^)");
-	// setTimeout(function() {}, 10);
-	output += "setTimeout(function() {";
+	output += "setTimeout(function() {\n";
 	exec(program, getNext(program, node));
-	output += "}, " + timeout + ");";
+	output += "}, " + timeout + ");\n";
 }
 
 
