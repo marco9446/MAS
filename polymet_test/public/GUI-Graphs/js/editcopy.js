@@ -123,7 +123,7 @@ var myObject=function(){
                         {alignment: go.Spot.Right, margin: 5}),
                     $(go.TextBlock,
                         {
-                            alignment: go.Spot.Left, editable: true,
+                            alignment: go.Spot.Left,
                             margin: 5,
                             font: "bold 18px sans-serif",
                             stroke: "#9A6600"
@@ -198,7 +198,7 @@ var myObject=function(){
                         {alignment: go.Spot.Right, margin: 2}),
                     $(go.TextBlock,
                         {
-                            alignment: go.Spot.Left, editable: true,
+                            alignment: go.Spot.Left,
                             margin: 5,
                             font: "bold 16px sans-serif",
                             stroke: "#006080"
@@ -272,7 +272,7 @@ var myObject=function(){
                             {
                                 textAlign: "center",
                                 stroke: "white",
-                                margin: 5, editable: true,
+                                margin: 5, 
                                 font: "bold 13px sans-serif"
                             },
                             new go.Binding("text", "text").makeTwoWay()),
