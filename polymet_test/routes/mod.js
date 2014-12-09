@@ -38,7 +38,6 @@ router.get('/', function(req, res, next) {
 
     Module.find({}).populate("devices").exec(function(err, modules) {
         if (err) return next (err);
-
         res.json(modules);
     })
 });
@@ -103,8 +102,6 @@ function sendRequestTo(design){
         }
       }
       loop(); 
-
-
 }
 
 
