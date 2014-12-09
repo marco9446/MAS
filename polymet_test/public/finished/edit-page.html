@@ -90,6 +90,10 @@
         
 
     <script>
+        (function() {
+            // these variables are shared by all instances of app-globals
+            var role = "";
+
 
         Polymer("edit-page", {
                     graph:null,
@@ -157,14 +161,15 @@
                         var selectedDecision = document.querySelector("html /deep/ paper-dropdown-menu").selectedItemLabel;
                         var postAjax = this.$.GetNewId;
                         var postDictionary  = {"Tourn on":"true","Tourn off":"false","Switch":'switch' };
-                        console.log(postAjax, oldId , selectedDecision);
+                        //console.log(postAjax, oldId , selectedDecision);
                         if (selectedDecision.length>1){
-                            console.log(selectedDecision);
+                            //console.log(selectedDecision);
                             
 
                             //TODO do the ajax request
 
-                            postAjax.body = JSON.stringify({state:postDictionary[selectedDecision],device:oldId})
+                            postAjax.body = JSON.stringify({state:postDictionary[selectedDecision],device:oldId});
+                            role = selectedDecision;
                             postAjax.go();
                             document.querySelector("html /deep/ #dialog2").toggle();
                         }
@@ -172,16 +177,18 @@
 
                     }//TODO
                     , newIpAssigner: function(){
+                        console.log("role",role);
+                        var postDictionary  = {"Tourn on":"../GUI-Graphs/res/bulb-on.png","Tourn off":"../GUI-Graphs/res/lamp.png","Switch":'../GUI-Graphs/res/on-off.png' };
                         var name = document.querySelector("html /deep/ #dialog2 > #nameDeviceHidden").innerHTML;
                         var responce  =  this.newIp;//risposta delll'ajax request
-                        console.log(responce);
+                        //console.log(responce);
                         
-                         this.graph.newNode(responce, name, "../GUI-Graphs/res/lamp.png", '')
+                         this.graph.newNode(responce, name,postDictionary[role] , '')
                     }
                 }
 
 
-        )
+        )})();
     </script>
 
     <!--<script src="../GUI-Graphs/js/editcopy.js"></script>-->
