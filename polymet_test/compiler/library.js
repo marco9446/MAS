@@ -66,10 +66,13 @@ var action = function action(argument) {
 		if (err) {
 				throw new Error("no devices found! reboot or something");
 			}
-		if (device.type != "o") {
+		if (device.type.indexOf("o") ==-1 ) {
 			throw new Error("runLoop: bad type of device:" + device._id);
 		}
 		var newstate = found.state;
+		if(found.state=="switch"){
+			newstate=device.state=="true"?"false":"true";
+		}
 		console.log(device.state,newstate)
 		saveAndSend({id:device._id,status:newstate});
 		
