@@ -339,6 +339,7 @@ var myObject=function(){
     myDiagram.linkTemplate =
        $(go.Link,
          { routing: go.Link.AvoidsNodes,
+             curve:go.Link.JumpOver,
         corner: 10 },                // with rounded corners
       $(go.Shape,  { strokeWidth: 2, stroke: "black" }),
            $(go.Shape,  // the arrowhead
