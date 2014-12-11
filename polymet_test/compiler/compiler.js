@@ -127,12 +127,12 @@ function execIfNode(program, node) {
 		output += "db, ";
 		output += "[";
 		for (var i = 0; i < conditions.length; i++) {
-			output += "'" + conditions[i].key + "'";
+			output += "'" + conditions[i].dbId + "'";
 			// , between arguments if this isn't the last one
 			if (i != conditions.length-1)
 				output += ", ";
 			//add condition to list of sensors!
-			sensors.push(conditions[i].key);
+			sensors.push(conditions[i].dbId);
 		};
 		output += "]"
 		output += ")";
@@ -155,7 +155,7 @@ function execIfNode(program, node) {
 
 //parse an action node
 function execAction(program, node) {
-	output += "library.action(" + "'" + node.key + "'" + ");\n";
+	output += "library.action(" + "'" + node.dbId + "'" + ");\n";
 	if (getNext(program, node))
 		exec(program, getNext(program, node));
 
