@@ -546,17 +546,20 @@ function getNewId(){
         myDiagram.model.addNodeData(subgrp);
 
     }else if(category=="Sensor"){
+        console.log("add sensor");
         var newSensor={};
         newSensor.source=source;
-        newSensor.key=key;
+        newSensor.key=getNewId();
         newSensor.text=text;
+        newSensor.dbId=key;
         myDiagram.model.addNodeData(newSensor);
     }
     else{
         var newDevice={};
-        newDevice.key=key;
+        newDevice.key=getNewId();
         newDevice.text=text;
         newDevice.source=source;
+        newDevice.dbId=key;
         newDevice.topArray=[{portColor:"black",portId:"from"+key}];
         newDevice.bottomArray=[{portColor:"black",portId:"to"+key}];
         myDiagram.model.addNodeData(newDevice)
