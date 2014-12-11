@@ -73,11 +73,23 @@ function saveAndSend(json) {
     log.save();
       arduino.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
       found1.state=json.status;
-      found1.save(function(err,saved){console.log(err,saved)});
+      found1.save(function(err,saved){console.log(err,saved);
+         Design.find({sensors:json.id},function(err,found){
+          if(found){
+          for(var lala=0;lala<found.length;lala++){
+            sendRequestTo(found[lala]);
+            }
+          }
+          });
+        
+      });
       }});
 
     }
   });
+  
+
+
 }
 
 function sendRequestTo(design){

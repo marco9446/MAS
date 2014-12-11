@@ -560,8 +560,10 @@ function getNewId(){
         newDevice.text=text;
         newDevice.source=source;
         newDevice.dbId=key;
-        newDevice.topArray=[{portColor:"black",portId:"from"+key}];
-        newDevice.bottomArray=[{portColor:"black",portId:"to"+key}];
+        if(category!="false"){
+            newDevice.topArray=[{portColor:"black",portId:"from"+key}];
+            newDevice.bottomArray=[{portColor:"black",portId:"to"+key}];
+        }
         myDiagram.model.addNodeData(newDevice)
     }
 }
