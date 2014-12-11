@@ -75,6 +75,7 @@
                         <paper-item>Tourn on</paper-item>
                         <paper-item>Tourn off</paper-item>
                         <paper-item>Switch</paper-item>
+                        <paper-item>Test</paper-item>
                     </core-menu>
                 </paper-dropdown>
             </paper-dropdown-menu>
@@ -160,18 +161,28 @@
                         var oldId =  document.querySelector("html /deep/ #dialog2 > #idDeviceHidden").innerHTML;
                         var selectedDecision = document.querySelector("html /deep/ paper-dropdown-menu").selectedItemLabel;
                         var postAjax = this.$.GetNewId;
-                        var postDictionary  = {"Tourn on":"true","Tourn off":"false","Switch":'switch' };
+                        var postDictionary  = {"Tourn on":"true","Tourn off":"false","Switch":'switch',"Test":"Test"};
                         //console.log(postAjax, oldId , selectedDecision);
                         if (selectedDecision.length>1){
                             //console.log(selectedDecision);
                             
 
                             //TODO do the ajax request
+                            //if not a test
+                            if(postDictionary[selectedDecision]!="Test"){
+                                postAjax.body = JSON.stringify({state:postDictionary[selectedDecision],device:oldId});
+                                role = selectedDecision;
+                                postAjax.go();
+                                document.querySelector("html /deep/ #dialog2").toggle();
+                            }else{
+                                console.log("test"+oldId)
+                                document.querySelector("html /deep/ #dialog2").toggle();
+                                var name = document.querySelector("html /deep/ #dialog2 > #nameDeviceHidden").innerHTML;
+                       
+                        
+                                this.graph.newNode(oldId, name,"../GUI-Graphs/res/bulb-on.png" , '')
 
-                            postAjax.body = JSON.stringify({state:postDictionary[selectedDecision],device:oldId});
-                            role = selectedDecision;
-                            postAjax.go();
-                            document.querySelector("html /deep/ #dialog2").toggle();
+                            }
                         }
 
 
