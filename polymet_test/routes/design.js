@@ -48,7 +48,7 @@ router.post('/', function(req, res, next) {
 
 router.put('/:paramID',function(req,res,next){
    var context=req.body;
-   console.log(context);
+   console.log(req.body+"akjdhakjsdhkajsdhkajshdkajshdkjashdkajsdhkjasdh");
   Design.findOne({_id:req.params.paramID},function(err,found){
     if(!err && found){
       if(context.name){
@@ -57,9 +57,10 @@ router.put('/:paramID',function(req,res,next){
       if(context.program){
         found.program=JSON.parse(context.program);
       }
-      if(context.code){
+      if(context.code!=undefined){
 
         found.code=JSON.parse(context.code);
+        console.log(found.code);
         var compiled = compiler(found.code);
         found.program=compiled.code;
         found.sensors=compiled.sensors;  

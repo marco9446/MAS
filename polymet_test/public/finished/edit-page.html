@@ -12,7 +12,8 @@
 
     <template  >
       <core-ajax 
-                    id="requestDesign"
+                   id="requestDesign"
+                   contentType="application/json"
                    auto =false
                    url="/design"
                    handleAs="json"
@@ -142,10 +143,10 @@
                     },
                     save:function(){
 
-                        console.log(this.graph.getJSON());
-                         this.$.requestDesign.method="PUT"
+                        console.log(this.graph.getJSON()+" "+this.pathArg1);
+                        this.$.requestDesign.method="PUT"
                         this.$.requestDesign.url="/design/"+this.pathArg1.replace(":","");
-                        this.$.requestDesign.body=JSON.stringify({code:this.graph.getJSON()});
+                        this.$.requestDesign.body= JSON.stringify({code : this.graph.getJSON() });
                         this.$.requestDesign.go();
 
 
