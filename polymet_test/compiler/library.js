@@ -49,6 +49,7 @@ var condition = function condition(arg) {
 		}
 	};
 
+	console.log("CONDITION IS "+ passing);
 	return passing;
 
 }
