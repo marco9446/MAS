@@ -44,7 +44,7 @@ var condition = function condition(db, arg) {
 		arg=[arg];
 	} 
 	for (var i = 0; i < arg.length; i++) {
-		if (db[arg[i]] != true) {
+		if (dbase[arg[i]] != true) {
 			passing = false;
 		}
 	};
@@ -73,6 +73,7 @@ var action = function action(argument) {
 		if(found.state=="switch"){
 			newstate=device.state=="true"?"false":"true";
 		}
+		dbase[device_id] = newstate == 'true' 
 		console.log(device.state,newstate)
 		saveAndSend({id:device._id,status:newstate});
 		
