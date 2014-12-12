@@ -67,8 +67,7 @@ router.post('/logIn',function(req,res){
   console.log(req.body);
   if(req.body.username=="admin" && req.body.password=="admin"){
     console.log("redirect")
-      var sess = req.session
-      req.session.logged = true;
+
      res.redirect("/finished");
   }else{
 

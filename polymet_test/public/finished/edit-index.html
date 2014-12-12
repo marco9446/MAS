@@ -95,12 +95,11 @@
                    on-core-response="{{handleResponse}}"
                    class="">
         </core-ajax>
-
+        <core-ajax id="Change_status" contentType="application/json"  method="PUT"  ></core-ajax>
         <template  repeat="{{des in res}}"  >
                   
             <div class="logContainer"  layout horizontal center id="A{{des._id}}" style="width:70%; visibility:{{cosa}}">
-                <paper-checkbox class="activeProgramm" on-core-change="{{ uscabau }}" ></paper-checkbox>
-
+                <paper-checkbox class="activeProgramm" checked="{{des.active}}" on-change="{{ uscabau }}" ></paper-checkbox>
                <h1 style="margin-left:30px"> {{des.name}} </h1>
                <div horizontal end-justified  layout style="width:100%;">
                  <div  style="margin-right:30px; position: relative">
@@ -140,7 +139,11 @@
 
                     },
                     uscabau: function(a,b,target){
+                        var aja = this.$.Change_status;
                         console.log(target.parentElement.id, target.checked);
+                        aja.body=JSON.stringify({active:target.checked});
+                        aja.url="/design/"+target.parentElement.id.substring(1);
+                        aja.go();
                     }
 
                 }

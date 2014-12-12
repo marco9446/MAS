@@ -12,7 +12,7 @@ var library = require('./../compiler/library.js');
 
 
 //allowed methods
-router.all('/', middleware.supportedMethods('GET, POST',"DELETE"));
+router.all('/', middleware.supportedMethods('GET, POST',"DELETE","PUT"));
 
 
 //get all Project
@@ -47,8 +47,7 @@ router.post('/', function(req, res, next) {
 
 
 router.put('/:paramID',function(req,res,next){
-   console.log(req.body);
-   var context=JSON.parse(Object.keys(req.body)[0]);
+   var context=req.body;
    console.log(context);
   Design.findOne({_id:req.params.paramID},function(err,found){
     if(!err && found){
@@ -65,8 +64,9 @@ router.put('/:paramID',function(req,res,next){
         found.program=compiled.code;
         found.sensors=compiled.sensors;  
       }
-      if(context.active){
-         found.active=JSON.parse(context.active);
+      if(context.active!=undefined){
+         found.active=context.active;
+          console.log(found.active);
       }
       found.save(function(err,saved){if(!err){res.status(200).end()}else{console.log(err);res.status(404).end()}});
 
