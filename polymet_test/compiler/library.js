@@ -49,7 +49,7 @@ var condition = function condition(arg) {
 		}
 	};
 
-	console.log("CONDITION IS "+ passing + "because " + dbase[arg[i]]);
+	console.log("CONDITION IS "+ passing + " because " + dbase[arg[0]]);
 	return passing;
 
 }
