@@ -74,7 +74,7 @@ function saveAndSend(json) {
       arduino.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
       found1.state=json.status;
       found1.save(function(err,saved){console.log(err,saved);
-         Design.find({sensors:json.id},function(err,found){
+         Design.find({sensors:json.id,active:true},function(err,found){
           if(found){
           for(var lala=0;lala<found.length;lala++){
             sendRequestTo(found[lala]);
@@ -120,7 +120,7 @@ function sendRequestTo(design){
 arduino.actionLinstener.push(function(msg){
 
   console.log(msg);
-  Design.find({sensors:msg._id},function(err,found){
+  Design.find({sensors:msg._id,active:true},function(err,found){
     if(found){
     for(var lala=0;lala<found.length;lala++){
       sendRequestTo(found[lala]);
