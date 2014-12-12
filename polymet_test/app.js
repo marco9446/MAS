@@ -22,7 +22,7 @@ var usersRouter = require('./routes/user');
 var deviceRouter = require('./routes/device');
 var logRouter = require('./routes/log');
 var modRouter = require('./routes/mod');
-var designRouter = require('./routes/Design');
+var designRouter = require('./routes/design');
 var actionRouter = require('./routes/action');
 
 
