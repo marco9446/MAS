@@ -36,7 +36,7 @@ function doRequest(method, url, data) {
 
 //evaluate the IF condition
 //takes a list of arguments, check each of them for AND
-var condition = function condition(db, arg) {
+var condition = function condition(arg) {
 	console.log("condition",arg)
 
 	var passing = true;
