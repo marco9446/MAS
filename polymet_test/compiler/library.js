@@ -73,7 +73,7 @@ var action = function action(argument) {
 		if(found.state=="switch"){
 			newstate=device.state=="true"?"false":"true";
 		}
-		dbase[device_id] = newstate == 'true' 
+		dbase[device._id] = newstate == 'true' 
 		console.log(device.state,newstate)
 		saveAndSend({id:device._id,status:newstate});
 		
