@@ -38,7 +38,7 @@ var compile = function compile(program) {
 	}
 	//we don't add footer or header atm as the code is supposed to go into a generated function
 	//and now we do!
-	//output += addHeader();
+	output += addHeader();
 
 	//get START node
 	var startNode = program.nodeDataArray.filter(function (obj) {
