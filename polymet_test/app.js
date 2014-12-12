@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
-var session = require('express-session')
 
 
 
@@ -45,9 +44,6 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
- secret: '1234567890QWERTY'
-}))
 
 
 // app.use('/', indexRouter);
@@ -63,6 +59,7 @@ app.get("/",function(req,res){
     res.sendFile(path.join(__dirname,"/public/finished/vulcanizedLogin.html"));
 
 })
+
 
 
 // catch 404 and forward to error handler
