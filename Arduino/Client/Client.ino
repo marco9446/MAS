@@ -33,7 +33,7 @@ void setPinMode(){
   }
 }
 void onlyOneTimePleas(){
- Client client("10.20.6.141", 3005);
+ Client client("10.20.6.151", 3005);
     //Serial.println("connecting...");
 
     if (client.connect()) {
@@ -103,7 +103,7 @@ void updateInput(){
     
   }
   if(change){
-    Client client("10.20.6.141", 3015);
+    Client client("10.20.6.151", 3015);
    
     //Serial.println("connecting...");
     

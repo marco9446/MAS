@@ -316,6 +316,10 @@ html /deep/ .dropdown{
 
 
   }
+  .settingsDeviceContainer{
+    width: 100%;
+  }
+
   #editPage{
     display: none;
   }
