@@ -63,9 +63,10 @@ router.put('/:paramID',function(req,res,next){
         found.code=JSON.parse(context.code);
         var compiled = compiler(found.code);
         found.program=compiled.code;
-        found.sensors=compiled.sensors;
-        
-        
+        found.sensors=compiled.sensors;  
+      }
+      if(context.active){
+         found.active=JSON.parse(context.active);
       }
       found.save(function(err,saved){if(!err){res.status(200).end()}else{console.log(err);res.status(404).end()}});
 
