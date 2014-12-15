@@ -296,6 +296,14 @@ html /deep/ .dropdown{
   width: 80px;
   height: 80px;
 }
+.arduino_controll{
+  background: #44CCFF url("../GUI-Graphs/res/remote-control.png");
+  background-size: cover;
+  border-radius: 90px;
+  border: 1px #000000 solid;
+  width: 80px;
+  height: 80px;
+}
 
 .settingsDeviceContainer{
   display: inline-block;
