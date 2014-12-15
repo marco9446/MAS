@@ -344,7 +344,7 @@ var myObject=function(){
       $(go.Shape,  { strokeWidth: 2, stroke: "black" }),
            $(go.Shape,  // the arrowhead
                { toArrow: "standard", stroke: "black", strokeWidth:3, fill: "black"})
-           
+
     );
 
 
