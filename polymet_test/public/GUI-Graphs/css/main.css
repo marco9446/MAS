@@ -4,13 +4,13 @@
     background-image: url("../../images/bigpaper.jpg");
 
     border: solid 1px black;
-    height: 521px
+    height: 100%;
 }
 #conditionContainer{
 
     display: inline;
     overflow: auto;
-    height: 500px;
+    height: 96.5%;
     border: 1px #000000 solid;
     padding: 10px;
 }

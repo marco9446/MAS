@@ -27,9 +27,9 @@
         <core-ajax id="Getdevice" auto response="{{listOfdevices2}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="Getdevice" auto response="{{code}}" handleAs="json" method="GET" url="/device/" ></core-ajax>
         <core-ajax id="GetNewId"   url="/action" response="{{newIp}}" handleAs="json" contentType="application/json" method="POST" on-core-response="{{newIpAssigner}}"></core-ajax>
-        <div style="width:100%; white-space:nowrap;" class="unselectable">
+        <div style="width:100%; height:100%;white-space:nowrap;" class="unselectable">
 
-            <div inline flex horizontal layout style="width: 100%">
+            <div inline flex horizontal layout style="width: 100%; height: 80%">
 
                 <div id="conditionContainer" >
                     <core-drag-drop></core-drag-drop>
@@ -58,12 +58,11 @@
                 </template>
 
             </div>
+            Semantic zoom level: <input id="levelSlider" type="range" min="0" max="5" value="3">
+
+            <paper-button raised  inline on-tap="{{save}}">Save</paper-button>
         </div>
-        Semantic zoom level: <input id="levelSlider" type="range" min="0" max="5" value="3">
 
-
-       
-        <paper-button raised  inline on-tap="{{save}}">Save</paper-button>
         <paper-dialog id="dialog2" backdrop transition="core-transition-bottom" style="width: 600px">
 
             <h1>Decide the behavior of the device</h1>
