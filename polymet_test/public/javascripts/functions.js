@@ -105,6 +105,8 @@ function dropArduino(draginfo){
             //graph.newNode(id, name, "../GUI-Graphs/res/lamp.png", '')
         }else if(type == 'delay' ){
             graph.newNode('', name, "../GUI-Graphs/res/time.png", '')
+        }else if(type == 'controll' ){
+            graph.newNode(id, name, "../GUI-Graphs/res/remote-control.png", '')
         }
 
     }
