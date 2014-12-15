@@ -71,6 +71,11 @@
     height: 80px;
 
 }
+.editDeviceName{
+    max-width: 80px;
+    overflow:hidden;
+    text-overflow:initial;
+}
 
 .arduino_output{
     background: #44CCFF url("../../GUI-Graphs/res/lamp.png");
