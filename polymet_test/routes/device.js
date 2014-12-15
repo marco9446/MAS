@@ -38,6 +38,9 @@ router.get('/', function( req, res, next) {
 
     Device.find({}).lean().exec(function(err, devices) {
         if (err) return next (err);
+        for(var a =0; a<devices.length; a++){
+            devices[a].type = devices[a].type.replace(/\s/g, "");
+        }
 
         res.json(devices);
     })
