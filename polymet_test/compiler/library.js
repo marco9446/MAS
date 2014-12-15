@@ -57,13 +57,13 @@ var condition = function condition(arg) {
 var action = function action(argument) {
 	//get Device from action
 	//do the same stuff
-	console.log("action",argument)
+	console.log("action",argument);
+	
 	Action.findOne({_id:argument},function(err,found){
 	if(!err){
-	console.log("action found ",found)
 	//resolve device name
 	Device.findById(found.device).exec(function(err, device) {
-		console.log(device,"admdMuasd")
+		//console.log(device,"admdMuasd")
 		if (err) {
 				throw new Error("no devices found! reboot or something");
 			}
@@ -78,8 +78,6 @@ var action = function action(argument) {
 		dbase[device._id] = newstate == 'true' 
 		console.log(device.state,newstate,dbase)
 		saveAndSend({id:device._id,status:newstate});
-		
-
 		});
 	}
 	});
@@ -90,7 +88,6 @@ var action = function action(argument) {
 
 
 function saveAndSend(json) {
-	console.log(json);
   Module.findOne({devices : json.id},function(err,found){
     if(found){
       Device.findOne({_id:json.id},function(err,found1){
@@ -103,7 +100,7 @@ function saveAndSend(json) {
     log.save();
       ac.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
       found1.state=json.status;
-      found1.save(function(err,saved){console.log(err,saved)});
+      found1.save(function(err,saved){});
       }});
 
     }

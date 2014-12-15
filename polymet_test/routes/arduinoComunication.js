@@ -27,7 +27,6 @@ var Queue=function(){
           for (i in a.action){
             finalMsg+=Object.keys(a.action[i])[0].replace("in","")+"=";
             finalMsg+=possibleAction[a.action[i][Object.keys(a.action[i])[0]]]+"&"  //not check
-            console.log(finalMsg);
           }
           var options = {
                     host: a.ip,
@@ -39,12 +38,10 @@ var Queue=function(){
             console.log("Got error: " + e.message);
           });
       }catch(err){
-        console.log(err);
       }
     }
      this.performQuery = function(elem){
         var helper={};
-        console.log(elem)
         for(var i = 1; i < list.length ; i++){
             if(list[i].ip == elem.ip ){
               for( var l = 0;l<elem.action.length;l++){
@@ -59,7 +56,6 @@ var Queue=function(){
     //element = {ID:id,MESSAGE:msg}
     this.AddElement=function(elem){
       //OPTIMIZE THE ELEMENT ADDED
-      console.log("add element")
       this.performQuery(elem);
       this.start();
     }
@@ -68,14 +64,11 @@ var Queue=function(){
       if(list.length >0){
             callBack(list[0]);
             list.splice(0,1);
-            console.log("do elem in pos ",list.length,0);
              timer=setTimeout(function() {
               execute();
             },2000);
-            console.log("run timeout");   
       }else{
          timer=null;
-         console.log("no more element");
       }
 
     }
@@ -83,11 +76,9 @@ var Queue=function(){
         //TODO
         //Set timer that call execute function every time
         if(timer==null){
-          console.log("no stuff restart all the timer")
           execute();
         }else{
 
-          console.log("in coda")
         }
 
     }}
@@ -120,7 +111,6 @@ io.server1=http.createServer(function (req, res) {
     body += chunk;
   });
     req.on('end', function () {
-      console.log(body);
       var content=body.split("\n");
       content[2]=content[2].replace(/(\r\n|\n|\r)/gm,"");
       query.getByNetId(content[2],function(err,found){
@@ -145,18 +135,16 @@ io.server1=http.createServer(function (req, res) {
               var type=content[3].replace(/(\r\n|\n|\r)/gm,"");
 
               query.addNewModule({ip:ip,type:type,netID:netID},function callBack(err,saved){ 
-                  console.log(err,saved);
                   var arr= content[4].split(",");
+                  console.log(arr);
                   for(var i in arr){
                       var pin="pin"+arr[i].substring(0,arr[i].indexOf('='));
                       var type=arr[i].substring(arr[i].indexOf('=')+1);
-
+                      console.log(pin,type)
                       query.addNewDevice({pin:pin,type:type,state:false},function(err1,dSaved){
-                      console.log(err1,dSaved);
                       for (var i in io.addNewDeviceCallback){
                             io.addNewDeviceCallback[i](dSaved);
                           }
-                      console.log(saved._id)
                       query.pushDevices({id:dSaved._id},saved._id,function(err,upp){
                           for (var i in io.addNewModuleCallback){
                             io.addNewModuleCallback[i](upp);
@@ -177,7 +165,7 @@ io.server2=http.createServer(function (req, res) {
     body += chunk;
   });
     req.on('end', function () {
-      console.log("asd");
+      console.log(body);
       var ip=req.connection.remoteAddress;
       //ArduinoBase.findOne({IP:ip},function(err,found){
       query.getOneModuleByIp(ip,function(err,found){
@@ -187,6 +175,7 @@ io.server2=http.createServer(function (req, res) {
         //p2=t,p3=f,p4=t .....
         for(elem in elems){
             //make the incoming information more readble
+
             elems[elem]=elems[elem].replace("t",'true');
             elems[elem]=elems[elem].replace("f",'false');
             elems[elem]=elems[elem].replace("p",'pin');
@@ -199,7 +188,6 @@ io.server2=http.createServer(function (req, res) {
                     if(found){
                       if(found.state!=mState){
                           query.updateDevieState(found._id,mState,function(err,res){
-                          console.log(res);
                           for (i in io.actionLinstener){
                                     io.actionLinstener[i](res);
                           } 

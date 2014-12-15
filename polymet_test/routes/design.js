@@ -35,20 +35,17 @@ router.get('/:paramID', function(req, res, next) {
 //add new Design
 router.post('/', function(req, res, next) {
 
-     console.log(req.body);
-    console.log(JSON.parse(Object.keys(req.body)[0]));
+    
 
     var newDesign = new Design();
     newDesign.name=JSON.parse(Object.keys(req.body)[0]).name
     newDesign.code=JSON.parse(JSON.parse(Object.keys(req.body)[0]).code);
-    console.log(newDesign);
     newDesign.save(onModelSave(res, 201, true));
 });
 
 
 router.put('/:paramID',function(req,res,next){
    var context=req.body;
-   console.log(req.body+"akjdhakjsdhkajsdhkajshdkajshdkjashdkajsdhkjasdh");
   Design.findOne({_id:req.params.paramID},function(err,found){
     if(!err && found){
       if(context.name){
@@ -60,16 +57,14 @@ router.put('/:paramID',function(req,res,next){
       if(context.code!=undefined){
 
         found.code=JSON.parse(context.code);
-        console.log(found.code);
         var compiled = compiler(found.code);
         found.program=compiled.code;
         found.sensors=compiled.sensors;  
       }
       if(context.active!=undefined){
          found.active=context.active;
-          console.log(found.active);
       }
-      found.save(function(err,saved){if(!err){res.status(200).end()}else{console.log(err);res.status(404).end()}});
+      found.save(function(err,saved){if(!err){res.status(200).end()}else{res.status(404).end()}});
 
     }else{
       res.status(404).end();
@@ -84,10 +79,8 @@ router.get('/run/:id',function(req,res,next){
       var i=0;
       var db={};
       function loop(){
-        console.log(design.sensors);
         if(i<design.sensors.length){
           Device.findOne({_id:design.sensors[i]},function(err1,found){
-            console.log(err1,found,"asdjaslkjdlkas")
             if(!err1){
                 db[found._id]=found.state=="true"?true:false;
                 i++;
@@ -96,7 +89,6 @@ router.get('/run/:id',function(req,res,next){
           })
 
         }else{
-          console.log(db,"db");
           var func=Function("db","library",design.program);
           func(db,library);
         }

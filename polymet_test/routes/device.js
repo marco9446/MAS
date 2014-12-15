@@ -54,12 +54,10 @@ router.get('/byname/:devicename', function(req, res, next) {
 //update device
 
 router.put('/:deviceid', function(req, res, next) {
-    console.log(req.body);
     Device.findOne({_id:req.params.deviceid}).exec(function(err, device) {
         if (err) return next(err);
 
         if (device) {
-          console.log(device);
             if (req.body.name) {
                 device.name = req.body.name;
             }

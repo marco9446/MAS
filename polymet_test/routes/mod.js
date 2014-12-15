@@ -73,7 +73,7 @@ function saveAndSend(json) {
     log.save();
       arduino.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
       found1.state=json.status;
-      found1.save(function(err,saved){console.log(err,saved);
+      found1.save(function(err,saved){
          Design.find({sensors:json.id,active:true},function(err,found){
           if(found){
           for(var lala=0;lala<found.length;lala++){
@@ -96,10 +96,8 @@ function sendRequestTo(design){
   var i=0;
   var db={};
   function loop(){
-        console.log(design.sensors);
         if(i<design.sensors.length){
           Device.findOne({_id:design.sensors[i]},function(err1,found){
-            console.log(err1,found,"asdjaslkjdlkas")
             if(!err1){
                 db[found._id]=found.state=="true"?true:false;
                 i++;
@@ -108,7 +106,6 @@ function sendRequestTo(design){
           })
 
         }else{
-          console.log(db,"db");
           var func=Function("db","library",design.program);
           func(db,library);
         }
@@ -119,7 +116,6 @@ function sendRequestTo(design){
 
 arduino.actionLinstener.push(function(msg){
 
-  console.log(msg);
   Design.find({sensors:msg._id,active:true},function(err,found){
     if(found){
     for(var lala=0;lala<found.length;lala++){
@@ -132,19 +128,15 @@ arduino.actionLinstener.push(function(msg){
 });
 
 router.post('/send', function(req, res, next) {
-    console.log(req.body.status+"asdasdjhaskjdhaskjdhakjsdhakjshd");
     saveAndSend(req.body);
     res.status(200).end();
 });
 
 router.post('/sendByName', function(req, res, next) {
-    console.log(req.body.state+"asdasdasdasdasdasdasdas");
     Device.find({name:req.body.name},function(err,found){
       if(!err && found){
          for(var i=0;i<found.length;i++){
-            console.log(found[i])
             if(found[i].type.indexOf("o")!=-1){
-              console.log({id:found[i]._id,status:req.body.status})
                saveAndSend({id:found[i]._id,status:req.body.status});
             }
            
@@ -162,7 +154,6 @@ router.put('/:deviceid', function(req, res, next) {
         if (err) return next(err);
 
         if (module) {
-            console.log(module);
             if (req.body.name) {
                 module.name = req.body.name;
             }
