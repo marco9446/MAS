@@ -82,7 +82,7 @@ void modStatusPin(char* in){
 
 
 void onlyOneTimePleas(){
-    Client client("10.20.6.151", 3005);
+    Client client("10.20.6.141", 3005);
     Serial.println("connecting...");
 
     if (client.connect()) {
@@ -119,6 +119,7 @@ void onlyOneTimePleas(){
 void setup() {
   Serial.begin(9600);
   stringOne=new char[HeadLength];
+   Serial.print("IP: ");
   WiFly.begin();
   if (!WiFly.join("ModularAutomationSystem", "fbedulli4")) {
     Serial.println("Association failed.");
