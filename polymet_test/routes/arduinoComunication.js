@@ -122,7 +122,7 @@ io.server1=http.createServer(function (req, res) {
               
               }
               //call calback
-              console.log("mamma mia dammi cento lire che in america voglio andar")
+              console.log("Ready To work")
               for(i in io.logModuleCallback.length){
 
                 io.logModuleCallback[i](found);
@@ -164,9 +164,9 @@ io.server2=http.createServer(function (req, res) {
   req.on('data', function (chunk) {
     body += chunk;
   });
-    req.on('end', function () {
-      console.log(body);
+      req.on('end', function () {
       var ip=req.connection.remoteAddress;
+      console.log(body);
       //ArduinoBase.findOne({IP:ip},function(err,found){
       query.getOneModuleByIp(ip,function(err,found){
       if(found){
@@ -179,15 +179,20 @@ io.server2=http.createServer(function (req, res) {
             elems[elem]=elems[elem].replace("t",'true');
             elems[elem]=elems[elem].replace("f",'false');
             elems[elem]=elems[elem].replace("p",'pin');
-            var pin = elems[elem].substring(1,elems[elem].indexOf(":")); 
+            console.log("Refactory element ",elems[elem])
+            var pin   = elems[elem].substring(1,elems[elem].indexOf(":")); 
             var state = elems[elem].substring(elems[elem].indexOf(":")+1,elems[elem].length-1);
+            console.log("Pin ",pin," State ",state);
             var p=function(p,s){
                 var mPin=p;
                 var mState=s;
-                query.getOneDeviceFromArrayPin(found.devices,pin,function(err,found){
-                    if(found){
-                      if(found.state!=mState){
-                          query.updateDevieState(found._id,mState,function(err,res){
+                query.getOneDeviceFromArrayPin(found.devices,pin,function(err,found1){
+                    if(found1){
+                      console.log(found1.state,mState)
+                      if(found1.state!=mState){
+                          console.log("This device is change state",found1);
+                          query.updateDevieState(found1._id,mState,function(err,res){
+                          console.log("Update State " + res)
                           for (i in io.actionLinstener){
                                     io.actionLinstener[i](res);
                           } 

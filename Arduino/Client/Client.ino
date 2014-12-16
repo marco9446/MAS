@@ -11,7 +11,7 @@
 #define DEBUG true
 #define ID "1111111112"
 #define Type "INPUT "
-#define PIN "2=b,3=b,4=b,5=b,6=s,7=s,8=w,9=t,A=t,B=t,C=t,D=t,E=t,F=t,G=t,H=t,I=t"
+#define PIN "2=b,3=b,4=b,5=b,6=b,7=b,8=b,9=t,A=t,B=t,C=t,D=t,E=t,F=t,G=t,H=t,I=t"
 IRrecv irrecv(9);
 decode_results results;
 char actionInDig[]={
@@ -60,7 +60,6 @@ void onlyOneTimePleas(){
 }
 
 void setup() {
-  Serial.begin(9600);
   WiFly.begin();
   if (!WiFly.join("ModularAutomationSystem", "fbedulli4")) {
     while (1) {
@@ -79,7 +78,7 @@ void updateInput(){
   boolean change=false;
   for(byte i=0;i<actionInDigLength;i++){
     int readVal=digitalRead((int)(actionInDig[i]-'0'));
-    if(i<6){
+    if(i<9){
       if(readVal==0){
         actionInDigStatusClick[i]++;
       }
@@ -93,9 +92,7 @@ void updateInput(){
       if((readVal==1 && actionInDigStatus[i]==LOW)||(readVal==0 && actionInDigStatus[i]==HIGH)){
         actionInDigStatus[i]= actionInDigStatus[i]==LOW?HIGH:LOW;
         change=true;
-
       }
-
     }
   }
 
@@ -152,7 +149,7 @@ void updateInput(){
     case 0xFF42BD:  
       b1=true;
       actionInDigStatus[15]=actionInDigStatus[15]==HIGH?LOW:HIGH;
-      pippo = actionInDigStatus[15]==HIGH?",{pG:t}":",{pG:f}";
+      pippo = actionInDigStatus[15]==HIGH ? ",{pG:t}":",{pG:f}";
       break;
 
     case 0xFF4AB5: 
@@ -164,19 +161,19 @@ void updateInput(){
     case 0xFF52AD:
       b1=true;  
       actionInDigStatus[17]=actionInDigStatus[17]==HIGH?LOW:HIGH;
-      pippo = actionInDigStatus[17]==HIGH?",{pI:t}":",{pI:f}";
+      pippo = actionInDigStatus[17]==HIGH ?",{pI:t}":",{pI:f}";
       break;
 
     default: 
       Serial.println(" other button   ");
-
-
     }
+    Serial.println(pippo);
     irrecv.resume(); // Receive the next value
     delay(200);
   }
 
   if(change || b1){
+    
     Client client("10.20.6.141", 3015);
     if (client.connect()) {
       client.println("GET /  HTTP/1.0");

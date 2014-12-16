@@ -61,16 +61,15 @@ router.post('/', function(req, res, next) {
 
 
 function saveAndSend(json) {
+
+  console.log("Save and Send"+JSON.stringify(json))
   Module.findOne({devices : json.id},function(err,found){
     if(found){
       Device.findOne({_id:json.id},function(err,found1){
       if(found1){
       var pin=found1.pin;
 
-      var log= new Log();
-     log.title="Change Device State.";
-    log.msg="Name:"+found.name;
-    log.save();
+      
       arduino.sendMessage(JSON.parse('{"ip":"' + found.ip + '","action":[{"'+ pin + '":"'+json.status+'"}]}'));
       found1.state=json.status;
       found1.save(function(err,saved){
@@ -80,16 +79,11 @@ function saveAndSend(json) {
             sendRequestTo(found[lala]);
             }
           }
-          });
-        
+          });    
       });
       }});
-
     }
-  });
-  
-
-
+  }); 
 }
 
 function sendRequestTo(design){
@@ -104,13 +98,15 @@ function sendRequestTo(design){
                 loop();
             }
           })
-
         }else{
+          console.log("Calling  Function")
           var func=Function("db","library",design.program);
           func(db,library);
+          console.log("End  Function")
         }
       }
       loop(); 
+      console.log("Ennding")
 }
 
 
@@ -120,8 +116,6 @@ arduino.actionLinstener.push(function(msg){
     if(found){
     for(var lala=0;lala<found.length;lala++){
       sendRequestTo(found[lala]);
-      
-
     }
   }
   })
