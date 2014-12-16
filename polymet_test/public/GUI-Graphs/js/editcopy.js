@@ -6,7 +6,6 @@ var myObject=function(){
   //must be a singleton
  
  this.init=function(arg) {
-
     var $ = go.GraphObject.make;
     myDiagram =
         $(go.Diagram, document.querySelector("html /deep/ #test"),
@@ -21,8 +20,6 @@ var myObject=function(){
                 },
                 layout: $(go.TreeLayout,
                     {
-                       //wrappingWidth: Infinity, alignment: go.GridLayout.Position,
-                        //cellSize: new go.Size(1, 1)
                     }),
                 initialContentAlignment: go.Spot.TopLeft,
                 groupSelectionAdornmentTemplate:  // this applies to all Groups
@@ -33,7 +30,6 @@ var myObject=function(){
                 "commandHandler.archetypeGroupData": {isGroup: true, category: "OfNodes"},
                 "undoManager.isEnabled": true
             });
-
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
         var button = document.querySelector("html /deep/ #SaveButton");
@@ -143,7 +139,7 @@ var myObject=function(){
                             {
                                 _side: "bottom",  // internal property to make it easier to tell which side it's on
                                 fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
-                                fromLinkable: true, toLinkable: true, cursor: "pointer",
+                                fromLinkable: true, toLinkable: true, cursor: "pointer"
                             },
                             new go.Binding("portId", "portId"),
                             $(go.Shape, "Rectangle",
@@ -170,7 +166,6 @@ var myObject=function(){
     myDiagram.groupTemplateMap.add("OfNodes",
         $(go.Group, go.Panel.Auto,
             {
-
                 background: "transparent",
                 ungroupable: true,
                 // highlight when dragging into the Group
@@ -213,7 +208,6 @@ var myObject=function(){
             ),  // end Vertical Panel
             $(go.Shape, "Rectangle",
                 {
-
                     isPanelMain: true,
                     fill: null,
                     stroke: "#0099CC",
@@ -230,7 +224,6 @@ var myObject=function(){
                 locationObjectName: "BODY",
                 locationSpot: go.Spot.Center,
                 selectionObjectName: "BODY"
-                //contextMenu: nodeMenu
             },
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
 
@@ -294,7 +287,7 @@ var myObject=function(){
                         {
                             _side: "top",
                             fromSpot: go.Spot.Top, toSpot: go.Spot.Top,
-                            fromLinkable: true, toLinkable: true, cursor: "pointer",
+                            fromLinkable: true, toLinkable: true, cursor: "pointer"
                         },
                         new go.Binding("portId", "portId"),
                         $(go.Shape, "Rectangle",
@@ -309,8 +302,8 @@ var myObject=function(){
             ),  // end Horizontal Panel
             //
 
-            //    // the Panel holding the bottom port elements, which are themselves Panels,
-            //    // created for each item in the itemArray, bound to data.bottomArray
+               // the Panel holding the bottom port elements, which are themselves Panels,
+               // created for each item in the itemArray, bound to data.bottomArray
             $(go.Panel, "Horizontal",
                 new go.Binding("itemArray", "bottomArray"),
                 {
@@ -319,7 +312,7 @@ var myObject=function(){
                         {
                             _side: "bottom",
                             fromSpot: go.Spot.Bottom, toSpot: go.Spot.Bottom,
-                            fromLinkable: true, toLinkable: true, cursor: "pointer",
+                            fromLinkable: true, toLinkable: true, cursor: "pointer"
                         },
                         new go.Binding("portId", "portId"),
                         $(go.Shape, "Rectangle",
@@ -344,24 +337,18 @@ var myObject=function(){
       $(go.Shape,  { strokeWidth: 2, stroke: "black" }),
            $(go.Shape,  // the arrowhead
                { toArrow: "standard", stroke: "black", strokeWidth:3, fill: "black"})
-
     );
-
-
-
     var slider = document.querySelector("html /deep/ #levelSlider");
     slider.addEventListener('change', reexpand);
     slider.addEventListener('input', reexpand);
 
     load(arg)
-
 }
 
 var CustomLink=function() {
     go.Link.call(this);
 };
 
-//go.Diagram.inherit(CustomLink, go.Link);
 
 function expandGroups(g, i, level) {
     if (!(g instanceof go.Group)) return;
