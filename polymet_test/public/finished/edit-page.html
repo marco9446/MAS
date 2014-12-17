@@ -72,8 +72,8 @@
             <paper-dropdown-menu  label="what will i do?" style="position: static">
                 <paper-dropdown class="dropdown">
                     <core-menu class="menu">
-                        <paper-item>Tourn on</paper-item>
-                        <paper-item>Tourn off</paper-item>
+                        <paper-item>Turn on</paper-item>
+                        <paper-item>Turn off</paper-item>
                         <paper-item>Switch</paper-item>
                         <paper-item>Test</paper-item>
                     </core-menu>
@@ -156,14 +156,14 @@
                     decision: function(){
                         /*
                          oldId = id dell'elemento trascinato
-                         selectedDecision = elemento selezionato nel menu. potrá essere "Tourn on", "Tourn off", "Switch" o "";
+                         selectedDecision = elemento selezionato nel menu. potrá essere "Turn on", "Turn off", "Switch" o "";
                          quando il server risponderá, verrá chiamata la funzione newIpAssigner, da dove bisognerá creare il nuovo oggetto.
 
                          */
                         var oldId =  document.querySelector("html /deep/ #dialog2 > #idDeviceHidden").innerHTML;
                         var selectedDecision = document.querySelector("html /deep/ paper-dropdown-menu").selectedItemLabel;
                         var postAjax = this.$.GetNewId;
-                        var postDictionary  = {"Tourn on":"true","Tourn off":"false","Switch":'switch',"Test":"Test"};
+                        var postDictionary  = {"Turn on":"true","Turn off":"false","Switch":'switch',"Test":"Test"};
                         //console.log(postAjax, oldId , selectedDecision);
                         if (selectedDecision.length>1){
                             //console.log(selectedDecision);
@@ -189,7 +189,7 @@
                     }//TODO
                     , newIpAssigner: function(){
                         console.log("role",role);
-                        var postDictionary  = {"Tourn on":"../GUI-Graphs/res/bulb-on.png","Tourn off":"../GUI-Graphs/res/lamp.png","Switch":'../GUI-Graphs/res/on-off.png' };
+                        var postDictionary  = {"Turn on":"../GUI-Graphs/res/bulb-on.png","Turn off":"../GUI-Graphs/res/lamp.png","Switch":'../GUI-Graphs/res/on-off.png' };
                         var name = document.querySelector("html /deep/ #dialog2 > #nameDeviceHidden").innerHTML;
                         var responce  =  this.newIp;//risposta delll'ajax request
                         //console.log(responce);
